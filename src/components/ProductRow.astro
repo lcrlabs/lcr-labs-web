@@ -1,0 +1,125 @@
+---
+import ProductVisual from './ProductVisual.astro';
+import SetappAction from './SetappAction.astro';
+import StatusBadge from './StatusBadge.astro';
+import Button from './Button.astro';
+import type { Product } from '../lib/products';
+import { productHref } from '../lib/products';
+
+/**
+ * A homepage product row: one product told at full width, with its visual
+ * anchor on alternating sides. Editorial rather than a dense card grid — the
+ * products are the page, so each gets the room to be understood.
+ */
+interface Props {
+  product: Product;
+  /** Row position, used only to alternate the visual's side. */
+  index: number;
+}
+
+const { product, index } = Astro.props;
+const href = productHref(product);
+const flipped = index % 2 === 1;
+---
+
+<article class:list={['row', flipped && 'row--flipped']}>
+  <div class="row__body">
+    <div class="row__heading">
+      <h3 class="row__name">{product.data.name}</h3>
+      <StatusBadge product={product} />
+    </div>
+
+    <p class="row__summary">{product.data.shortDescription}</p>
+
+    {
+      product.data.highlights.length > 0 && (
+        <ul class="row__highlights">
+          {product.data.highlights.slice(0, 4).map((highlight) => (
+            <li>{highlight}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="row__actions">
+      {href && <Button href={href} variant="secondary">Learn more</Button>}
+      <SetappAction product={product} />
+    </div>
+  </div>
+
+  <div class="row__visual">
+    <ProductVisual product={product} />
+  </div>
+</article>
+
+<style>
+  .row {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .row__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .row__name {
+    font-size: var(--text-xl);
+  }
+
+  .row__summary {
+    margin-top: var(--space-3);
+    max-width: 46ch;
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+  }
+
+  .row__highlights {
+    margin-top: var(--space-5);
+    display: grid;
+    gap: var(--space-2);
+    max-width: 46ch;
+  }
+
+  .row__highlights li {
+    position: relative;
+    padding-left: var(--space-5);
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+  }
+
+  .row__highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  .row__actions {
+    margin-top: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+  }
+
+  @media (min-width: 60rem) {
+    .row {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: var(--space-12);
+    }
+
+    /* Reordering only the visual keeps the DOM in reading order. */
+    .row--flipped .row__visual {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+</style>

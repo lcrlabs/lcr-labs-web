@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout title="Page not found" description="This page does not exist.">
+  <section class="section">
+    <div class="container notfound">
+      <p class="eyebrow">404</p>
+      <h1>This page does not exist.</h1>
+      <p class="lede">
+        The link may be out of date, or the page may have moved. The products are a good place
+        to start.
+      </p>
+      <div class="notfound__actions">
+        <Button href="/products/" variant="primary">View products</Button>
+        <Button href="/" variant="secondary">Go to the homepage</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: var(--content-narrow);
+  }
+
+  .notfound h1 {
+    margin-top: var(--space-3);
+  }
+
+  .notfound .lede {
+    margin-top: var(--space-4);
+  }
+
+  .notfound__actions {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

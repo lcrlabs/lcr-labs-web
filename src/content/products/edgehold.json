@@ -1,0 +1,34 @@
+{
+  "name": "Edgehold",
+  "order": 3,
+  "shortDescription": "Make the pointer cross between displays on purpose instead of by accident.",
+  "longDescription": "On a multi-display desk the pointer slips onto the wrong screen constantly. Edgehold adds configurable behaviour at each boundary between displays — resistance, a deliberate second push, a modifier key, or a single crossing point — while leaving pointer movement everywhere else completely normal. Once it is configured you should stop noticing it.",
+  "placeholder": false,
+  "icon": null,
+  "screenshots": [],
+  "platform": "macOS",
+  "status": "coming-soon",
+  "statusNote": "In planning. Details will be published as development progresses.",
+  "highlights": [
+    "Rules configured per boundary, not per display",
+    "Resistance, double-push, modifier and gate behaviours",
+    "Profiles for different desk setups",
+    "Steps aside while you are dragging"
+  ],
+  "features": [
+    {
+      "title": "Per-boundary rules",
+      "description": "Each edge between two displays is configured on its own, because the boundary you keep crossing by accident is rarely the one you cross on purpose."
+    },
+    {
+      "title": "Deliberate crossings",
+      "description": "Choose how much intent a crossing needs — slowing at the edge, a second push, a held modifier key, or a defined gate along the shared edge."
+    },
+    {
+      "title": "Desk profiles",
+      "description": "Different setups get different behaviour, so docking and undocking does not mean reconfiguring."
+    }
+  ],
+  "privacyNote": "Pointer behaviour is evaluated entirely on your Mac. Nothing about how you use your displays leaves the device.",
+  "setapp": {}
+}

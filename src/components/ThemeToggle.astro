@@ -1,0 +1,117 @@
+---
+/**
+ * Appearance control.
+ *
+ * The page follows the system appearance until the reader overrides it; the
+ * override is stored per browser and re-applied before first paint by the
+ * inline script in BaseLayout. The button starts hidden and is revealed by its
+ * own script, so a reader without JavaScript is never shown a dead control —
+ * the system appearance still works for them, because the theming is pure CSS.
+ *
+ * The icon shows the appearance the button switches *to*, driven by a
+ * `data-resolved` attribute the script keeps in sync. Since the control only
+ * exists when the script has run, that is simpler and less duplicative than
+ * restating the system-preference query in CSS.
+ */
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  data-theme-toggle
+  data-resolved="light"
+  hidden
+  aria-label="Switch appearance"
+>
+  <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 20 20" aria-hidden="true">
+    <circle cx="10" cy="10" r="3.5" />
+    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M10 2.2v1.9M10 15.9v1.9M2.2 10h1.9M15.9 10h1.9" />
+      <path d="m4.5 4.5 1.3 1.3M14.2 14.2l1.3 1.3M15.5 4.5l-1.3 1.3M5.8 14.2l-1.3 1.3" />
+    </g>
+  </svg>
+  <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 20 20" aria-hidden="true">
+    <path d="M16.3 12.6A7 7 0 0 1 7.4 3.7a7 7 0 1 0 8.9 8.9Z" />
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease),
+      color var(--duration-fast) var(--ease);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--surface-hover);
+    color: var(--text-primary);
+  }
+
+  .theme-toggle__icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .theme-toggle__icon--sun {
+    display: none;
+  }
+
+  .theme-toggle[data-resolved='dark'] .theme-toggle__icon--sun {
+    display: block;
+  }
+
+  .theme-toggle[data-resolved='dark'] .theme-toggle__icon--moon {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector('[data-theme-toggle]');
+    if (!button) return;
+
+    const root = document.documentElement;
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const resolved = () => root.dataset.theme ?? (systemDark.matches ? 'dark' : 'light');
+
+    const sync = () => {
+      const current = resolved();
+      const next = current === 'dark' ? 'light' : 'dark';
+      button.dataset.resolved = current;
+      button.setAttribute('aria-label', `Switch to ${next} appearance`);
+    };
+
+    button.hidden = false;
+    sync();
+
+    // Keep the icon honest while the reader is still following the system.
+    systemDark.addEventListener('change', sync);
+
+    button.addEventListener('click', () => {
+      root.dataset.theme = resolved() === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem('lcr-theme', root.dataset.theme);
+      } catch {
+        /* Private browsing or blocked storage: the choice just won't persist. */
+      }
+      sync();
+    });
+  })();
+</script>

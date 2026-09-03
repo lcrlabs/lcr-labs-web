@@ -1,0 +1,90 @@
+---
+import StatusBadge from './StatusBadge.astro';
+import type { Product } from '../lib/products';
+import { productHref } from '../lib/products';
+
+/**
+ * The /products listing entry. Compact by design — the detail page does the
+ * explaining, this only has to be enough to choose from.
+ */
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const href = productHref(product);
+---
+
+<article class="card">
+  <div class="card__head">
+    <h2 class="card__name">
+      {
+        href ? (
+          <a class="card__link" href={href}>
+            {product.data.name}
+          </a>
+        ) : (
+          product.data.name
+        )
+      }
+    </h2>
+    <StatusBadge product={product} />
+  </div>
+
+  <p class="card__summary">{product.data.shortDescription}</p>
+
+  <p class="card__meta">
+    {product.data.minimumOS ? `${product.data.minimumOS} or later` : product.data.platform}
+  </p>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+    transition: border-color var(--duration-fast) var(--ease);
+  }
+
+  .card:has(.card__link:hover) {
+    border-color: var(--border-strong);
+  }
+
+  .card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .card__name {
+    font-size: var(--text-md);
+  }
+
+  /* The whole card is the target, but only the title is the link. */
+  .card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card:has(.card__link) {
+    position: relative;
+  }
+
+  .card__summary {
+    flex: 1;
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+  }
+
+  .card__meta {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+  }
+</style>

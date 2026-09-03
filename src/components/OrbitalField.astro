@@ -1,0 +1,131 @@
+---
+/**
+ * The hero's decorative background: concentric tilted rings echoing the ringed
+ * planet in the LCR Labs mark, with a soft accent glow behind them.
+ *
+ * Cost, deliberately: three elements animating `transform` only, so the work
+ * stays on the compositor and never touches layout or paint. No canvas, no
+ * WebGL, no animation library, no pointer tracking, no scroll listener, and
+ * nothing running outside the hero. Each ring turns once every three to six
+ * minutes — enough that the page is not static, far too slow to draw the eye.
+ *
+ * Under `prefers-reduced-motion` the rotation stops and the rings simply hold
+ * their offset positions; the composition is designed to read as finished
+ * standing still, which is also what it looks like with CSS animation
+ * unavailable.
+ */
+---
+
+<div class="field" aria-hidden="true">
+  <div class="field__glow"></div>
+  <div class="field__ring field__ring--1"></div>
+  <div class="field__ring field__ring--2"></div>
+  <div class="field__ring field__ring--3"></div>
+  <div class="field__dots"></div>
+</div>
+
+<style>
+  .field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    /* Sits behind hero content, which establishes its own stacking context. */
+    z-index: 0;
+  }
+
+  .field__glow {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    width: min(1100px, 130vw);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, var(--field-glow) 0%, transparent 62%);
+  }
+
+  .field__ring {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    border: 1px solid var(--field-line);
+    border-radius: 50%;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .field__ring--1 {
+    width: min(760px, 92vw);
+    height: min(300px, 36vw);
+    margin: calc(min(300px, 36vw) / -2) 0 0 calc(min(760px, 92vw) / -2);
+    animation: drift 210s linear infinite;
+  }
+
+  .field__ring--2 {
+    width: min(1080px, 128vw);
+    height: min(400px, 47vw);
+    margin: calc(min(400px, 47vw) / -2) 0 0 calc(min(1080px, 128vw) / -2);
+    animation: drift-reverse 340s linear infinite;
+  }
+
+  .field__ring--3 {
+    width: min(1420px, 168vw);
+    height: min(520px, 62vw);
+    margin: calc(min(520px, 62vw) / -2) 0 0 calc(min(1420px, 168vw) / -2);
+    animation: drift 470s linear infinite;
+    opacity: 0.7;
+  }
+
+  /* A sparse scatter of points, painted once as a background image. */
+  .field__dots {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle 1.5px at 18% 30%, var(--field-dot) 100%, transparent 0),
+      radial-gradient(circle 1.5px at 74% 22%, var(--field-dot) 100%, transparent 0),
+      radial-gradient(circle 1px at 88% 58%, var(--field-dot) 100%, transparent 0),
+      radial-gradient(circle 1px at 32% 72%, var(--field-dot) 100%, transparent 0),
+      radial-gradient(circle 1.5px at 58% 84%, var(--field-dot) 100%, transparent 0),
+      radial-gradient(circle 1px at 8% 62%, var(--field-dot) 100%, transparent 0);
+    opacity: 0.9;
+  }
+
+  /* The rings start tilted rather than level, so a stopped field still reads
+     as the mark's ring rather than as a set of flat ellipses. */
+  @keyframes drift {
+    from {
+      transform: rotate(-14deg);
+    }
+    to {
+      transform: rotate(346deg);
+    }
+  }
+
+  @keyframes drift-reverse {
+    from {
+      transform: rotate(8deg);
+    }
+    to {
+      transform: rotate(-352deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .field__ring {
+      animation: none;
+      will-change: auto;
+    }
+
+    .field__ring--1 {
+      transform: rotate(-14deg);
+    }
+
+    .field__ring--2 {
+      transform: rotate(8deg);
+    }
+
+    .field__ring--3 {
+      transform: rotate(-22deg);
+    }
+  }
+</style>

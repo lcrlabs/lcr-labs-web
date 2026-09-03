@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DraftNotice from '../components/DraftNotice.astro';
+---
+
+<BaseLayout
+  title="Imprint"
+  description="Anbieterkennzeichnung und Kontaktinformationen für LCR Labs."
+>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">Legal</p>
+        <h1>Impressum</h1>
+        <p class="lede">Anbieterkennzeichnung und Kontaktinformationen.</p>
+      </header>
+
+      <div class="prose">
+        <DraftNotice
+          action="The operator details below were carried over from the existing Greenly imprint and must be confirmed for LCR Labs before this page is published. The wording is a scaffold, not verified legal text."
+        >
+          <ul>
+            <li>Confirm the operator name and address are correct for LCR Labs</li>
+            <li>Add the LCR Labs contact email address</li>
+            <li>Confirm whether LCR Labs is a business name requiring further registration details</li>
+            <li>Confirm whether a VAT identification number (USt-IdNr.) must be stated</li>
+            <li>Have the finished text reviewed for DDG/German and EU requirements</li>
+          </ul>
+        </DraftNotice>
+
+        <h2>Angaben gemäß § 5 DDG</h2>
+        <p>
+          Luca Moritz Runkel<br />
+          Bahnhofstr. 12<br />
+          79353 Bahlingen<br />
+          Deutschland
+        </p>
+
+        <h2>Kontakt</h2>
+        <p class="placeholder">E-Mail: noch zu ergänzen.</p>
+
+        <h2>Verantwortlich für den Inhalt</h2>
+        <p>Luca Moritz Runkel, Anschrift wie oben.</p>
+
+        <h2>Haftung für Inhalte und Links</h2>
+        <p>
+          Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Für die Inhalte externer
+          Links sind ausschließlich deren Betreiber verantwortlich. Bei Bekanntwerden von
+          Rechtsverletzungen werden entsprechende Links entfernt.
+        </p>
+
+        <h2>Urheberrecht</h2>
+        <p>
+          Eigene Inhalte, Gestaltung sowie das LCR-Labs-Logo sind urheberrechtlich geschützt.
+          Produktnamen, Marken und Abbildungen Dritter verbleiben bei ihren jeweiligen
+          Rechteinhabern. „Setapp“ ist eine Marke des jeweiligen Betreibers.
+        </p>
+
+        <h2>Vertrieb</h2>
+        <p>
+          Über diese Website findet kein Vertragsschluss und kein Verkauf statt. Der Vertrieb
+          der LCR-Labs-Anwendungen erfolgt über Setapp; Zahlungsabwicklung, Lizenzierung und
+          Rechnungsstellung liegen dort.
+        </p>
+
+        <h2>Verbraucherstreitbeilegung</h2>
+        <p>
+          Der Anbieter ist nicht verpflichtet und derzeit nicht bereit, an
+          Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .head .lede {
+    margin-top: var(--space-4);
+  }
+
+  .placeholder {
+    color: var(--text-tertiary);
+    font-style: italic;
+  }
+</style>

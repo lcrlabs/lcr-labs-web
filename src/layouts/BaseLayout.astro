@@ -1,0 +1,75 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_NAME, SITE_DESCRIPTION } from '../lib/site';
+import '../styles/global.css';
+
+interface Props {
+  /** Page title without the site suffix. Omit on the homepage. */
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative path to a social card image. */
+  image?: string;
+}
+
+const { title, description = SITE_DESCRIPTION, image = '/brand/og-default.jpg' } = Astro.props;
+
+const pageTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Thoughtful software for macOS`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/brand/lcr-icon-512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <meta name="generator" content={Astro.generator} />
+
+    {/*
+      Applies a stored appearance choice before first paint, so an explicit
+      light or dark preference never flashes the other one. With no stored
+      choice nothing is set and the CSS follows the system on its own, which
+      is also exactly what happens when this script does not run.
+    */}
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem('lcr-theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.dataset.theme = stored;
+        }
+      } catch {
+        /* Storage unavailable: fall through to the system appearance. */
+      }
+    </script>
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

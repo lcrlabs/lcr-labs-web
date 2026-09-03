@@ -1,0 +1,351 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductVisual from '../../components/ProductVisual.astro';
+import SetappAction from '../../components/SetappAction.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { getProducts, hasSetappDestination, type Product } from '../../lib/products';
+import { SITE_NAME } from '../../lib/site';
+
+/**
+ * One page per announced product. A reserved slot has nothing to say yet and
+ * so gets no page — see `placeholder` in the products collection.
+ */
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products
+    .filter((product) => !product.data.placeholder)
+    .map((product) => ({ params: { slug: product.id }, props: { product } }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const data = product.data;
+
+const requirements = [
+  { label: 'Platform', value: data.platform },
+  data.minimumOS ? { label: 'Requires', value: `${data.minimumOS} or later` } : null,
+  data.architecture ? { label: 'Architecture', value: data.architecture } : null,
+  data.version ? { label: 'Version', value: data.version } : null,
+  { label: 'Distribution', value: hasSetappDestination(product) ? 'Setapp' : 'To be announced' },
+].filter((row): row is { label: string; value: string } => row !== null);
+
+/*
+ * Structured data describes only what the product data actually states. No
+ * offer, price or download URL is emitted — the site is not the seller, and
+ * claiming otherwise in metadata would be as wrong as claiming it on the page.
+ */
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: data.name,
+  description: data.shortDescription,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: data.minimumOS ?? data.platform,
+  ...(data.version ? { softwareVersion: data.version } : {}),
+  author: { '@type': 'Organization', name: SITE_NAME },
+};
+
+const linkable = hasSetappDestination(product);
+const extraScreenshots = data.screenshots.slice(1);
+---
+
+<BaseLayout title={data.name} description={data.shortDescription}>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+    is:inline
+  />
+
+  <article>
+    <section class="section section--tight">
+      <div class="container">
+        <nav class="crumb" aria-label="Breadcrumb">
+          <a href="/products/">Products</a>
+        </nav>
+
+        <div class="intro">
+          <div class="intro__body">
+            <div class="intro__heading">
+              <h1>{data.name}</h1>
+              <StatusBadge product={product} />
+            </div>
+            <p class="lede intro__summary">{data.shortDescription}</p>
+            <div class="intro__action">
+              <SetappAction product={product} size="lg" showPrice />
+            </div>
+          </div>
+
+          <dl class="specs">
+            {
+              requirements.map((row) => (
+                <div class="specs__row">
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <div class="visual">
+          <ProductVisual product={product} loading="eager" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-labelledby="overview-heading">
+      <div class="container overview">
+        <h2 id="overview-heading" class="overview__heading">Overview</h2>
+        <p class="overview__text">{data.longDescription}</p>
+      </div>
+    </section>
+
+    {
+      data.features.length > 0 && (
+        <section class="section section--tight" aria-labelledby="features-heading">
+          <div class="container">
+            <h2 id="features-heading" class="block__heading">
+              What it does
+            </h2>
+            <ul class="features">
+              {data.features.map((feature) => (
+                <li class="feature">
+                  <h3 class="feature__title">{feature.title}</h3>
+                  <p class="feature__text">{feature.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      extraScreenshots.length > 0 && (
+        <section class="section section--tight" aria-labelledby="screens-heading">
+          <div class="container">
+            <h2 id="screens-heading" class="block__heading">
+              Screenshots
+            </h2>
+            <div class="shots">
+              {extraScreenshots.map((_, offset) => (
+                <ProductVisual product={product} index={offset + 1} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="section section--tight" aria-labelledby="availability-heading">
+      <div class="container">
+        <div class:list={['panel', linkable && 'panel--with-action']}>
+          <div>
+            <h2 id="availability-heading" class="panel__title">Availability</h2>
+            <p class="panel__text">
+              {
+                linkable
+                  ? `${data.name} is distributed through Setapp. Purchase, licensing and installation are handled by Setapp.`
+                  : `${data.name} is not yet available. When it is released, this page will link to its official Setapp page.`
+              }
+            </p>
+            {data.privacyNote && <p class="panel__privacy">{data.privacyNote}</p>}
+          </div>
+          {
+            /* Only when there is a real destination. Without one, the paragraph
+               above already says everything, and `SetappAction` would just
+               repeat the status note the hero has already shown. */
+            linkable && (
+              <div class="panel__action">
+                <SetappAction product={product} size="lg" />
+              </div>
+            )
+          }
+        </div>
+
+        <p class="support">
+          Questions about {data.name}? <a href="/support/">Get support</a>.
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .crumb {
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .crumb a:hover {
+    color: var(--text-primary);
+  }
+
+  .intro {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .intro__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .intro__summary {
+    margin-top: var(--space-4);
+    max-width: 50ch;
+  }
+
+  .intro__action {
+    margin-top: var(--space-6);
+  }
+
+  .specs {
+    align-self: start;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+    font-size: var(--text-sm);
+  }
+
+  .specs__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .specs__row + .specs__row {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .specs dt {
+    color: var(--text-tertiary);
+  }
+
+  .specs dd {
+    margin: 0;
+    color: var(--text-primary);
+    text-align: right;
+  }
+
+  .visual {
+    margin-top: clamp(var(--space-10), 6vw, var(--space-16));
+  }
+
+  .overview {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .overview__heading {
+    font-size: var(--text-lg);
+  }
+
+  .overview__text {
+    max-width: var(--content-narrow);
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+  }
+
+  .block__heading {
+    margin-bottom: var(--space-8);
+    font-size: var(--text-lg);
+  }
+
+  .features {
+    display: grid;
+    gap: var(--space-8) var(--space-10);
+  }
+
+  .feature {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .feature__title {
+    font-size: var(--text-md);
+  }
+
+  .feature__text {
+    margin-top: var(--space-2);
+    max-width: 46ch;
+    color: var(--text-secondary);
+  }
+
+  .shots {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .panel {
+    display: grid;
+    gap: var(--space-6);
+    padding: clamp(var(--space-6), 4vw, var(--space-10));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+  }
+
+  .panel__title {
+    font-size: var(--text-lg);
+  }
+
+  .panel__text {
+    margin-top: var(--space-3);
+    max-width: 56ch;
+    color: var(--text-secondary);
+  }
+
+  .panel__privacy {
+    margin-top: var(--space-3);
+    max-width: 56ch;
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .support {
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .support a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 48rem) {
+    .features {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .intro {
+      grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    .panel--with-action {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      align-items: center;
+    }
+
+    .panel__action {
+      justify-self: end;
+    }
+  }
+</style>

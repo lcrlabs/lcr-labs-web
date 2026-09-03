@@ -1,0 +1,56 @@
+---
+/**
+ * Marks content that is a scaffold, not finished text.
+ *
+ * Deliberately visible in the built site rather than only in a comment: these
+ * pages carry legal weight, and a placeholder that is invisible in production
+ * is a placeholder that ships. Remove each notice as its page is completed and
+ * reviewed.
+ */
+interface Props {
+  /** What has to happen before this notice can be removed. */
+  action: string;
+}
+
+const { action } = Astro.props;
+---
+
+<aside class="draft" role="note">
+  <p class="draft__title">Draft — not yet reviewed</p>
+  <p class="draft__body">{action}</p>
+  <slot />
+</aside>
+
+<style>
+  .draft {
+    margin-block: var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--warning);
+    border-radius: var(--radius-md);
+    background-color: color-mix(in srgb, var(--warning) 8%, transparent);
+  }
+
+  .draft__title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--warning);
+  }
+
+  .draft__body {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .draft :global(ul) {
+    margin-top: var(--space-3);
+    padding-left: var(--space-5);
+    list-style: disc;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .draft :global(li + li) {
+    margin-top: var(--space-1);
+  }
+</style>

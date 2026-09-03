@@ -1,0 +1,120 @@
+---
+/**
+ * The site's only button. Renders an <a> when given an href, otherwise a
+ * <button>, so a link never has to be faked with a click handler.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'quiet';
+  size?: 'md' | 'lg';
+  external?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className]
+  .filter(Boolean)
+  .join(' ');
+
+const linkAttrs = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : { type: 'button' as const };
+---
+
+<Tag class={classes} {...linkAttrs} {...rest}>
+  <span class="btn__label"><slot /></span>
+  {
+    external && (
+      <svg
+        class="btn__external"
+        viewBox="0 0 16 16"
+        width="12"
+        height="12"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M6 3h7v7" />
+        <path d="M13 3 6.5 9.5" />
+        <path d="M11 10.5V13H3V5h2.5" />
+      </svg>
+    )
+  }
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color var(--duration-fast) var(--ease),
+      border-color var(--duration-fast) var(--ease),
+      color var(--duration-fast) var(--ease);
+  }
+
+  .btn--md {
+    padding: 0.5rem 0.9rem;
+  }
+
+  .btn--lg {
+    padding: 0.65rem 1.2rem;
+    font-size: var(--text-md);
+  }
+
+  .btn--primary {
+    background-color: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .btn--primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .btn--secondary {
+    background-color: var(--surface);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn--secondary:hover {
+    background-color: var(--surface-hover);
+  }
+
+  .btn--quiet {
+    padding-inline: var(--space-1);
+    color: var(--accent);
+  }
+
+  .btn--quiet:hover {
+    color: var(--accent-hover);
+  }
+
+  .btn__external {
+    flex: none;
+    opacity: 0.7;
+  }
+</style>

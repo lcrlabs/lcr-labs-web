@@ -1,0 +1,54 @@
+---
+/**
+ * The LCR Labs lockup: the ringed-planet mark plus the wordmark.
+ *
+ * The mark is the brand PNG drawn as a CSS mask over `currentColor` — the same
+ * approach the macOS apps take with `.renderingMode(.template)`. One asset
+ * therefore serves both appearances, and the mark inherits whatever colour its
+ * context sets instead of needing a light and a dark file.
+ */
+interface Props {
+  /** Mark height in px. The wordmark scales with it. */
+  size?: number;
+  /** Hide the wordmark and show the mark alone. */
+  markOnly?: boolean;
+  class?: string;
+}
+
+const { size = 26, markOnly = false, class: className } = Astro.props;
+---
+
+<span class:list={['logo', className]} style={`--mark-height: ${size}px`}>
+  <span class="logo__mark" aria-hidden="true"></span>
+  {markOnly ? <span class="visually-hidden">LCR Labs</span> : <span class="logo__word">LCR Labs</span>}
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    font-size: calc(var(--mark-height) * 0.62);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .logo__mark {
+    flex: none;
+    /* The source mark is 520×280. */
+    width: calc(var(--mark-height) * 520 / 280);
+    height: var(--mark-height);
+    background-color: currentColor;
+    mask-image: url('/brand/lcr-mark.png');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+  }
+
+  .logo__word {
+    display: inline-block;
+  }
+</style>

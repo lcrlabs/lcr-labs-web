@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="LCR Labs is an independent software label building small, native, privacy-respecting utilities for macOS."
+>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">About</p>
+        <h1>An independent software label</h1>
+      </header>
+
+      <div class="prose">
+        <p>
+          LCR Labs builds small, carefully designed tools for Apple platforms. The focus is
+          macOS: utilities that do one job properly, look and behave like the system they run
+          on, and stay out of the way the rest of the time.
+        </p>
+
+        <h2>What that means in practice</h2>
+        <p>
+          The apps are written in Swift and SwiftUI using Apple’s own frameworks, rather than
+          wrapped web interfaces. That is not a technical preference for its own sake — it is
+          what makes an app feel native: the right typography, the right spacing, working
+          keyboard navigation, sensible window behaviour, correct dark and light appearances,
+          and a resource footprint small enough that you can leave the app running.
+        </p>
+        <p>
+          Data stays on the device by default. A system monitor should not need an account, a
+          note-taking companion should not upload your email, and a pointer utility should not
+          be interested in how you use your displays. Where a product later benefits from
+          synchronisation, the intent is user-controlled iCloud rather than a database owned
+          by LCR Labs.
+        </p>
+
+        <h2>How the apps are distributed</h2>
+        <p>
+          LCR Labs applications are distributed through <span class="nowrap">Setapp</span>,
+          which handles installation, licensing, payment and the associated billing support.
+          This website exists to explain the products and point you to the right place — it is
+          not a shop, and it does not process payments or host paid downloads.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Product questions, bug reports and feedback are welcome through the
+          <a href="/support/">support page</a>. Legal contact details are listed in the
+          <a href="/imprint/">imprint</a>.
+        </p>
+      </div>
+
+      <div class="actions">
+        <Button href="/products/" variant="primary">View the products</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .actions {
+    margin-top: var(--space-10);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+</style>

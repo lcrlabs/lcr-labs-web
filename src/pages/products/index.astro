@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import ProductSlot from '../../components/ProductSlot.astro';
+import { getProducts } from '../../lib/products';
+
+const products = await getProducts();
+const announced = products.filter((product) => !product.data.placeholder);
+const reserved = products.filter((product) => product.data.placeholder);
+---
+
+<BaseLayout
+  title="Products"
+  description="Every LCR Labs product: small, native macOS utilities, their requirements and where to get them."
+>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">Products</p>
+        <h1>Utilities for the Mac</h1>
+        <p class="lede">
+          Each app does one job. They share a design language, a privacy stance and a
+          preference for doing the work on your own machine.
+        </p>
+      </header>
+
+      <ul class="grid">
+        {announced.map((product) => <li><ProductCard product={product} /></li>)}
+      </ul>
+
+      {
+        reserved.length > 0 && (
+          <div class="reserved">
+            {reserved.map((product) => (
+              <ProductSlot product={product} />
+            ))}
+          </div>
+        )
+      }
+
+      <p class="note">
+        LCR Labs applications are distributed through <span>Setapp</span>. Purchase, licensing
+        and installation of paid apps happen there — this site does not sell or deliver
+        software itself.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    max-width: var(--content-narrow);
+    margin-bottom: var(--space-12);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .head .lede {
+    margin-top: var(--space-5);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* The <li> already stretches to the row height; making it a grid container
+     passes that height on to the card inside it, so cards in a row match. */
+  .grid > li {
+    display: grid;
+  }
+
+  .reserved {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .note {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+    max-width: var(--content-narrow);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .note span {
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

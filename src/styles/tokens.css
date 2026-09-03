@@ -1,0 +1,131 @@
+/*
+ * LCR Labs — design tokens.
+ *
+ * The palette is taken from the shipping macOS applications rather than
+ * reinvented for the web: the accent is Background Doctor's AccentColor asset
+ * (#7C3AED in light appearance, #A78BFA in dark), and the status colours are
+ * the Apple system colours the suite's `StatusColor` maps onto.
+ *
+ * Only semantic names are exposed. Components never reference a raw colour,
+ * so a palette change happens here and nowhere else.
+ *
+ * Theming: every colour is declared once as `light-dark(light, dark)` and
+ * resolved by `color-scheme`. The document follows the system by default;
+ * the header toggle sets `data-theme` on <html>, which narrows `color-scheme`
+ * to a single appearance and so wins in both directions. No token is defined
+ * twice, and nothing depends on JavaScript having run.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces */
+  --bg: light-dark(#fbfbfc, #0e0f12);
+  --bg-subtle: light-dark(#f4f4f6, #131419);
+  --surface: light-dark(#ffffff, #16181d);
+  --surface-hover: light-dark(#f4f4f6, #1d1f26);
+  --surface-sunken: light-dark(#f0f0f3, #101116);
+
+  /* Text tiers */
+  --text-primary: light-dark(#17181c, #f2f3f5);
+  --text-secondary: light-dark(#5b5f68, #9da1aa);
+  --text-tertiary: light-dark(#8a8e97, #6b6f79);
+  --text-on-accent: light-dark(#ffffff, #14101f);
+
+  /* Lines */
+  --border: light-dark(rgb(0 0 0 / 9%), rgb(255 255 255 / 9%));
+  --border-strong: light-dark(rgb(0 0 0 / 16%), rgb(255 255 255 / 16%));
+
+  /* Brand accent — an accent, never a background wash. */
+  --accent: light-dark(#7c3aed, #a78bfa);
+  --accent-hover: light-dark(#6d28d9, #bda6fc);
+  --accent-soft: light-dark(rgb(124 58 237 / 10%), rgb(167 139 250 / 12%));
+  --accent-ring: light-dark(rgb(124 58 237 / 40%), rgb(167 139 250 / 45%));
+
+  /* Semantic status — meaning, not branding. */
+  --success: light-dark(#248a3d, #30d158);
+  --warning: light-dark(#b25000, #ff9f0a);
+  --danger: light-dark(#d70015, #ff453a);
+  --info: light-dark(#0040dd, #0a84ff);
+
+  /* Decorative background field */
+  --field-line: light-dark(rgb(23 24 28 / 7%), rgb(255 255 255 / 6%));
+  --field-dot: light-dark(rgb(23 24 28 / 16%), rgb(255 255 255 / 18%));
+  --field-glow: light-dark(rgb(124 58 237 / 8%), rgb(167 139 250 / 10%));
+
+  --shadow-sm: 0 1px 2px light-dark(rgb(0 0 0 / 5%), rgb(0 0 0 / 30%));
+  --shadow-md:
+    0 6px 24px light-dark(rgb(0 0 0 / 6%), rgb(0 0 0 / 36%)),
+    0 1px 2px light-dark(rgb(0 0 0 / 4%), rgb(0 0 0 / 24%));
+
+  /* Typography — the platform's own faces, no webfont download. */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.375rem;
+  --text-4xl: 3rem;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+
+  /* Spacing — a 4px base, as in the apps' `Metrics`. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Shape — 10px matches the apps' card corner radius. */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  /* Layout */
+  --content-width: 1200px;
+  --content-narrow: 68ch;
+  --gutter: var(--space-6);
+  --header-height: 64px;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration: 200ms;
+  --duration-slow: 400ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The explicit reader choice. Narrowing `color-scheme` re-resolves every
+   `light-dark()` above, and also re-themes native form controls and scrollbars. */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: var(--space-8);
+    --header-height: 68px;
+  }
+}

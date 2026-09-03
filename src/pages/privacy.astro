@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DraftNotice from '../components/DraftNotice.astro';
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How the LCR Labs website handles data, and where each application's own privacy behaviour is described."
+>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">Privacy</p>
+        <h1>Privacy notice</h1>
+      </header>
+
+      <div class="prose">
+        <DraftNotice
+          action="This describes the site as it is currently built. It is a scaffold, not a reviewed GDPR/DSGVO privacy policy, and needs legal review — plus the hosting details below — before publication."
+        >
+          <ul>
+            <li>Confirm the hosting provider and its data-processing terms</li>
+            <li>Confirm what the host logs, for how long, and on what legal basis</li>
+            <li>Add the responsible party and contact address (see the imprint)</li>
+            <li>Add the standard data-subject rights section in German</li>
+            <li>Have the finished text reviewed against DSGVO requirements</li>
+          </ul>
+        </DraftNotice>
+
+        <h2>What this website does</h2>
+        <p>
+          This site is a set of static pages. It has no accounts, no login, no shop, no
+          comment system and no forms. It does not process payments and does not deliver
+          software.
+        </p>
+
+        <h2>Cookies and tracking</h2>
+        <p>
+          The site sets no cookies and includes no analytics, advertising or session-replay
+          scripts. There is no tracking pixel and no third-party embed.
+        </p>
+        <p>
+          If you use the appearance switch in the header, your choice is stored in your own
+          browser’s local storage under the key <code>lcr-theme</code>. It never leaves your
+          device and is not readable by LCR Labs.
+        </p>
+
+        <h2>Fonts and assets</h2>
+        <p>
+          All images and styles are served from this site. No web fonts are downloaded — the
+          site uses the typefaces already installed on your system — so no font service
+          receives your IP address.
+        </p>
+
+        <h2>Server logs</h2>
+        <p>
+          The site is served by a hosting provider, which may record technical access data
+          such as IP address, time of request, requested page and user agent for the purpose
+          of delivering the site securely.
+        </p>
+        <p class="placeholder">
+          Hosting provider, retention period and legal basis: to be confirmed.
+        </p>
+
+        <h2>Links to Setapp</h2>
+        <p>
+          Product pages link to Setapp, where LCR Labs applications are distributed. Following
+          such a link takes you to a service operated by another company, under its own privacy
+          policy. LCR Labs receives no personal data about you from those links.
+        </p>
+
+        <h2>Privacy inside the applications</h2>
+        <p>
+          This notice covers the website only. Each application’s own data handling is
+          described on its product page and in the app itself; the shared intent across all
+          LCR Labs software is that personal data stays on your Mac.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          The responsible party and contact details are listed in the
+          <a href="/imprint/">imprint</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .placeholder {
+    color: var(--text-tertiary);
+    font-style: italic;
+  }
+</style>

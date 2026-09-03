@@ -1,0 +1,40 @@
+{
+  "name": "Background Doctor",
+  "order": 1,
+  "shortDescription": "Understand what is running on your Mac, why it is running and what belongs to which app.",
+  "longDescription": "Activity Monitor shows you processes. Background Doctor shows you applications — it groups the dozen helpers a browser spawns back under the browser, explains in plain language what each background component is and whose software it belongs to, and tells you what starts automatically at login. It is a system inspector written for people who want an answer, not a process table.",
+  "placeholder": false,
+  "icon": null,
+  "screenshots": [],
+  "platform": "macOS",
+  "minimumOS": "macOS 27",
+  "architecture": "Apple Silicon",
+  "status": "coming-soon",
+  "statusNote": "In late-stage development. Release and Setapp availability will be announced here.",
+  "highlights": [
+    "Groups helper processes under the application they belong to",
+    "Explains what a background component is and where it came from",
+    "Live CPU, memory, network, disk, thermal and battery readings",
+    "Available in six languages, following your system setting"
+  ],
+  "features": [
+    {
+      "title": "Applications, not process noise",
+      "description": "A browser's renderer, GPU and plugin helpers are collapsed into the one application they serve, so the resource figures you read are the ones you actually care about."
+    },
+    {
+      "title": "Plain-language explanations",
+      "description": "Each background component answers what it is, whose software it is and what starts it — backed by a curated catalogue of known macOS and third-party processes, with an honest fallback rather than an invented purpose."
+    },
+    {
+      "title": "A dashboard that holds still",
+      "description": "CPU, temperature, memory, battery, network and disk on fixed scales, so a value means the same thing from one glance to the next instead of each chart rescaling itself."
+    },
+    {
+      "title": "Login items and background tasks",
+      "description": "See what macOS starts on your behalf, including leftover components from applications you have already removed."
+    }
+  ],
+  "privacyNote": "All process and system data stays on your Mac. No account, no telemetry, no remote service.",
+  "setapp": {}
+}

@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrbitalField from '../components/OrbitalField.astro';
+import ProductRow from '../components/ProductRow.astro';
+import ProductSlot from '../components/ProductSlot.astro';
+import Button from '../components/Button.astro';
+import { getProducts } from '../lib/products';
+
+const products = await getProducts();
+const announced = products.filter((product) => !product.data.placeholder);
+const reserved = products.filter((product) => product.data.placeholder);
+
+const principles = [
+  {
+    title: 'Native',
+    text: 'Built with Apple’s own frameworks and designed around macOS conventions, so the apps behave the way the rest of your Mac does.',
+  },
+  {
+    title: 'Private',
+    text: 'Local-first wherever it is practical. No account to create, no analytics SDK, and no reason for your data to leave the device.',
+  },
+  {
+    title: 'Focused',
+    text: 'Small tools with one clear job each, kept deliberately narrow instead of grown into something that does everything poorly.',
+  },
+];
+---
+
+<BaseLayout>
+  <section class="hero">
+    <OrbitalField />
+    <div class="container hero__inner">
+      <h1 class="hero__title">LCR Labs</h1>
+      <p class="hero__tagline">Thoughtful software for macOS.</p>
+      <p class="hero__text">
+        Small, focused tools designed to feel at home on the Mac — fast, private and
+        deliberately simple.
+      </p>
+      <div class="hero__actions">
+        <Button href="#products" variant="primary" size="lg">Explore products</Button>
+        <Button href="/about/" variant="secondary" size="lg">About LCR Labs</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="products" aria-labelledby="products-heading">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Products</p>
+        <h2 id="products-heading">Utilities for the Mac, one job at a time.</h2>
+      </header>
+
+      <div class="products">
+        {announced.map((product, index) => <ProductRow product={product} index={index} />)}
+      </div>
+
+      {
+        reserved.length > 0 && (
+          <div class="products__reserved">
+            {reserved.map((product) => (
+              <ProductSlot product={product} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="principles-heading">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Principles</p>
+        <h2 id="principles-heading">How the apps are built.</h2>
+      </header>
+
+      <ul class="principles">
+        {
+          principles.map((principle) => (
+            <li class="principle">
+              <h3 class="principle__title">{principle.title}</h3>
+              <p class="principle__text">{principle.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="about-heading">
+    <div class="container about">
+      <h2 id="about-heading" class="about__heading">About LCR Labs</h2>
+      <div class="about__body">
+        <p>
+          LCR Labs is an independent software label building small, carefully designed tools
+          for Apple platforms. Products are developed with an emphasis on native interaction,
+          privacy, performance and long-term usefulness rather than feature count.
+        </p>
+        <p class="about__more">
+          <a href="/about/">More about LCR Labs</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cta">
+        <div>
+          <h2 class="cta__title">Explore LCR Labs software</h2>
+          <p class="cta__text">Every product, its requirements and where to get it.</p>
+        </div>
+        <Button href="/products/" variant="primary" size="lg">View all products</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---- Hero ---- */
+
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(var(--space-20), 15vw, 9rem);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .hero__title {
+    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 3.75rem);
+    letter-spacing: -0.03em;
+  }
+
+  .hero__tagline {
+    margin-top: var(--space-4);
+    font-size: clamp(var(--text-lg), 1rem + 1vw, var(--text-xl));
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .hero__text {
+    margin: var(--space-4) auto 0;
+    max-width: 46ch;
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+  }
+
+  .hero__actions {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  /* ---- Sections ---- */
+
+  .section__head {
+    max-width: 34ch;
+    margin-bottom: var(--space-12);
+  }
+
+  .section__head h2 {
+    margin-top: var(--space-3);
+  }
+
+  .products {
+    display: grid;
+    gap: clamp(var(--space-16), 9vw, var(--space-24));
+  }
+
+  .products__reserved {
+    margin-top: clamp(var(--space-12), 7vw, var(--space-16));
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* ---- Principles ---- */
+
+  .principles {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .principle {
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  .principle__title {
+    font-size: var(--text-md);
+  }
+
+  .principle__text {
+    margin-top: var(--space-2);
+    max-width: 40ch;
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .principles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+  }
+
+  /* ---- About ---- */
+
+  .about {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .about__heading {
+    font-size: var(--text-lg);
+  }
+
+  .about__body {
+    max-width: var(--content-narrow);
+    color: var(--text-secondary);
+  }
+
+  .about__more {
+    margin-top: var(--space-4);
+  }
+
+  .about__more a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 48rem) {
+    .about {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
+      gap: var(--space-10);
+    }
+  }
+
+  /* ---- Final CTA ---- */
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: clamp(var(--space-8), 5vw, var(--space-12));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+  }
+
+  .cta__title {
+    font-size: var(--text-lg);
+  }
+
+  .cta__text {
+    margin-top: var(--space-2);
+    color: var(--text-secondary);
+  }
+</style>

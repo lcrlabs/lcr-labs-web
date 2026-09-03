@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DraftNotice from '../components/DraftNotice.astro';
+import { getProducts } from '../lib/products';
+
+const products = (await getProducts()).filter((product) => !product.data.placeholder);
+---
+
+<BaseLayout
+  title="Support"
+  description="Get help with an LCR Labs application, or find out where billing and licensing questions are handled."
+>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">Support</p>
+        <h1>Getting help</h1>
+        <p class="lede">
+          Product questions, bug reports and feature suggestions all go to the same place.
+        </p>
+      </header>
+
+      <div class="prose">
+        <DraftNotice action="A support contact address has to be set before this page is published.">
+          <ul>
+            <li>Support email address for LCR Labs</li>
+            <li>Expected response time, if one should be stated</li>
+            <li>Whether support is offered in German as well as English</li>
+          </ul>
+        </DraftNotice>
+
+        <h2>Contacting LCR Labs</h2>
+        <p>
+          Write in with the name and version of the app, your macOS version, and what you
+          expected to happen. For a bug, the steps that lead to it are more useful than
+          anything else.
+        </p>
+        <p class="placeholder">Support address: to be added.</p>
+
+        <h2>Billing, licensing and installation</h2>
+        <p>
+          LCR Labs applications are distributed through Setapp. Questions about subscriptions,
+          payments, invoices, refunds or installing an app through Setapp are handled by Setapp
+          support, because that is where the transaction and the licence live. Anything about
+          how an app itself behaves comes to LCR Labs.
+        </p>
+
+        <h2>Per-product notes</h2>
+        <ul>
+          {
+            products.map((product) => (
+              <li>
+                <a href={`/products/${product.id}/`}>{product.data.name}</a> —{' '}
+                {product.data.statusNote ?? product.data.shortDescription}
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2>Privacy</h2>
+        <p>
+          What each app does with your data is described on its product page, and this
+          website’s own data handling is described in the <a href="/privacy/">privacy notice</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    max-width: var(--content-narrow);
+    margin-bottom: var(--space-10);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .head .lede {
+    margin-top: var(--space-4);
+  }
+
+  .placeholder {
+    color: var(--text-tertiary);
+    font-style: italic;
+  }
+</style>
