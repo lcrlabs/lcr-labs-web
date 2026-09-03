@@ -1,10 +1,10 @@
 # LCR Labs — Website
 
-The product and brand hub for [LCR Labs](https://lcrlabs.com), an independent
+The product and brand hub for [LCR Labs](https://lcrlabs.de), an independent
 software label building small, native macOS utilities.
 
-Static site: **Astro + TypeScript**, no backend, no client framework, deployed
-to Cloudflare Pages.
+Static site: **Astro + TypeScript**, no backend, no client framework. Built and
+deployed to GitHub Pages at <https://lcrlabs.de> by GitHub Actions.
 
 ## What this site does
 
@@ -107,8 +107,8 @@ docs/                  design system and deployment notes
 
 - [`docs/design-system.md`](docs/design-system.md) — tokens, type, motion, the
   rules a new component has to follow.
-- [`docs/deployment.md`](docs/deployment.md) — Cloudflare Pages settings,
-  headers, domain.
+- [`docs/deployment.md`](docs/deployment.md) — the GitHub Pages workflow,
+  domain and header policy.
 - [`CLAUDE.md`](CLAUDE.md) — working rules and hard constraints.
 
 Longer-lived project documentation (master plan, decisions, roadmap, Setapp

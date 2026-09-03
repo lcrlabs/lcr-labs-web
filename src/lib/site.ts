@@ -1,11 +1,11 @@
 /**
  * Site-wide constants.
  *
- * `SITE_URL` is a placeholder until the real LCR Labs domain is registered and
- * pointed at Cloudflare Pages. It only affects canonical URLs, Open Graph URLs
- * and the generated sitemap — change it in one place when the domain is final.
+ * `SITE_URL` is the production origin. It affects canonical URLs, Open Graph
+ * URLs and the generated sitemap — change it in one place if the domain ever
+ * moves, and keep `public/robots.txt` and `public/CNAME` in step with it.
  */
-export const SITE_URL = 'https://lcrlabs.com';
+export const SITE_URL = 'https://lcrlabs.de';
 
 export const SITE_NAME = 'LCR Labs';
 export const SITE_TAGLINE = 'Thoughtful software for macOS.';

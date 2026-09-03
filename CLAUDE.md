@@ -6,7 +6,8 @@ still apply; where this file is more specific, this file wins.
 ## What this is
 
 The LCR Labs website: a static product and brand hub for the LCR Labs macOS
-utilities. Astro + TypeScript, no backend, deployed to Cloudflare Pages.
+utilities. Astro + TypeScript, no backend, built by GitHub Actions and served
+by GitHub Pages at https://lcrlabs.de.
 
 It is **not** an ecommerce site. Setapp is the distribution and monetization
 layer for every commercial product.

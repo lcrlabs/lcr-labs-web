@@ -1,4 +1,10 @@
-# Cloudflare Pages security headers.
+# The intended response-header policy for this site.
+#
+# NOT ACTIVE ON GITHUB PAGES. GitHub Pages serves static files with its own
+# fixed headers and reads no per-site header file, so nothing below is applied
+# today. The file is kept because it is the reviewed policy: it applies as
+# written the moment the site sits behind a host that reads `_headers`
+# (Cloudflare Pages, Netlify), and it documents what the headers should be.
 #
 # The site is static and loads nothing from a third party, so the policy can be
 # strict. `unsafe-inline` for scripts is required by the two small inline

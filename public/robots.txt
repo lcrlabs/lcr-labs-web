@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lcrlabs.com/sitemap.xml
+Sitemap: https://lcrlabs.de/sitemap.xml
