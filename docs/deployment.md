@@ -17,8 +17,8 @@ push to `main` and on manual dispatch:
 | Install | `npm ci` — exactly what `package-lock.json` pins |
 | Type check | `npm run check` — must report 0 errors |
 | Build | `npm run build` → `dist/` |
-| Upload | `actions/upload-pages-artifact@v3` with `path: dist` |
-| Deploy | `actions/deploy-pages@v4` |
+| Upload | `actions/upload-pages-artifact@v5` with `path: dist` |
+| Deploy | `actions/deploy-pages@v5` |
 
 Any failing step fails the job and nothing is published — the previous
 deployment stays live. Permissions are the minimum Pages needs
