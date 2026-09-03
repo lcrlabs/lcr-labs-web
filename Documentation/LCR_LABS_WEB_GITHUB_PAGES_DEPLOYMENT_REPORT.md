@@ -259,6 +259,14 @@ which is a deliberate decision, not a config tweak.
 
 **None required for the site to be live.** It already is.
 
+One item lives **outside this repository** and is worth acting on soon: the
+Background Doctor app's in-app "Contact Support" button points at
+`https://lcrlabs.com/support/` through a constant in
+`Support/ExternalLinks.swift`. LCR Labs does not own `lcrlabs.com`, so that
+button currently opens a parked page. It should become
+`https://lcrlabs.de/support/`, which is live. That is a one-line change in the
+Background Doctor repository, not here.
+
 One thing worth knowing: the Pages **Source** must stay on *GitHub Actions*
 (Settings → Pages). Switching it back to a branch would publish the repository
 source instead of the build and break the site.
