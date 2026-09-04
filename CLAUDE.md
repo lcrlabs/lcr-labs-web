@@ -9,8 +9,11 @@ The LCR Labs website: a static product and brand hub for the LCR Labs macOS
 utilities. Astro + TypeScript, no backend, built by GitHub Actions and served
 by GitHub Pages at https://lcrlabs.de.
 
-It is **not** an ecommerce site. Setapp is the distribution and monetization
-layer for every commercial product.
+It is **not** an ecommerce site, and it is not a sales channel. **No
+distribution channel has been chosen.** How the apps will be delivered is
+undecided and will be announced when it is decided — until then the site says
+"Not yet available", "Distribution will be announced", "Release details will be
+published here", and nothing more.
 
 ## Hard constraints
 
@@ -21,10 +24,11 @@ without an explicit instruction that overrides this file:
   success page, licence generation, customer database, order storage or
   customer accounts. No Stripe, Lemon Squeezy or Paddle.
 - **No paid downloads.** Never host or link a paid DMG, and never create a
-  `/download/...` route for a commercial product. Setapp delivers the binary.
-- **No invented Setapp values.** App IDs, vendor IDs, product URLs and partner
-  URLs come only from the real LCR Labs Setapp developer account. If a value
-  does not exist yet, leave it out — the UI already handles its absence.
+  `/download/...` route for a commercial product.
+- **No invented distribution.** LCR Labs is not on Setapp, the App Store or any
+  other channel, and the site must not imply otherwise. Do not add a store
+  name, a store link, an app ID, a vendor ID or a price. If a channel is chosen
+  later, that is a new user decision, not something to anticipate here.
 - **No invented product content.** Do not write feature copy for a product that
   has not been specified, and do not invent the fourth product's name. Use the
   `placeholder` flag instead.
@@ -50,7 +54,7 @@ without an explicit instruction that overrides this file:
 src/
   content/products/*.json   product data — the single source of truth
   content.config.ts         the product schema (Zod)
-  lib/products.ts           product queries and the Setapp CTA rules
+  lib/products.ts           product queries and status labels
   lib/site.ts               site constants (URL, nav, tagline)
   components/               presentational; no data fetching
   layouts/BaseLayout.astro  head, SEO, appearance script, header/footer
@@ -65,10 +69,17 @@ Rules:
   `src/content/products/`; the homepage, `/products`, its detail page and the
   sitemap all pick it up. If a product ever needs a layout change to appear,
   the layout is wrong.
-- **`lib/products.ts` owns the Setapp decision.** `hasSetappDestination()` is
-  the only thing that may authorise an outbound commercial link, and
-  `SetappAction.astro` is the only component that renders one. Do not inline
-  that logic anywhere else.
+- **A product's availability is stated in one sentence, never as a button.**
+  `statusNote` in the product's JSON is that sentence and `StatusNote.astro`
+  renders it. There is no outbound commercial link anywhere in the site, and
+  no component that could produce one.
+- **`status` must not overstate.** `coming-soon` is reserved for a release that
+  is genuinely imminent. Work in progress is `in-development`; an idea is
+  `in-planning`. Copy for a planned product describes intended direction, not
+  shipped behaviour.
+- **Screenshots come in pairs.** Each entry carries `lightSrc`, an optional
+  `darkSrc`, `alt`, and the file's real `width` and `height`. The dimensions
+  are what keep the theme swap free of layout shift, so they are not optional.
 - **Components never hard-code a colour, spacing value or duration.** Use the
   tokens. A raw hex outside `tokens.css` is a bug.
 - **Scoped styles do not reach into child components.** Wrap a child in an
@@ -81,6 +92,11 @@ Light and dark are one `light-dark()` declaration per token in `tokens.css`,
 resolved by `color-scheme`. The page follows the system by default; the header
 toggle sets `data-theme` on `<html>`, which narrows `color-scheme`. A tiny
 inline script in `BaseLayout` re-applies a stored choice before first paint.
+
+`ThemeScript.astro` owns all of this and exposes `window.lcrTheme`. Anything
+that has to react to the appearance — the header toggle, the light/dark
+screenshots — subscribes to it rather than re-deriving the answer, so the page
+cannot end up half in one appearance and half in the other.
 
 Never define a colour only inside a media query, and never add a second
 theming mechanism.
@@ -114,8 +130,8 @@ Before calling work here done:
    on `<html>` — the same mechanism the toggle uses. It cannot emulate
    `prefers-reduced-motion` at all; check that one by hand.
 4. Tab through the page: skip link, header, menu, every CTA, visible focus.
-5. Confirm no secrets, no checkout code, no paid-download link, and no invented
-   Setapp URL entered the build.
+5. Confirm no secrets, no checkout code, no paid-download link, and no
+   distribution channel or store link entered the build.
 
 There is no test suite: the site has no domain logic to protect. If real logic
 ever appears in `src/lib/`, test it first.

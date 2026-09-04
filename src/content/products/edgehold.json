@@ -1,34 +1,33 @@
 {
   "name": "Edgehold",
   "order": 3,
-  "shortDescription": "Make the pointer cross between displays on purpose instead of by accident.",
-  "longDescription": "On a multi-display desk the pointer slips onto the wrong screen constantly. Edgehold adds configurable behaviour at each boundary between displays — resistance, a deliberate second push, a modifier key, or a single crossing point — while leaving pointer movement everywhere else completely normal. Once it is configured you should stop noticing it.",
-  "placeholder": false,
+  "featured": false,
+  "shortDescription": "A planned utility for making the pointer cross between displays on purpose instead of by accident.",
+  "longDescription": "On a multi-display desk the pointer slips onto the wrong screen constantly. Edgehold is being planned as a way to give each boundary between displays its own behaviour — asking for a little more intent before a crossing happens — while leaving pointer movement everywhere else completely normal. The aim is that once it is configured you stop noticing it. Which behaviours actually ship is not yet decided.",
   "icon": null,
   "screenshots": [],
   "platform": "macOS",
-  "status": "coming-soon",
-  "statusNote": "In planning. Details will be published as development progresses.",
+  "status": "in-planning",
+  "statusNote": "In planning. This describes the intended direction, not finished software.",
   "highlights": [
-    "Rules configured per boundary, not per display",
-    "Resistance, double-push, modifier and gate behaviours",
-    "Profiles for different desk setups",
-    "Steps aside while you are dragging"
+    "Planned: rules configured per boundary, not per display",
+    "Under consideration: resistance, a second push, a modifier key, a defined gate",
+    "Planned: profiles for different desk setups",
+    "Intended to stay out of the way while you are dragging"
   ],
   "features": [
     {
       "title": "Per-boundary rules",
-      "description": "Each edge between two displays is configured on its own, because the boundary you keep crossing by accident is rarely the one you cross on purpose."
+      "description": "The central idea: configure each edge between two displays on its own, because the boundary you keep crossing by accident is rarely the one you cross on purpose."
     },
     {
       "title": "Deliberate crossings",
-      "description": "Choose how much intent a crossing needs — slowing at the edge, a second push, a held modifier key, or a defined gate along the shared edge."
+      "description": "Several ways of asking for intent are being explored — slowing at the edge, a second push, a held modifier key, or a defined gate along the shared edge. The set that ships may be narrower than that list."
     },
     {
       "title": "Desk profiles",
-      "description": "Different setups get different behaviour, so docking and undocking does not mean reconfiguring."
+      "description": "The goal is that different setups get different behaviour, so docking and undocking does not mean reconfiguring."
     }
   ],
-  "privacyNote": "Pointer behaviour is evaluated entirely on your Mac. Nothing about how you use your displays leaves the device.",
-  "setapp": {}
+  "privacyNote": "The intended design evaluates pointer behaviour entirely on your Mac, with nothing about your display use leaving the device. This is a design goal for a product that does not exist yet, not a description of shipped behaviour."
 }

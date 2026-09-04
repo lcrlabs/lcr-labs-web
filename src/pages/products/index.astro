@@ -1,17 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import ProductSlot from '../../components/ProductSlot.astro';
 import { getProducts } from '../../lib/products';
 
 const products = await getProducts();
-const announced = products.filter((product) => !product.data.placeholder);
-const reserved = products.filter((product) => product.data.placeholder);
+
+/* The closing note must not be able to outlive the data it summarises: the
+   moment a product ships, the sentence saying nothing has shipped goes. */
+const anyReleased = products.some(
+  (product) => product.data.status === 'available' || product.data.status === 'beta',
+);
 ---
 
 <BaseLayout
   title="Products"
-  description="Every LCR Labs product: small, native macOS utilities, their requirements and where to get them."
+  description="Every LCR Labs product: small, native macOS utilities, what each one does and where it stands."
 >
   <section class="section">
     <div class="container">
@@ -25,23 +28,16 @@ const reserved = products.filter((product) => product.data.placeholder);
       </header>
 
       <ul class="grid">
-        {announced.map((product) => <li><ProductCard product={product} /></li>)}
+        {products.map((product) => <li><ProductCard product={product} /></li>)}
       </ul>
 
-      {
-        reserved.length > 0 && (
-          <div class="reserved">
-            {reserved.map((product) => (
-              <ProductSlot product={product} />
-            ))}
-          </div>
-        )
-      }
-
       <p class="note">
-        LCR Labs applications are distributed through <span>Setapp</span>. Purchase, licensing
-        and installation of paid apps happen there — this site does not sell or deliver
-        software itself.
+        {
+          anyReleased
+            ? 'Availability is listed on each product page.'
+            : 'None of these are available yet. Distribution will be announced, and release details will be published here.'
+        }{' '}
+        This site does not sell or deliver software itself.
       </p>
     </div>
   </section>
@@ -72,12 +68,6 @@ const reserved = products.filter((product) => product.data.placeholder);
     display: grid;
   }
 
-  .reserved {
-    margin-top: var(--space-4);
-    display: grid;
-    gap: var(--space-4);
-  }
-
   .note {
     margin-top: var(--space-12);
     padding-top: var(--space-6);
@@ -85,10 +75,6 @@ const reserved = products.filter((product) => product.data.placeholder);
     max-width: var(--content-narrow);
     font-size: var(--text-sm);
     color: var(--text-tertiary);
-  }
-
-  .note span {
-    color: var(--text-secondary);
   }
 
   @media (min-width: 48rem) {

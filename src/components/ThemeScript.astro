@@ -1,0 +1,97 @@
+---
+/**
+ * The site's appearance machinery, in one place.
+ *
+ * Rendered inline in <head>, so a stored choice is applied before first paint
+ * and an explicit light or dark preference never flashes the other one. With
+ * no stored choice nothing is set and the CSS follows the system on its own —
+ * which is also exactly what happens if this script never runs.
+ *
+ * It exposes `window.lcrTheme` so that everything appearance-aware shares one
+ * notion of what is on screen: the toggle reads and writes it, and anything
+ * that has to react subscribes to it instead of re-deriving the answer.
+ *
+ * The one thing CSS cannot do is choose between a light and a dark screenshot
+ * file. `data-theme` narrows `color-scheme`, but an <img> cannot follow that,
+ * and a `prefers-color-scheme` <picture> would ignore the reader's override.
+ * So theme-aware images ship without a `src` and are given one here, from the
+ * resolved appearance — one element, one request, and never the wrong variant
+ * on screen first.
+ */
+---
+
+<script is:inline>
+  (() => {
+    const KEY = 'lcr-theme';
+    const root = document.documentElement;
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    let stored = null;
+    try {
+      const value = localStorage.getItem(KEY);
+      if (value === 'light' || value === 'dark') stored = value;
+    } catch {
+      /* Storage unavailable: fall through to the system appearance. */
+    }
+
+    if (stored) root.dataset.theme = stored;
+
+    /** What is actually on screen: the reader's override, else the system. */
+    const resolved = () => root.dataset.theme ?? (systemDark.matches ? 'dark' : 'light');
+
+    const listeners = new Set();
+    let current = resolved();
+
+    const announce = () => {
+      const next = resolved();
+      if (next === current) return;
+      current = next;
+      for (const listener of listeners) listener(next);
+    };
+
+    /* Only has an effect while the reader is still following the system: once
+       `data-theme` is set, `resolved()` stops consulting the query. */
+    systemDark.addEventListener('change', announce);
+
+    window.lcrTheme = {
+      get current() {
+        return resolved();
+      },
+      /** Store an explicit choice and tell everything that cares. */
+      set(theme) {
+        root.dataset.theme = theme;
+        try {
+          localStorage.setItem(KEY, theme);
+        } catch {
+          /* Private browsing or blocked storage: the choice just won't persist. */
+        }
+        announce();
+      },
+      /** Called back immediately with the current appearance, then on changes. */
+      subscribe(listener) {
+        listeners.add(listener);
+        listener(resolved());
+      },
+    };
+
+    /* Theme-aware images carry their two sources as data attributes and no
+       `src`, so nothing is fetched until the appearance is known. The swap is
+       deliberately not animated: the two files are the same window in two
+       appearances, and the browser keeps the old frame on screen until the new
+       one has decoded, which is already the calmest possible transition. */
+    const paintImages = (theme) => {
+      for (const image of document.querySelectorAll('img[data-light-src]')) {
+        const src = (theme === 'dark' && image.dataset.darkSrc) || image.dataset.lightSrc;
+        if (image.getAttribute('src') !== src) image.setAttribute('src', src);
+      }
+    };
+
+    const bindImages = () => window.lcrTheme.subscribe(paintImages);
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindImages);
+    } else {
+      bindImages();
+    }
+  })();
+</script>

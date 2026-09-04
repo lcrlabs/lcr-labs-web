@@ -1,34 +1,33 @@
 {
   "name": "Threadmark",
   "order": 2,
-  "shortDescription": "Private notes, tags and follow-ups for Apple Mail conversations.",
-  "longDescription": "An email thread usually carries context that does not belong in the email itself — what you are waiting for, what was agreed on the phone, which project it relates to. Threadmark keeps that context next to the conversation instead of in your head. It works alongside Apple Mail rather than replacing it, and it stays a lightweight companion rather than growing into a CRM.",
-  "placeholder": false,
+  "featured": false,
+  "shortDescription": "A planned companion for Apple Mail: private notes, tags and follow-ups kept beside the conversation.",
+  "longDescription": "An email thread usually carries context that does not belong in the email itself — what you are waiting for, what was agreed on the phone, which project it relates to. Threadmark is being planned as a way to keep that context next to the conversation instead of in your head. The intent is a lightweight companion to Apple Mail rather than a replacement for it, and deliberately not a CRM. Nothing here is built yet, and the shape of the product may still change.",
   "icon": null,
   "screenshots": [],
   "platform": "macOS",
-  "status": "coming-soon",
-  "statusNote": "In planning. Details will be published as development progresses.",
+  "status": "in-planning",
+  "statusNote": "In planning. This describes the intended direction, not finished software.",
   "highlights": [
-    "Private notes attached to Apple Mail conversations",
-    "Tags, follow-up dates and project context",
-    "Never alters the original message or notifies the sender",
-    "No account required"
+    "Planned: private notes attached to Apple Mail conversations",
+    "Planned: tags, follow-up dates and project context",
+    "Intended to leave the original message untouched",
+    "Intended to work without an account"
   ],
   "features": [
     {
       "title": "Context where the conversation is",
-      "description": "Attach a note, a tag or a follow-up date to a thread and find it again from the thread itself."
+      "description": "The core idea: attach a note, a tag or a follow-up date to a thread and find it again from the thread itself, rather than in a separate app you have to remember to open."
     },
     {
-      "title": "Invisible until needed",
-      "description": "Threadmark complements Apple Mail instead of competing with it. Your mail workflow does not change."
+      "title": "A companion, not a replacement",
+      "description": "Threadmark is intended to sit alongside Apple Mail and leave your existing mail workflow as it is. How closely it can integrate depends on what Apple's mail extension APIs allow, which is still being assessed."
     },
     {
-      "title": "Your annotations stay yours",
-      "description": "Notes are private by default and are never sent to anyone in the conversation."
+      "title": "Annotations meant to stay yours",
+      "description": "The design goal is that notes are private, stored on your Mac, and never sent to anyone in the conversation."
     }
   ],
-  "privacyNote": "Notes and metadata are stored locally on your Mac. Email content is not uploaded, and no Threadmark account is required.",
-  "setapp": {}
+  "privacyNote": "The intended design keeps notes and metadata on your Mac, with no Threadmark account and no upload of email content. This is a design goal for a product that does not exist yet, not a description of shipped behaviour."
 }

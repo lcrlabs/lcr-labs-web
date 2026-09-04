@@ -1,0 +1,24 @@
+---
+import type { Product } from '../lib/products';
+
+/**
+ * The one honest sentence about a product's availability.
+ *
+ * The site sells and delivers nothing, so this is all a not-yet-released
+ * product gets: no button that goes nowhere, and no invented release date.
+ */
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+{product.data.statusNote && <p class="status-note">{product.data.statusNote}</p>}
+
+<style>
+  .status-note {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+</style>

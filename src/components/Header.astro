@@ -43,7 +43,6 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
 
     <div class="header__actions">
       <ThemeToggle />
-      <a class="header__cta" href="/products/">Explore Apps</a>
 
       <details class="menu" data-menu>
         <summary class="menu__button" aria-label="Menu">
@@ -144,23 +143,6 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
     margin-left: auto;
   }
 
-  .header__cta {
-    display: none;
-    padding: 0.4rem 0.85rem;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    background-color: var(--surface);
-    box-shadow: var(--shadow-sm);
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--text-primary);
-    transition: background-color var(--duration-fast) var(--ease);
-  }
-
-  .header__cta:hover {
-    background-color: var(--surface-hover);
-  }
-
   /* ---- Compact-width menu ---- */
 
   .menu {
@@ -219,8 +201,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
   }
 
   @media (min-width: 48rem) {
-    .header__nav,
-    .header__cta {
+    .header__nav {
       display: block;
     }
 

@@ -1,6 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Product = CollectionEntry<'products'>;
+export type ProductStatus = Product['data']['status'];
 
 /** Products in their configured display order. Adding a JSON file is enough. */
 export async function getProducts(): Promise<Product[]> {
@@ -8,40 +9,30 @@ export async function getProducts(): Promise<Product[]> {
   return products.sort((a, b) => a.data.order - b.data.order);
 }
 
-/**
- * The Setapp destination for a product, or `null` when none is configured.
- *
- * The partner link is preferred when present so referral attribution survives,
- * falling back to the plain product page. A URL is only ever read from the
- * product's own data — the site never derives, guesses or templates one.
- */
-export function setappHref(product: Product): string | null {
-  const { partnerUrl, productUrl } = product.data.setapp;
-  return partnerUrl ?? productUrl ?? null;
-}
-
-/**
- * Whether to render an actionable "View on Setapp" control.
- *
- * Both conditions matter: a product still in development must not link out
- * even if a URL was configured early, and an available product without a
- * confirmed destination gets no CTA rather than an invented one.
- */
-export function hasSetappDestination(product: Product): boolean {
-  return product.data.status === 'available' && setappHref(product) !== null;
-}
-
-const STATUS_LABELS: Record<Product['data']['status'], string> = {
+const STATUS_LABELS: Record<ProductStatus, string> = {
   available: 'Available',
-  'coming-soon': 'Coming soon',
   beta: 'Beta',
+  'coming-soon': 'Coming soon',
+  'in-development': 'In development',
+  'in-planning': 'In planning',
 };
 
 export function statusLabel(product: Product): string {
   return STATUS_LABELS[product.data.status];
 }
 
-/** The product page URL. Placeholder slots have no page of their own. */
-export function productHref(product: Product): string | null {
-  return product.data.placeholder ? null : `/products/${product.id}/`;
+/**
+ * The one status label a group of products shares, or `null` when they differ.
+ *
+ * Lets a section be headed by what its products actually are — "In planning" —
+ * without that heading being able to outlive the data it describes.
+ */
+export function sharedStatusLabel(products: Product[]): string | null {
+  const labels = [...new Set(products.map(statusLabel))];
+  return labels.length === 1 ? labels[0] : null;
+}
+
+/** The product page URL. Every product in the collection has one. */
+export function productHref(product: Product): string {
+  return `/products/${product.id}/`;
 }

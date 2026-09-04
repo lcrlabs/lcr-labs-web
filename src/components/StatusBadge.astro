@@ -37,7 +37,9 @@ const status = product.data.status;
     background-color: currentColor;
   }
 
-  /* Status colour carries meaning; the brand accent stays out of it. */
+  /* Status colour carries meaning; the brand accent stays out of it. The
+     scale runs from shipped to speculative, and the dot gets quieter as the
+     product gets further from release. */
   .badge--available .badge__dot {
     background-color: var(--success);
   }
@@ -46,7 +48,12 @@ const status = product.data.status;
     background-color: var(--warning);
   }
 
-  .badge--coming-soon .badge__dot {
+  .badge--coming-soon .badge__dot,
+  .badge--in-development .badge__dot {
+    background-color: var(--info);
+  }
+
+  .badge--in-planning .badge__dot {
     background-color: var(--text-tertiary);
   }
 </style>

@@ -1,0 +1,121 @@
+---
+import ProductShot from './ProductShot.astro';
+import StatusBadge from './StatusBadge.astro';
+import StatusNote from './StatusNote.astro';
+import Button from './Button.astro';
+import type { Product } from '../lib/products';
+import { productHref } from '../lib/products';
+
+/**
+ * The homepage's lead product: told at full width, with its screenshot given
+ * the whole column rather than half of one. Everything else on the page is
+ * listed compactly, so this is the one product a first-time visitor is meant
+ * to understand without clicking anything.
+ */
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const data = product.data;
+---
+
+<article class="lead">
+  <div class="lead__body">
+    <div class="lead__heading">
+      <h3 class="lead__name">{data.name}</h3>
+      <StatusBadge product={product} />
+    </div>
+
+    <p class="lead__summary">{data.shortDescription}</p>
+
+    {
+      data.highlights.length > 0 && (
+        <ul class="lead__highlights">
+          {data.highlights.slice(0, 4).map((highlight) => (
+            <li>{highlight}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="lead__actions">
+      <Button href={productHref(product)} variant="primary" size="lg">
+        Learn more<span class="visually-hidden"> about {data.name}</span>
+      </Button>
+      <StatusNote product={product} />
+    </div>
+  </div>
+
+  <ProductShot product={product} loading="eager" />
+</article>
+
+<style>
+  .lead {
+    display: grid;
+    gap: clamp(var(--space-8), 5vw, var(--space-12));
+  }
+
+  .lead__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .lead__name {
+    font-size: var(--text-2xl);
+    letter-spacing: -0.02em;
+  }
+
+  .lead__summary {
+    margin-top: var(--space-4);
+    max-width: 52ch;
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+  }
+
+  .lead__highlights {
+    margin-top: var(--space-6);
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .lead__highlights li {
+    position: relative;
+    padding-left: var(--space-5);
+    max-width: 46ch;
+    color: var(--text-secondary);
+  }
+
+  .lead__highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  .lead__actions {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  @media (min-width: 60rem) {
+    .lead__highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3) var(--space-8);
+      max-width: 68ch;
+    }
+
+    .lead__highlights li {
+      max-width: none;
+    }
+  }
+</style>

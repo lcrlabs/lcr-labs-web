@@ -98,10 +98,9 @@ not widened to `*` to make an error go away.
 - [ ] Imprint completed and legally reviewed; `DraftNotice` removed.
 - [ ] Privacy notice completed, hosting details filled in (GitHub Pages, GitHub
       Inc.), reviewed; `DraftNotice` removed.
-- [ ] Support contact address added; `DraftNotice` removed.
-- [ ] Product screenshots added, or the empty-frame placeholder accepted
+- [x] Support contact address added; `DraftNotice` removed.
+- [ ] Product screenshots added in both appearances, or their absence accepted
       knowingly.
-- [ ] Setapp URLs added for any product whose status is `available`.
 - [x] Build clean, `npm run check` clean.
 - [ ] Checked in Safari at desktop and phone widths, both appearances.
 - [ ] Keyboard pass: skip link, header, menu, every CTA.

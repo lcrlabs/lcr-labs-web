@@ -8,9 +8,10 @@ deployed to GitHub Pages at <https://lcrlabs.de> by GitHub Actions.
 
 ## What this site does
 
-It presents the products and sends interested visitors to Setapp, which handles
-distribution, licensing and payment. The site itself sells nothing, stores
-nothing about visitors and has no server component.
+It presents the products and says honestly where each one stands. No
+distribution channel has been chosen yet, so no page links to a store or names
+one. The site sells nothing, stores nothing about visitors and has no server
+component.
 
 ## Getting started
 
@@ -37,7 +38,7 @@ src/content/products/my-product.json
 
 The filename becomes the URL slug (`/products/my-product/`). The schema lives in
 [`src/content.config.ts`](src/content.config.ts) and the build fails on an
-invalid file. The homepage row, the `/products` listing, the detail page and the
+invalid file. The homepage, the `/products` listing, the detail page and the
 sitemap all update on their own — no layout change is needed.
 
 Minimum viable product file:
@@ -48,45 +49,67 @@ Minimum viable product file:
   "order": 5,
   "shortDescription": "One sentence.",
   "longDescription": "A paragraph.",
-  "status": "coming-soon"
+  "status": "in-planning",
+  "statusNote": "In planning. This describes the intended direction, not finished software."
 }
 ```
 
-### Products that are not announced yet
+### Status
 
-Set `"placeholder": true`. The product renders as a reserved slot with no
-detail page and no call to action, so an unnamed product never gets invented
-copy. Removing the flag promotes it to a full product.
+`status` is the one place the site states how real a product is, so it must not
+overstate:
 
-## Connecting a product to Setapp
+| Value | Means |
+|---|---|
+| `in-planning` | An idea. Copy describes intended direction, not behaviour. |
+| `in-development` | Being built. Not released, no date. |
+| `coming-soon` | Release is genuinely imminent. |
+| `beta` | Released as a beta. |
+| `available` | Released. |
 
-Fill in the `setapp` object once the real values exist in the LCR Labs Setapp
-developer account:
+`statusNote` is the one honest sentence the page shows about availability.
+There is no purchase button anywhere in the site and no component that could
+render one.
+
+### The lead product
+
+`"featured": true` makes a product the homepage lead: told at full width with
+its screenshot given the whole column. Everything else is listed compactly
+below it. Moving the emphasis is a change to this flag and nothing else.
+
+### Screenshots
+
+Each screenshot carries both appearances:
 
 ```json
-"setapp": {
-  "model": "membership",
-  "productUrl": "https://setapp.com/apps/...",
-  "partnerUrl": "https://...",
-  "appId": "...",
-  "vendorId": "...",
-  "priceLabel": "€X.XX"
-}
+"screenshots": [
+  {
+    "lightSrc": "/products/my-product-overview-light.png",
+    "darkSrc": "/products/my-product-overview-dark.png",
+    "alt": "What the screenshot shows.",
+    "width": 2400,
+    "height": 1500
+  }
+]
 ```
 
-Every field is optional. A "View on Setapp" button appears only when the product
-is `"status": "available"` **and** a `productUrl` or `partnerUrl` is present —
-`partnerUrl` wins so referral attribution survives. Otherwise the page states
-the availability honestly instead of rendering a dead button.
+The two files must show the same app state, the same window size and the same
+crop — switching between them should read as a change of appearance and nothing
+else. `darkSrc` is optional; without it the light file is used in both.
 
-**Never invent a URL or an identifier.** If it is not in the developer account
-yet, leave it out.
+`width` and `height` are the file's real pixel dimensions and are **required**.
+They reserve the space before anything is fetched, which is what keeps the
+first paint and every theme swap free of layout shift. The visible `<img>` ships
+with no `src`: the appearance is only known at runtime, so
+[`ThemeScript.astro`](src/components/ThemeScript.astro) fills it in and keeps it
+in step with the theme — one element, one request, and never the wrong variant
+on screen first.
 
 ## What this repository will not contain
 
 No cart, checkout, payment SDK, payment webhook, purchase-success page, licence
 generation, customer database, order storage, customer accounts, or public paid
-downloads. Setapp is the commercial layer. See [`CLAUDE.md`](CLAUDE.md) for the
+downloads, and no store link or store name. See [`CLAUDE.md`](CLAUDE.md) for the
 full set of constraints.
 
 ## Structure
@@ -98,7 +121,7 @@ src/content/products/  product data (the source of truth)
 src/components/        presentational components
 src/layouts/           the single page shell
 src/pages/             routes
-src/lib/               product queries, Setapp rules, site constants
+src/lib/               product queries, status labels, site constants
 src/styles/            design tokens and global styles
 docs/                  design system and deployment notes
 ```
@@ -111,9 +134,8 @@ docs/                  design system and deployment notes
   domain and header policy.
 - [`CLAUDE.md`](CLAUDE.md) — working rules and hard constraints.
 
-Longer-lived project documentation (master plan, decisions, roadmap, Setapp
-distribution architecture, completion reports) lives in the Obsidian vault under
-`LCR Labs/`.
+Longer-lived project documentation (master plan, decisions, roadmap, completion
+reports) lives in the Obsidian vault under `LCR Labs/`.
 
 ## Licence
 

@@ -29,7 +29,10 @@
   /* Text tiers */
   --text-primary: light-dark(#17181c, #f2f3f5);
   --text-secondary: light-dark(#5b5f68, #9da1aa);
-  --text-tertiary: light-dark(#8a8e97, #6b6f79);
+  /* Tertiary carries real information — status notes, requirement lines,
+     captions — so it clears WCAG AA (4.5:1) against every surface it is used
+     on in both appearances, not just against the page background. */
+  --text-tertiary: light-dark(#6b6f78, #838791);
   --text-on-accent: light-dark(#ffffff, #14101f);
 
   /* Lines */

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
+import { CONTACT_EMAIL } from '../lib/site';
 ---
 
 <BaseLayout
@@ -16,9 +17,9 @@ import Button from '../components/Button.astro';
 
       <div class="prose">
         <p>
-          LCR Labs builds small, carefully designed tools for Apple platforms. The focus is
-          macOS: utilities that do one job properly, look and behave like the system they run
-          on, and stay out of the way the rest of the time.
+          LCR Labs builds small, carefully designed tools for macOS: utilities that do one job
+          properly, look and behave like the system they run on, and stay out of the way the
+          rest of the time.
         </p>
 
         <h2>What that means in practice</h2>
@@ -37,19 +38,20 @@ import Button from '../components/Button.astro';
           by LCR Labs.
         </p>
 
-        <h2>How the apps are distributed</h2>
+        <h2>Availability</h2>
         <p>
-          LCR Labs applications are distributed through <span class="nowrap">Setapp</span>,
-          which handles installation, licensing, payment and the associated billing support.
-          This website exists to explain the products and point you to the right place — it is
-          not a shop, and it does not process payments or host paid downloads.
+          Nothing has been released yet. How the apps will be distributed has not been decided,
+          and it will be announced here once it is — release details for each product are
+          published on its own page. This website exists to explain the products; it is not a
+          shop, it processes no payments and it hosts no paid downloads.
         </p>
 
         <h2>Contact</h2>
         <p>
-          Product questions, bug reports and feedback are welcome through the
-          <a href="/support/">support page</a>. Legal contact details are listed in the
-          <a href="/imprint/">imprint</a>.
+          Product questions, bug reports and feedback are welcome at <a
+            href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a
+          >, or through the <a href="/support/">support page</a>, which says what is worth
+          including. Legal contact details are listed in the <a href="/imprint/">imprint</a>.
         </p>
       </div>
 
@@ -71,9 +73,5 @@ import Button from '../components/Button.astro';
 
   .actions {
     margin-top: var(--space-10);
-  }
-
-  .nowrap {
-    white-space: nowrap;
   }
 </style>

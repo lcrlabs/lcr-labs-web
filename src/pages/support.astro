@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import DraftNotice from '../components/DraftNotice.astro';
-import { getProducts } from '../lib/products';
+import { getProducts, statusLabel } from '../lib/products';
+import { CONTACT_EMAIL } from '../lib/site';
 
-const products = (await getProducts()).filter((product) => !product.data.placeholder);
+const products = await getProducts();
 ---
 
 <BaseLayout
   title="Support"
-  description="Get help with an LCR Labs application, or find out where billing and licensing questions are handled."
+  description="Get help with an LCR Labs application: where to write, and what to include so a problem can be reproduced."
 >
   <section class="section">
     <div class="container">
@@ -21,28 +21,23 @@ const products = (await getProducts()).filter((product) => !product.data.placeho
       </header>
 
       <div class="prose">
-        <DraftNotice action="A support contact address has to be set before this page is published.">
-          <ul>
-            <li>Support email address for LCR Labs</li>
-            <li>Expected response time, if one should be stated</li>
-            <li>Whether support is offered in German as well as English</li>
-          </ul>
-        </DraftNotice>
-
         <h2>Contacting LCR Labs</h2>
         <p>
-          Write in with the name and version of the app, your macOS version, and what you
-          expected to happen. For a bug, the steps that lead to it are more useful than
-          anything else.
+          Write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. It is a person
+          reading, not a ticket system, so plain prose is fine.
         </p>
-        <p class="placeholder">Support address: to be added.</p>
 
-        <h2>Billing, licensing and installation</h2>
+        <h2>What to include in a bug report</h2>
+        <p>Four things make a report something that can actually be acted on:</p>
+        <ul>
+          <li>The app and its version number.</li>
+          <li>Your macOS version.</li>
+          <li>What you expected to happen, and what happened instead.</li>
+          <li>The steps that reproduce it, in the order you took them.</li>
+        </ul>
         <p>
-          LCR Labs applications are distributed through Setapp. Questions about subscriptions,
-          payments, invoices, refunds or installing an app through Setapp are handled by Setapp
-          support, because that is where the transaction and the licence live. Anything about
-          how an app itself behaves comes to LCR Labs.
+          The steps matter most. A problem that can be reproduced is usually a problem that
+          can be fixed; one that cannot be reproduced rarely is.
         </p>
 
         <h2>Per-product notes</h2>
@@ -51,7 +46,7 @@ const products = (await getProducts()).filter((product) => !product.data.placeho
             products.map((product) => (
               <li>
                 <a href={`/products/${product.id}/`}>{product.data.name}</a> —{' '}
-                {product.data.statusNote ?? product.data.shortDescription}
+                {product.data.statusNote ?? `${statusLabel(product)}.`}
               </li>
             ))
           }
@@ -79,10 +74,5 @@ const products = (await getProducts()).filter((product) => !product.data.placeho
 
   .head .lede {
     margin-top: var(--space-4);
-  }
-
-  .placeholder {
-    color: var(--text-tertiary);
-    font-style: italic;
   }
 </style>

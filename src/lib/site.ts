@@ -12,6 +12,12 @@ export const SITE_TAGLINE = 'Thoughtful software for macOS.';
 export const SITE_DESCRIPTION =
   'LCR Labs is an independent software label building small, focused macOS utilities that are native, private and deliberately simple.';
 
+/**
+ * The one contact and support address. Used on the support page, the imprint
+ * and the privacy notice — one address everywhere, changed in one place.
+ */
+export const CONTACT_EMAIL = 'info.lcrlabs@gmx.de';
+
 /** Shown in the footer and imprint. */
 export const COPYRIGHT_YEAR = 2026;
 

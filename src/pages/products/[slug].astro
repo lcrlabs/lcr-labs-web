@@ -1,20 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProductVisual from '../../components/ProductVisual.astro';
-import SetappAction from '../../components/SetappAction.astro';
+import ProductShot from '../../components/ProductShot.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
-import { getProducts, hasSetappDestination, type Product } from '../../lib/products';
+import StatusNote from '../../components/StatusNote.astro';
+import { getProducts, statusLabel, type Product } from '../../lib/products';
 import { SITE_NAME } from '../../lib/site';
 
-/**
- * One page per announced product. A reserved slot has nothing to say yet and
- * so gets no page — see `placeholder` in the products collection.
- */
+/** One page per product. Adding a JSON file adds a page. */
 export async function getStaticPaths() {
   const products = await getProducts();
-  return products
-    .filter((product) => !product.data.placeholder)
-    .map((product) => ({ params: { slug: product.id }, props: { product } }));
+  return products.map((product) => ({ params: { slug: product.id }, props: { product } }));
 }
 
 interface Props {
@@ -29,7 +24,7 @@ const requirements = [
   data.minimumOS ? { label: 'Requires', value: `${data.minimumOS} or later` } : null,
   data.architecture ? { label: 'Architecture', value: data.architecture } : null,
   data.version ? { label: 'Version', value: data.version } : null,
-  { label: 'Distribution', value: hasSetappDestination(product) ? 'Setapp' : 'To be announced' },
+  { label: 'Status', value: statusLabel(product) },
 ].filter((row): row is { label: string; value: string } => row !== null);
 
 /*
@@ -48,7 +43,7 @@ const structuredData = {
   author: { '@type': 'Organization', name: SITE_NAME },
 };
 
-const linkable = hasSetappDestination(product);
+const released = data.status === 'available' || data.status === 'beta';
 const extraScreenshots = data.screenshots.slice(1);
 ---
 
@@ -75,7 +70,7 @@ const extraScreenshots = data.screenshots.slice(1);
             </div>
             <p class="lede intro__summary">{data.shortDescription}</p>
             <div class="intro__action">
-              <SetappAction product={product} size="lg" showPrice />
+              <StatusNote product={product} />
             </div>
           </div>
 
@@ -91,9 +86,15 @@ const extraScreenshots = data.screenshots.slice(1);
           </dl>
         </div>
 
-        <div class="visual">
-          <ProductVisual product={product} loading="eager" />
-        </div>
+        {
+          /* Rendered only when there is something to show — an empty frame
+             would just be a hole between the specs and the overview. */
+          data.screenshots.length > 0 && (
+            <div class="visual">
+              <ProductShot product={product} loading="eager" />
+            </div>
+          )
+        }
       </div>
     </section>
 
@@ -133,7 +134,7 @@ const extraScreenshots = data.screenshots.slice(1);
             </h2>
             <div class="shots">
               {extraScreenshots.map((_, offset) => (
-                <ProductVisual product={product} index={offset + 1} />
+                <ProductShot product={product} index={offset + 1} />
               ))}
             </div>
           </div>
@@ -143,28 +144,16 @@ const extraScreenshots = data.screenshots.slice(1);
 
     <section class="section section--tight" aria-labelledby="availability-heading">
       <div class="container">
-        <div class:list={['panel', linkable && 'panel--with-action']}>
-          <div>
-            <h2 id="availability-heading" class="panel__title">Availability</h2>
-            <p class="panel__text">
-              {
-                linkable
-                  ? `${data.name} is distributed through Setapp. Purchase, licensing and installation are handled by Setapp.`
-                  : `${data.name} is not yet available. When it is released, this page will link to its official Setapp page.`
-              }
-            </p>
-            {data.privacyNote && <p class="panel__privacy">{data.privacyNote}</p>}
-          </div>
-          {
-            /* Only when there is a real destination. Without one, the paragraph
-               above already says everything, and `SetappAction` would just
-               repeat the status note the hero has already shown. */
-            linkable && (
-              <div class="panel__action">
-                <SetappAction product={product} size="lg" />
-              </div>
-            )
-          }
+        <div class="panel">
+          <h2 id="availability-heading" class="panel__title">Availability</h2>
+          <p class="panel__text">
+            {
+              released
+                ? `${data.name} is available. Release details are published here.`
+                : `${data.name} is not yet available. Distribution will be announced, and release details will be published here.`
+            }
+          </p>
+          {data.privacyNote && <p class="panel__privacy">{data.privacyNote}</p>}
         </div>
 
         <p class="support">
@@ -289,8 +278,6 @@ const extraScreenshots = data.screenshots.slice(1);
   }
 
   .panel {
-    display: grid;
-    gap: var(--space-6);
     padding: clamp(var(--space-6), 4vw, var(--space-10));
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -337,15 +324,6 @@ const extraScreenshots = data.screenshots.slice(1);
       grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
       gap: var(--space-12);
       align-items: start;
-    }
-
-    .panel--with-action {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-      align-items: center;
-    }
-
-    .panel__action {
-      justify-self: end;
     }
   }
 </style>

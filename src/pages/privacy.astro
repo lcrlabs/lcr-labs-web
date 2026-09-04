@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DraftNotice from '../components/DraftNotice.astro';
+import { CONTACT_EMAIL } from '../lib/site';
 ---
 
 <BaseLayout
@@ -16,12 +17,11 @@ import DraftNotice from '../components/DraftNotice.astro';
 
       <div class="prose">
         <DraftNotice
-          action="This describes the site as it is currently built. It is a scaffold, not a reviewed GDPR/DSGVO privacy policy, and needs legal review — plus the hosting details below — before publication."
+          action="This describes the site as it is currently built and is accurate as far as it goes. It is not a reviewed GDPR/DSGVO privacy policy, and the points below are still open."
         >
           <ul>
-            <li>Confirm the hosting provider and its data-processing terms</li>
-            <li>Confirm what the host logs, for how long, and on what legal basis</li>
-            <li>Add the responsible party and contact address (see the imprint)</li>
+            <li>Confirm what GitHub logs as the host, for how long, and on what legal basis</li>
+            <li>Confirm the data-processing terms that apply to GitHub Pages</li>
             <li>Add the standard data-subject rights section in German</li>
             <li>Have the finished text reviewed against DSGVO requirements</li>
           </ul>
@@ -40,9 +40,9 @@ import DraftNotice from '../components/DraftNotice.astro';
           scripts. There is no tracking pixel and no third-party embed.
         </p>
         <p>
-          If you use the appearance switch in the header, your choice is stored in your own
-          browser’s local storage under the key <code>lcr-theme</code>. It never leaves your
-          device and is not readable by LCR Labs.
+          If you use the appearance switch in the header, your choice is stored locally in
+          your browser’s local storage under the key <code>lcr-theme</code> and is not
+          transmitted by this website.
         </p>
 
         <h2>Fonts and assets</h2>
@@ -52,21 +52,30 @@ import DraftNotice from '../components/DraftNotice.astro';
           receives your IP address.
         </p>
 
-        <h2>Server logs</h2>
+        <h2>Hosting and server logs</h2>
         <p>
-          The site is served by a hosting provider, which may record technical access data
-          such as IP address, time of request, requested page and user agent for the purpose
-          of delivering the site securely.
+          The site is hosted on GitHub Pages, a service of GitHub, Inc. Its files are served
+          from GitHub’s infrastructure, which means GitHub as the host necessarily processes
+          the technical data any web server receives when a page is requested — such as your
+          IP address, the time of the request, the page requested and your browser’s user
+          agent. LCR Labs has no access to raw server logs for this site.
+        </p>
+        <p>
+          What GitHub does with that data is set out in its own <a
+            href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
+            rel="noopener noreferrer">GitHub Privacy Statement</a
+          >.
         </p>
         <p class="placeholder">
-          Hosting provider, retention period and legal basis: to be confirmed.
+          Retention period, legal basis and the applicable data-processing terms: still to be
+          confirmed.
         </p>
 
-        <h2>Links to Setapp</h2>
+        <h2>Outbound links</h2>
         <p>
-          Product pages link to Setapp, where LCR Labs applications are distributed. Following
-          such a link takes you to a service operated by another company, under its own privacy
-          policy. LCR Labs receives no personal data about you from those links.
+          Some pages link to services operated by other companies. Following such a link takes
+          you to a site under its own privacy policy; nothing about you is passed to it by
+          this website beyond what your browser sends on any link.
         </p>
 
         <h2>Privacy inside the applications</h2>
@@ -78,8 +87,9 @@ import DraftNotice from '../components/DraftNotice.astro';
 
         <h2>Contact</h2>
         <p>
-          The responsible party and contact details are listed in the
-          <a href="/imprint/">imprint</a>.
+          For privacy questions, write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a
+          >. The responsible party and full contact details are listed in
+          the <a href="/imprint/">imprint</a>.
         </p>
       </div>
     </div>

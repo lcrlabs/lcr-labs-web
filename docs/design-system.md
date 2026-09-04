@@ -107,12 +107,12 @@ override on top of that.
 | `Header` | Navigation, appearance toggle, compact-width `<details>` menu. |
 | `Footer` | Links and copyright. |
 | `OrbitalField` | The hero background. |
-| `ProductRow` | A homepage product, told at full width. |
-| `ProductCard` | A `/products` listing entry. |
-| `ProductSlot` | A reserved, unannounced product. |
-| `ProductVisual` | Screenshot frame, or an honest empty frame. |
-| `SetappAction` | The only component that may render an outbound Setapp link. |
-| `StatusBadge` | Availability, in status colour. |
+| `ProductLead` | The homepage lead product, told at full width. |
+| `ProductCard` | A listing entry, on `/products` and the homepage. |
+| `ProductShot` | A screenshot in both appearances. Renders nothing without one. |
+| `ThemeScript` | Owns the appearance and `window.lcrTheme`. Inline, in `<head>`. |
+| `StatusBadge` | How real the product is, in status colour. |
+| `StatusNote` | The one honest sentence about availability. |
 | `DraftNotice` | Marks unreviewed legal/support content. Visible in production. |
 
 Rules for a new component:

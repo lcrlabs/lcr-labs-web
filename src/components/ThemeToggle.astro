@@ -2,16 +2,15 @@
 /**
  * Appearance control.
  *
- * The page follows the system appearance until the reader overrides it; the
- * override is stored per browser and re-applied before first paint by the
- * inline script in BaseLayout. The button starts hidden and is revealed by its
- * own script, so a reader without JavaScript is never shown a dead control —
- * the system appearance still works for them, because the theming is pure CSS.
+ * All it does is read and write `window.lcrTheme`, which `ThemeScript` owns —
+ * the toggle holds no notion of its own about what is on screen, so the header
+ * icon and the theme-aware screenshots can never disagree. The button starts
+ * hidden and is revealed by its own script, so a reader without JavaScript is
+ * never shown a dead control; the system appearance still works for them,
+ * because the theming itself is pure CSS.
  *
  * The icon shows the appearance the button switches *to*, driven by a
- * `data-resolved` attribute the script keeps in sync. Since the control only
- * exists when the script has run, that is simpler and less duplicative than
- * restating the system-preference query in CSS.
+ * `data-resolved` attribute kept in sync by the subscription.
  */
 ---
 
@@ -84,34 +83,20 @@
 <script is:inline>
   (() => {
     const button = document.querySelector('[data-theme-toggle]');
-    if (!button) return;
-
-    const root = document.documentElement;
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-    const resolved = () => root.dataset.theme ?? (systemDark.matches ? 'dark' : 'light');
-
-    const sync = () => {
-      const current = resolved();
-      const next = current === 'dark' ? 'light' : 'dark';
-      button.dataset.resolved = current;
-      button.setAttribute('aria-label', `Switch to ${next} appearance`);
-    };
+    if (!button || !window.lcrTheme) return;
 
     button.hidden = false;
-    sync();
 
-    // Keep the icon honest while the reader is still following the system.
-    systemDark.addEventListener('change', sync);
+    // Fires immediately, and again whenever the appearance changes — including
+    // a change of system appearance while no override is stored.
+    window.lcrTheme.subscribe((theme) => {
+      const next = theme === 'dark' ? 'light' : 'dark';
+      button.dataset.resolved = theme;
+      button.setAttribute('aria-label', `Switch to ${next} appearance`);
+    });
 
     button.addEventListener('click', () => {
-      root.dataset.theme = resolved() === 'dark' ? 'light' : 'dark';
-      try {
-        localStorage.setItem('lcr-theme', root.dataset.theme);
-      } catch {
-        /* Private browsing or blocked storage: the choice just won't persist. */
-      }
-      sync();
+      window.lcrTheme.set(window.lcrTheme.current === 'dark' ? 'light' : 'dark');
     });
   })();
 </script>

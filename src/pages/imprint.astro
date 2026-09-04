@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DraftNotice from '../components/DraftNotice.astro';
+import { CONTACT_EMAIL } from '../lib/site';
 ---
 
 <BaseLayout
@@ -21,7 +22,6 @@ import DraftNotice from '../components/DraftNotice.astro';
         >
           <ul>
             <li>Confirm the operator name and address are correct for LCR Labs</li>
-            <li>Add the LCR Labs contact email address</li>
             <li>Confirm whether LCR Labs is a business name requiring further registration details</li>
             <li>Confirm whether a VAT identification number (USt-IdNr.) must be stated</li>
             <li>Have the finished text reviewed for DDG/German and EU requirements</li>
@@ -37,7 +37,9 @@ import DraftNotice from '../components/DraftNotice.astro';
         </p>
 
         <h2>Kontakt</h2>
-        <p class="placeholder">E-Mail: noch zu ergänzen.</p>
+        <p>
+          E-Mail: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+        </p>
 
         <h2>Verantwortlich für den Inhalt</h2>
         <p>Luca Moritz Runkel, Anschrift wie oben.</p>
@@ -53,14 +55,15 @@ import DraftNotice from '../components/DraftNotice.astro';
         <p>
           Eigene Inhalte, Gestaltung sowie das LCR-Labs-Logo sind urheberrechtlich geschützt.
           Produktnamen, Marken und Abbildungen Dritter verbleiben bei ihren jeweiligen
-          Rechteinhabern. „Setapp“ ist eine Marke des jeweiligen Betreibers.
+          Rechteinhabern.
         </p>
 
         <h2>Vertrieb</h2>
         <p>
-          Über diese Website findet kein Vertragsschluss und kein Verkauf statt. Der Vertrieb
-          der LCR-Labs-Anwendungen erfolgt über Setapp; Zahlungsabwicklung, Lizenzierung und
-          Rechnungsstellung liegen dort.
+          Über diese Website findet kein Vertragsschluss und kein Verkauf statt. Es werden
+          keine Zahlungen abgewickelt und keine kostenpflichtigen Downloads bereitgestellt.
+          Wie die LCR-Labs-Anwendungen vertrieben werden, ist noch nicht entschieden und wird
+          hier bekanntgegeben.
         </p>
 
         <h2>Verbraucherstreitbeilegung</h2>
@@ -84,10 +87,5 @@ import DraftNotice from '../components/DraftNotice.astro';
 
   .head .lede {
     margin-top: var(--space-4);
-  }
-
-  .placeholder {
-    color: var(--text-tertiary);
-    font-style: italic;
   }
 </style>

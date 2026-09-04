@@ -1,16 +1,16 @@
 {
   "name": "Background Doctor",
   "order": 1,
+  "featured": true,
   "shortDescription": "Understand what is running on your Mac, why it is running and what belongs to which app.",
   "longDescription": "Activity Monitor shows you processes. Background Doctor shows you applications — it groups the dozen helpers a browser spawns back under the browser, explains in plain language what each background component is and whose software it belongs to, and tells you what starts automatically at login. It is a system inspector written for people who want an answer, not a process table.",
-  "placeholder": false,
   "icon": null,
   "screenshots": [],
   "platform": "macOS",
-  "minimumOS": "macOS 27",
-  "architecture": "Apple Silicon",
-  "status": "coming-soon",
-  "statusNote": "In late-stage development. Release and Setapp availability will be announced here.",
+  "minimumOS": "macOS 15",
+  "architecture": "Apple silicon and Intel",
+  "status": "in-development",
+  "statusNote": "In development. Release details will be published here.",
   "highlights": [
     "Groups helper processes under the application they belong to",
     "Explains what a background component is and where it came from",
@@ -35,6 +35,5 @@
       "description": "See what macOS starts on your behalf, including leftover components from applications you have already removed."
     }
   ],
-  "privacyNote": "All process and system data stays on your Mac. No account, no telemetry, no remote service.",
-  "setapp": {}
+  "privacyNote": "App data stays on your Mac. No account and no analytics. No process or system data is transmitted by Background Doctor."
 }

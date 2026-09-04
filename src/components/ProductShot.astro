@@ -1,0 +1,84 @@
+---
+import type { Product } from '../lib/products';
+
+/**
+ * A product screenshot, framed consistently across products.
+ *
+ * Renders nothing at all when the product has no screenshot yet: an empty
+ * frame is a large hole in the page that says less than the sentence next to
+ * it, and an invented mockup would be worse still. Dropping a screenshot into
+ * the product's JSON makes it appear with no markup change.
+ *
+ * The visible <img> has no `src` in the HTML. The appearance is only known at
+ * runtime — the reader may have overridden the system — so `ThemeScript` fills
+ * it in and keeps it in step with the theme. That is why the dimensions are
+ * required: they hold the space open before anything has been fetched. The
+ * <noscript> copy falls back to the system appearance via <picture>, which is
+ * the best a reader without JavaScript can be given and is still correct.
+ */
+interface Props {
+  product: Product;
+  /** Index into the product's screenshots. */
+  index?: number;
+  loading?: 'eager' | 'lazy';
+}
+
+const { product, index = 0, loading = 'lazy' } = Astro.props;
+const shot = product.data.screenshots[index];
+---
+
+{
+  shot && (
+    <figure class="shot">
+      <img
+        class="shot__img"
+        data-light-src={shot.lightSrc}
+        data-dark-src={shot.darkSrc}
+        alt={shot.alt}
+        width={shot.width}
+        height={shot.height}
+        loading={loading}
+        decoding="async"
+        style={`--shot-ratio: ${shot.width} / ${shot.height}`}
+      />
+      <noscript>
+        <picture>
+          {shot.darkSrc && <source media="(prefers-color-scheme: dark)" srcset={shot.darkSrc} />}
+          <img
+            class="shot__img"
+            src={shot.lightSrc}
+            alt={shot.alt}
+            width={shot.width}
+            height={shot.height}
+            decoding="async"
+          />
+        </picture>
+      </noscript>
+    </figure>
+  )
+}
+
+<style>
+  .shot {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-sunken);
+    box-shadow: var(--shadow-md);
+  }
+
+  .shot__img {
+    width: 100%;
+    /* From the file's own dimensions, so the frame is the right height before
+       the image arrives and stays that height through every theme swap. */
+    aspect-ratio: var(--shot-ratio);
+  }
+
+  /* Between first paint and the appearance being resolved there is no source
+     yet. Reserving the box but hiding the element keeps the alt text from
+     appearing for a frame in its place. */
+  .shot__img:not([src]) {
+    visibility: hidden;
+  }
+</style>

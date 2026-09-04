@@ -1,14 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OrbitalField from '../components/OrbitalField.astro';
-import ProductRow from '../components/ProductRow.astro';
-import ProductSlot from '../components/ProductSlot.astro';
+import ProductLead from '../components/ProductLead.astro';
+import ProductCard from '../components/ProductCard.astro';
 import Button from '../components/Button.astro';
-import { getProducts } from '../lib/products';
+import { getProducts, productHref, sharedStatusLabel } from '../lib/products';
 
 const products = await getProducts();
-const announced = products.filter((product) => !product.data.placeholder);
-const reserved = products.filter((product) => product.data.placeholder);
+const featured = products.filter((product) => product.data.featured);
+const rest = products.filter((product) => !product.data.featured);
+
+/* The section is headed by what its products actually are, so the heading
+   cannot outlive the data — a product promoted out of planning changes it. */
+const restLabel = sharedStatusLabel(rest);
 
 const principles = [
   {
@@ -36,35 +40,31 @@ const principles = [
         Small, focused tools designed to feel at home on the Mac — fast, private and
         deliberately simple.
       </p>
-      <div class="hero__actions">
-        <Button href="#products" variant="primary" size="lg">Explore products</Button>
-        <Button href="/about/" variant="secondary" size="lg">About LCR Labs</Button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="products" aria-labelledby="products-heading">
-    <div class="container">
-      <header class="section__head">
-        <p class="eyebrow">Products</p>
-        <h2 id="products-heading">Utilities for the Mac, one job at a time.</h2>
-      </header>
-
-      <div class="products">
-        {announced.map((product, index) => <ProductRow product={product} index={index} />)}
-      </div>
-
       {
-        reserved.length > 0 && (
-          <div class="products__reserved">
-            {reserved.map((product) => (
-              <ProductSlot product={product} />
-            ))}
+        featured.length > 0 && (
+          <div class="hero__actions">
+            <Button href={productHref(featured[0])} variant="primary" size="lg">
+              Meet {featured[0].data.name}
+            </Button>
           </div>
         )
       }
     </div>
   </section>
+
+  {
+    featured.map((product) => (
+      <section class="section" id="products" aria-labelledby="lead-heading">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">The current focus</p>
+            <h2 id="lead-heading">The app LCR Labs is building right now.</h2>
+          </header>
+          <ProductLead product={product} />
+        </div>
+      </section>
+    ))
+  }
 
   <section class="section" aria-labelledby="principles-heading">
     <div class="container">
@@ -86,14 +86,39 @@ const principles = [
     </div>
   </section>
 
+  {
+    rest.length > 0 && (
+      <section class="section" aria-labelledby="planned-heading">
+        <div class="container">
+          <header class="section__head section__head--wide">
+            <p class="eyebrow">{restLabel ?? 'Also from LCR Labs'}</p>
+            <h2 id="planned-heading">What comes after that.</h2>
+            <p class="lede">
+              Early-stage products. What is written about them is intended direction rather
+              than finished software, and neither has a release date.
+            </p>
+          </header>
+
+          <ul class="cards">
+            {rest.map((product) => (
+              <li>
+                <ProductCard product={product} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
   <section class="section section--tight" aria-labelledby="about-heading">
     <div class="container about">
       <h2 id="about-heading" class="about__heading">About LCR Labs</h2>
       <div class="about__body">
         <p>
           LCR Labs is an independent software label building small, carefully designed tools
-          for Apple platforms. Products are developed with an emphasis on native interaction,
-          privacy, performance and long-term usefulness rather than feature count.
+          for macOS. Products are developed with an emphasis on native interaction, privacy,
+          performance and long-term usefulness rather than feature count.
         </p>
         <p class="about__more">
           <a href="/about/">More about LCR Labs</a>
@@ -106,10 +131,10 @@ const principles = [
     <div class="container">
       <div class="cta">
         <div>
-          <h2 class="cta__title">Explore LCR Labs software</h2>
-          <p class="cta__text">Every product, its requirements and where to get it.</p>
+          <h2 class="cta__title">Every LCR Labs product</h2>
+          <p class="cta__text">What each one does, where it stands and what it requires.</p>
         </div>
-        <Button href="/products/" variant="primary" size="lg">View all products</Button>
+        <Button href="/products/" variant="secondary" size="lg">View all products</Button>
       </div>
     </div>
   </section>
@@ -167,19 +192,28 @@ const principles = [
     margin-bottom: var(--space-12);
   }
 
+  .section__head--wide {
+    max-width: var(--content-narrow);
+  }
+
   .section__head h2 {
     margin-top: var(--space-3);
   }
 
-  .products {
-    display: grid;
-    gap: clamp(var(--space-16), 9vw, var(--space-24));
+  .section__head .lede {
+    margin-top: var(--space-4);
+    max-width: 56ch;
   }
 
-  .products__reserved {
-    margin-top: clamp(var(--space-12), 7vw, var(--space-16));
+  .cards {
     display: grid;
     gap: var(--space-4);
+  }
+
+  /* The <li> already stretches to the row height; making it a grid container
+     passes that height on to the card inside it, so cards in a row match. */
+  .cards > li {
+    display: grid;
   }
 
   /* ---- Principles ---- */
@@ -208,6 +242,10 @@ const principles = [
     .principles {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--space-6);
+    }
+
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
