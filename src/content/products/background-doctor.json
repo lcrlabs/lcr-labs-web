@@ -5,7 +5,22 @@
   "shortDescription": "Understand what is running on your Mac, why it is running and what belongs to which app.",
   "longDescription": "Activity Monitor shows you processes. Background Doctor shows you applications — it groups the dozen helpers a browser spawns back under the browser, explains in plain language what each background component is and whose software it belongs to, and tells you what starts automatically at login. It is a system inspector written for people who want an answer, not a process table.",
   "icon": null,
-  "screenshots": [],
+  "screenshots": [
+    {
+      "lightSrc": "/products/background-doctor-dashboard-light.png",
+      "darkSrc": "/products/background-doctor-dashboard-dark.png",
+      "alt": "Background Doctor dashboard showing CPU, temperature, memory, battery, network and disk readings, with a list of top applications by memory.",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "lightSrc": "/products/background-doctor-processes-light.png",
+      "darkSrc": "/products/background-doctor-processes-dark.png",
+      "alt": "Background Doctor Processes view grouping background processes under the application they belong to, with an explanation of the selected process.",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
   "platform": "macOS",
   "minimumOS": "macOS 15",
   "architecture": "Apple silicon and Intel",
