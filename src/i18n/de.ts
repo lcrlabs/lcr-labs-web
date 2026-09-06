@@ -18,7 +18,7 @@ export const de: typeof en = {
   site: {
     tagline: 'Durchdachte Software für macOS.',
     description:
-      'LCR Labs ist ein unabhängiges Software-Label und entwickelt kleine, fokussierte macOS-Werkzeuge: nativ, datensparsam und bewusst einfach.',
+      'LCR Labs ist das unabhängige Software-Studio eines Soloentwicklers: kleine, fokussierte macOS-Werkzeuge, nativ, datensparsam und bewusst einfach.',
     homeTitle: 'LCR Labs — Durchdachte Software für macOS',
     pageTitle: (title: string) => `${title} — LCR Labs`,
   },
@@ -45,14 +45,14 @@ export const de: typeof en = {
 
   nav: {
     products: 'Produkte',
-    about: 'Über uns',
+    about: 'Über LCR Labs',
     support: 'Support',
     privacy: 'Datenschutz',
     imprint: 'Impressum',
   },
 
   footer: {
-    tagline: 'Unabhängige Software für macOS.',
+    tagline: 'Unabhängige macOS-Software von einem Entwickler.',
     copyright: (year: number) => `© ${year} LCR Labs`,
   },
 
@@ -119,7 +119,7 @@ export const de: typeof en = {
 
     aboutHeading: 'Über LCR Labs',
     aboutText:
-      'LCR Labs ist ein unabhängiges Software-Label und entwickelt kleine, sorgfältig gestaltete Werkzeuge für macOS. Im Vordergrund stehen native Bedienung, Datenschutz, Performance und langfristiger Nutzen — nicht die Zahl der Funktionen.',
+      'LCR Labs ist mein unabhängiges Software-Studio: Als einzelner Entwickler baue ich kleine, sorgfältig gestaltete Werkzeuge für macOS. Im Vordergrund stehen native Bedienung, Datenschutz, Performance und langfristiger Nutzen — nicht die Zahl der Funktionen.',
     aboutLink: 'Mehr über LCR Labs',
 
     ctaTitle: 'Alle Produkte von LCR Labs',
@@ -141,16 +141,16 @@ export const de: typeof en = {
   },
 
   about: {
-    title: 'Über uns',
+    title: 'Über LCR Labs',
     description:
-      'LCR Labs ist ein unabhängiges Software-Label und entwickelt kleine, native und datensparsame Werkzeuge für macOS.',
-    eyebrow: 'Über uns',
-    heading: 'Ein unabhängiges Software-Label',
+      'LCR Labs ist das unabhängige Software-Studio eines Soloentwicklers: kleine, native und datensparsame Werkzeuge für macOS.',
+    eyebrow: 'Über LCR Labs',
+    heading: 'Ein unabhängiges Software-Studio',
     intro:
-      'LCR Labs entwickelt kleine, sorgfältig gestaltete Werkzeuge für macOS: Programme, die eine Aufgabe richtig erledigen, aussehen und sich verhalten wie das System, auf dem sie laufen, und ansonsten nicht im Weg stehen.',
+      'LCR Labs ist mein unabhängiges Software-Studio. Als Soloentwickler baue ich kleine, sorgfältig gestaltete Werkzeuge für macOS: Programme, die eine Aufgabe richtig erledigen, aussehen und sich verhalten wie das System, auf dem sie laufen, und ansonsten nicht im Weg stehen.',
     practiceHeading: 'Was das in der Praxis bedeutet',
     practiceOne:
-      'Die Apps sind in Swift und SwiftUI mit Apples eigenen Frameworks geschrieben und keine verpackten Weboberflächen. Das ist keine technische Vorliebe um ihrer selbst willen — es ist das, was eine App nativ wirken lässt: die richtige Typografie, die richtigen Abstände, funktionierende Tastaturbedienung, sinnvolles Fensterverhalten, korrekte helle und dunkle Erscheinungsbilder und ein Ressourcenbedarf, der klein genug ist, um die App dauerhaft laufen zu lassen.',
+      'Ich schreibe die Apps in Swift und SwiftUI mit Apples eigenen Frameworks; verpackte Weboberflächen sind es nicht. Das ist keine technische Vorliebe um ihrer selbst willen — es ist das, was eine App nativ wirken lässt: die richtige Typografie, die richtigen Abstände, funktionierende Tastaturbedienung, sinnvolles Fensterverhalten, korrekte helle und dunkle Erscheinungsbilder und ein Ressourcenbedarf, der klein genug ist, um die App dauerhaft laufen zu lassen.',
     practiceTwo:
       'Daten bleiben standardmäßig auf dem Gerät. Ein Systemmonitor braucht kein Konto, ein Begleiter für Notizen muss keine E-Mails hochladen, und ein Zeiger-Werkzeug hat sich nicht dafür zu interessieren, wie Bildschirme genutzt werden. Wo ein Produkt später von Synchronisierung profitiert, ist nutzergesteuertes iCloud vorgesehen und keine Datenbank in der Hand von LCR Labs.',
     availabilityHeading: 'Verfügbarkeit',
@@ -176,7 +176,7 @@ export const de: typeof en = {
     lede: 'Fragen zu den Produkten, Fehlerberichte und Vorschläge gehen alle an dieselbe Adresse.',
     contactHeading: 'Kontakt zu LCR Labs',
     contactBefore: 'Nachrichten gehen an ',
-    contactAfter: '. Dort liest ein Mensch und kein Ticketsystem — formloser Text genügt.',
+    contactAfter: '. Dort lese ich selbst, es gibt kein Ticketsystem — formloser Text genügt.',
     reportHeading: 'Was in einen Fehlerbericht gehört',
     reportIntro: 'Vier Angaben machen aus einem Bericht etwas, mit dem sich arbeiten lässt:',
     reportItems: [

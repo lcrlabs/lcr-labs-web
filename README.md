@@ -1,7 +1,7 @@
 # LCR Labs — Website
 
-The product and brand hub for [LCR Labs](https://lcrlabs.de), an independent
-software label building small, native macOS utilities.
+The product and brand hub for [LCR Labs](https://lcrlabs.de), the independent
+software studio of a solo developer building small, native macOS utilities.
 
 Static site: **Astro + TypeScript**, no backend, no client framework. Built and
 deployed to GitHub Pages at <https://lcrlabs.de> by GitHub Actions.

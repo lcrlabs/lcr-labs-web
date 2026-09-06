@@ -24,7 +24,7 @@ export const en = {
   site: {
     tagline: 'Thoughtful software for macOS.',
     description:
-      'LCR Labs is an independent software label building small, focused macOS utilities that are native, private and deliberately simple.',
+      'LCR Labs is the independent software studio of a solo developer, building small, focused macOS utilities that are native, private and deliberately simple.',
     /** The homepage title, which carries no page name. */
     homeTitle: 'LCR Labs — Thoughtful software for macOS',
     /** Every other page title. */
@@ -63,7 +63,7 @@ export const en = {
   },
 
   footer: {
-    tagline: 'Independent software for macOS.',
+    tagline: 'Independent macOS software, built by one developer.',
     copyright: (year: number) => `© ${year} LCR Labs`,
   },
 
@@ -131,7 +131,7 @@ export const en = {
 
     aboutHeading: 'About LCR Labs',
     aboutText:
-      'LCR Labs is an independent software label building small, carefully designed tools for macOS. Products are developed with an emphasis on native interaction, privacy, performance and long-term usefulness rather than feature count.',
+      'LCR Labs is my independent software studio: one developer building small, carefully designed tools for macOS, with an emphasis on native interaction, privacy, performance and long-term usefulness rather than feature count.',
     aboutLink: 'More about LCR Labs',
 
     ctaTitle: 'Every LCR Labs product',
@@ -155,14 +155,14 @@ export const en = {
   about: {
     title: 'About',
     description:
-      'LCR Labs is an independent software label building small, native, privacy-respecting utilities for macOS.',
+      'LCR Labs is the independent software studio of a solo developer, building small, native, privacy-respecting utilities for macOS.',
     eyebrow: 'About',
-    heading: 'An independent software label',
+    heading: 'An independent software studio',
     intro:
-      'LCR Labs builds small, carefully designed tools for macOS: utilities that do one job properly, look and behave like the system they run on, and stay out of the way the rest of the time.',
+      'LCR Labs is my independent software studio. As a solo developer I build small, carefully designed tools for macOS: utilities that do one job properly, look and behave like the system they run on, and stay out of the way the rest of the time.',
     practiceHeading: 'What that means in practice',
     practiceOne:
-      'The apps are written in Swift and SwiftUI using Apple’s own frameworks, rather than wrapped web interfaces. That is not a technical preference for its own sake — it is what makes an app feel native: the right typography, the right spacing, working keyboard navigation, sensible window behaviour, correct dark and light appearances, and a resource footprint small enough that you can leave the app running.',
+      'I write the apps in Swift and SwiftUI using Apple’s own frameworks, rather than wrapping web interfaces. That is not a technical preference for its own sake — it is what makes an app feel native: the right typography, the right spacing, working keyboard navigation, sensible window behaviour, correct dark and light appearances, and a resource footprint small enough that you can leave the app running.',
     practiceTwo:
       'Data stays on the device by default. A system monitor should not need an account, a note-taking companion should not upload your email, and a pointer utility should not be interested in how you use your displays. Where a product later benefits from synchronisation, the intent is user-controlled iCloud rather than a database owned by LCR Labs.',
     availabilityHeading: 'Availability',
@@ -188,7 +188,7 @@ export const en = {
     lede: 'Product questions, bug reports and feature suggestions all go to the same place.',
     contactHeading: 'Contacting LCR Labs',
     contactBefore: 'Write to ',
-    contactAfter: '. It is a person reading, not a ticket system, so plain prose is fine.',
+    contactAfter: '. I read it myself — there is no ticket system, so plain prose is fine.',
     reportHeading: 'What to include in a bug report',
     reportIntro: 'Four things make a report something that can actually be acted on:',
     reportItems: [
