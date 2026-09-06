@@ -1,0 +1,118 @@
+---
+import LegalPage from './LegalPage.astro';
+import { CONTACT_EMAIL, SITE_URL } from '../../lib/site';
+import { localePath, useTranslations, type Locale } from '../../i18n';
+
+/**
+ * The English legal notice.
+ *
+ * A translation, not a second legal regime: the site is operated from Germany,
+ * so the duties stated here are the German ones — § 5 DDG for the provider
+ * identification, and the same operator, address and contact address as the
+ * German page. `ImprintDe.astro` is the version that discharges the duty, and
+ * the two must always state the same facts.
+ */
+const LOCALE: Locale = 'en';
+const t = useTranslations(LOCALE);
+
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, '');
+---
+
+<LegalPage
+  locale={LOCALE}
+  title={t.legal.imprintTitle}
+  description={t.legal.imprintDescription}
+  heading={t.legal.imprintTitle}
+  lede={t.legal.imprintLede}
+>
+  <p>
+    LCR Labs is operated from Germany, so this page is the provider
+    identification required by German law. It is an English translation of the{' '}
+    <a href={localePath('/imprint/', 'de')}>German version</a>, which is the
+    authoritative one.
+  </p>
+
+  <h2>Information pursuant to § 5 DDG</h2>
+  <address class="address">
+    <strong>Luca Runkel</strong><br />
+    Bahnhofstraße 12<br />
+    79353 Bahlingen<br />
+    Germany
+  </address>
+  <p>
+    Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+  <p>
+    Website: <a href={SITE_URL}>{SITE_HOST}</a>
+  </p>
+
+  <h2>Responsible for the content</h2>
+  <p>Responsible for the content of this website:</p>
+  <address class="address">
+    <strong>Luca Runkel</strong><br />
+    Bahnhofstraße 12<br />
+    79353 Bahlingen<br />
+    Germany
+  </address>
+
+  <h2>Contact</h2>
+  <p>
+    For questions about LCR Labs, the applications it offers or this website, write to{' '}
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+  </p>
+
+  <h2>Distribution</h2>
+  <p>
+    No contract is concluded and nothing is sold through this website. It processes no
+    payments and provides no paid downloads. How the LCR Labs applications will be
+    distributed has not been decided, and it will be announced here.
+  </p>
+
+  <h2>Consumer dispute resolution</h2>
+  <p>
+    I am neither obliged nor willing to take part in dispute resolution proceedings before a
+    consumer arbitration board.
+  </p>
+
+  <h2>Liability for content</h2>
+  <p>
+    The content of this website was compiled with the greatest possible care. No warranty can
+    be given, however, for its accuracy, completeness or currency.
+  </p>
+  <p>
+    Statutory obligations to remove or block particular information remain unaffected.
+  </p>
+
+  <h2>Liability for links</h2>
+  <p>
+    This website contains links to external third-party websites. I have no influence over
+    their content. The respective provider or operator is always responsible for the content
+    of a linked page.
+  </p>
+  <p>
+    No infringements were apparent at the time the links were set. Permanent monitoring of
+    the content of external links is not reasonable without concrete evidence of an
+    infringement.
+  </p>
+  <p>Links will be removed if infringements become known.</p>
+
+  <h2>Copyright</h2>
+  <p>
+    The content, texts, graphics, designs, logos and other works created for this website are
+    subject to applicable copyright law.
+  </p>
+  <p>
+    Reproduction, adaptation, distribution or any other use beyond the limits of copyright law
+    requires the prior consent of the respective rights holder.
+  </p>
+  <p>
+    Where content on this website was not created by LCR Labs or Luca Runkel, the rights of
+    third parties are respected.
+  </p>
+
+  <h2>Privacy</h2>
+  <p>
+    How personal data is processed when you visit this website is set out in the{' '}
+    <a href={localePath('/privacy/', LOCALE)}>privacy policy</a>.
+  </p>
+</LegalPage>

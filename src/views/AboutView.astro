@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { CONTACT_EMAIL } from '../lib/site';
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={t.about.title} description={t.about.description}>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">{t.about.eyebrow}</p>
+        <h1>{t.about.heading}</h1>
+      </header>
+
+      <div class="prose">
+        <p>{t.about.intro}</p>
+
+        <h2>{t.about.practiceHeading}</h2>
+        <p>{t.about.practiceOne}</p>
+        <p>{t.about.practiceTwo}</p>
+
+        <h2>{t.about.availabilityHeading}</h2>
+        <p>{t.about.availabilityText}</p>
+
+        <h2>{t.about.contactHeading}</h2>
+        <p>
+          {t.about.contactBefore}<a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a
+          >{t.about.contactMiddle}<a href={localePath('/support/', locale)}
+            >{t.about.contactSupportLink}</a
+          >{t.about.contactAfter}<a href={localePath('/imprint/', locale)}
+            >{t.about.contactImprintLink}</a
+          >{t.about.contactEnd}
+        </p>
+      </div>
+
+      <div class="actions">
+        <Button href={localePath('/products/', locale)} variant="primary">
+          {t.about.action}
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .actions {
+    margin-top: var(--space-10);
+  }
+</style>

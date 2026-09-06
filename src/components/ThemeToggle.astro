@@ -11,7 +11,19 @@
  *
  * The icon shows the appearance the button switches *to*, driven by a
  * `data-resolved` attribute kept in sync by the subscription.
+ *
+ * The two labels the script swaps between are rendered as data attributes
+ * rather than assembled in JavaScript: they are full sentences in each
+ * language, not a stem plus a word.
  */
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
 ---
 
 <button
@@ -19,8 +31,10 @@
   type="button"
   data-theme-toggle
   data-resolved="light"
+  data-label-light={t.a11y.appearanceLight}
+  data-label-dark={t.a11y.appearanceDark}
   hidden
-  aria-label="Switch appearance"
+  aria-label={t.a11y.appearanceSwitch}
 >
   <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 20 20" aria-hidden="true">
     <circle cx="10" cy="10" r="3.5" />
@@ -90,9 +104,11 @@
     // Fires immediately, and again whenever the appearance changes — including
     // a change of system appearance while no override is stored.
     window.lcrTheme.subscribe((theme) => {
-      const next = theme === 'dark' ? 'light' : 'dark';
       button.dataset.resolved = theme;
-      button.setAttribute('aria-label', `Switch to ${next} appearance`);
+      button.setAttribute(
+        'aria-label',
+        theme === 'dark' ? button.dataset.labelLight : button.dataset.labelDark,
+      );
     });
 
     button.addEventListener('click', () => {

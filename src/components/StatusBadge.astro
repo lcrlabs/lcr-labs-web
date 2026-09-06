@@ -1,18 +1,20 @@
 ---
 import type { Product } from '../lib/products';
 import { statusLabel } from '../lib/products';
+import type { Locale } from '../i18n';
 
 interface Props {
   product: Product;
+  locale: Locale;
 }
 
-const { product } = Astro.props;
+const { product, locale } = Astro.props;
 const status = product.data.status;
 ---
 
 <span class:list={['badge', `badge--${status}`]}>
   <span class="badge__dot" aria-hidden="true"></span>
-  {statusLabel(product)}
+  {statusLabel(product, locale)}
 </span>
 
 <style>

@@ -36,10 +36,16 @@ Product pages are generated from data. To add a product, create one JSON file:
 src/content/products/my-product.json
 ```
 
-The filename becomes the URL slug (`/products/my-product/`). The schema lives in
+The filename becomes the URL slug (`/products/my-product/` and
+`/de/products/my-product/`). The schema lives in
 [`src/content.config.ts`](src/content.config.ts) and the build fails on an
-invalid file. The homepage, the `/products` listing, the detail page and the
+invalid file. The homepage, the `/products` listing, both detail pages and the
 sitemap all update on their own — no layout change is needed.
+
+Technical metadata sits at the top level, because it is the same fact in every
+language. Everything that is prose sits under `localized`, once per language,
+and both languages are required — a missing German block fails the build rather
+than falling back to English.
 
 Minimum viable product file:
 
@@ -47,10 +53,19 @@ Minimum viable product file:
 {
   "name": "My Product",
   "order": 5,
-  "shortDescription": "One sentence.",
-  "longDescription": "A paragraph.",
   "status": "in-planning",
-  "statusNote": "In planning. This describes the intended direction, not finished software."
+  "localized": {
+    "en": {
+      "shortDescription": "One sentence.",
+      "longDescription": "A paragraph.",
+      "statusNote": "In planning. This describes the intended direction, not finished software."
+    },
+    "de": {
+      "shortDescription": "Ein Satz.",
+      "longDescription": "Ein Absatz.",
+      "statusNote": "In Planung. Das beschreibt die beabsichtigte Richtung, keine fertige Software."
+    }
+  }
 }
 ```
 
@@ -105,6 +120,39 @@ with no `src`: the appearance is only known at runtime, so
 in step with the theme — one element, one request, and never the wrong variant
 on screen first.
 
+## Languages
+
+The site is published in English and German. English is the default and has no
+prefix, so every URL the site has ever had still resolves; German lives under
+`/de/`. There is no `/en/`, and nothing redirects — a reader who asks for a URL
+gets that URL.
+
+```
+/            /de/
+/products/   /de/products/
+/about/      /de/about/
+/support/    /de/support/
+/privacy/    /de/privacy/
+/imprint/    /de/imprint/
+```
+
+UI copy lives in [`src/i18n/en.ts`](src/i18n/en.ts) and
+[`src/i18n/de.ts`](src/i18n/de.ts); German is typed against English, so a key
+added to one and not the other is a build error. Page bodies live once in
+`src/views/` and are rendered by a three-line route file per language.
+`localePath` builds every internal link from a canonical path plus the current
+locale, so a German page cannot link to an English one.
+
+The header's `EN`/`DE` control links to the equivalent page in the other
+language, falling back to that language's homepage where none exists. It stores
+the reader's explicit choice under `lcr-language`, alongside `lcr-theme`; both
+are read-only preferences that never leave the browser, and neither triggers an
+automatic redirect. Both privacy pages say so.
+
+The one page that exists in English only is `404.html`: GitHub Pages serves a
+single not-found page for the whole domain, so there is nowhere for a German
+one to be served from.
+
 ## What this repository will not contain
 
 No cart, checkout, payment SDK, payment webhook, purchase-success page, licence
@@ -118,9 +166,11 @@ full set of constraints.
 public/brand/          logo, icons, social card
 public/products/       product screenshots
 src/content/products/  product data (the source of truth)
+src/i18n/              locale type, route arithmetic, the two dictionaries
 src/components/        presentational components
+src/views/             one page body per page, shared by both languages
 src/layouts/           the single page shell
-src/pages/             routes
+src/pages/             routes — English at the root, German under /de/
 src/lib/               product queries, status labels, site constants
 src/styles/            design tokens and global styles
 docs/                  design system and deployment notes

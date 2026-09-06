@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { getProducts } from '../lib/products';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const products = await getProducts();
+
+/* The closing note must not be able to outlive the data it summarises: the
+   moment a product ships, the sentence saying nothing has shipped goes. */
+const anyReleased = products.some(
+  (product) => product.data.status === 'available' || product.data.status === 'beta',
+);
+---
+
+<BaseLayout locale={locale} title={t.products.title} description={t.products.description}>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">{t.products.eyebrow}</p>
+        <h1>{t.products.heading}</h1>
+        <p class="lede">{t.products.lede}</p>
+      </header>
+
+      <ul class="grid">
+        {products.map((product) => <li><ProductCard product={product} locale={locale} /></li>)}
+      </ul>
+
+      <p class="note">
+        {anyReleased ? t.products.noteReleased : t.products.noteUnreleased}{' '}
+        {t.products.noteCommon}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    max-width: var(--content-narrow);
+    margin-bottom: var(--space-12);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .head .lede {
+    margin-top: var(--space-5);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* The <li> already stretches to the row height; making it a grid container
+     passes that height on to the card inside it, so cards in a row match. */
+  .grid > li {
+    display: grid;
+  }
+
+  .note {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+    max-width: var(--content-narrow);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  @media (min-width: 48rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import LegalPage from './LegalPage.astro';
+import { CONTACT_EMAIL, SITE_URL } from '../../lib/site';
+import { localePath, useTranslations, type Locale } from '../../i18n';
+
+/**
+ * The German imprint (Anbieterkennzeichnung), which is where the legal duty
+ * under § 5 DDG is actually discharged. `ImprintEn.astro` states the same
+ * facts in English for readers of the English site.
+ *
+ * Everything on this page is a verified fact: the operator, the address and the
+ * one contact address the site uses everywhere. There is no VAT identification
+ * number, no register entry and no published telephone number, so no such
+ * section appears — an imprint states what is true, and stays silent otherwise.
+ */
+const LOCALE: Locale = 'de';
+const t = useTranslations(LOCALE);
+
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, '');
+---
+
+<LegalPage
+  locale={LOCALE}
+  title={t.legal.imprintTitle}
+  description={t.legal.imprintDescription}
+  heading={t.legal.imprintTitle}
+  lede={t.legal.imprintLede}
+>
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <address class="address">
+    <strong>Luca Runkel</strong><br />
+    Bahnhofstraße 12<br />
+    79353 Bahlingen<br />
+    Deutschland
+  </address>
+  <p>
+    E-Mail: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+  <p>
+    Website: <a href={SITE_URL}>{SITE_HOST}</a>
+  </p>
+
+  <h2>Verantwortlich für den Inhalt</h2>
+  <p>Verantwortlich für den Inhalt dieser Website:</p>
+  <address class="address">
+    <strong>Luca Runkel</strong><br />
+    Bahnhofstraße 12<br />
+    79353 Bahlingen<br />
+    Deutschland
+  </address>
+
+  <h2>Kontakt</h2>
+  <p>
+    Bei Fragen zu LCR Labs, den angebotenen Apps oder dieser Website erreichen Sie mich
+    per E-Mail unter <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+  </p>
+
+  <h2>Vertrieb</h2>
+  <p>
+    Über diese Website findet kein Vertragsschluss und kein Verkauf statt. Es werden
+    keine Zahlungen abgewickelt und keine kostenpflichtigen Downloads bereitgestellt.
+    Wie die LCR-Labs-Anwendungen vertrieben werden, ist noch nicht entschieden und wird
+    hier bekanntgegeben.
+  </p>
+
+  <h2>Verbraucherstreitbeilegung</h2>
+  <p>
+    Ich bin weder verpflichtet noch bereit, an Streitbeilegungsverfahren vor einer
+    Verbraucherschlichtungsstelle teilzunehmen.
+  </p>
+
+  <h2>Haftung für Inhalte</h2>
+  <p>
+    Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Eine Gewähr
+    für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch nicht
+    übernommen werden.
+  </p>
+  <p>
+    Soweit gesetzliche Verpflichtungen zur Entfernung oder Sperrung bestimmter
+    Informationen bestehen, bleiben diese unberührt.
+  </p>
+
+  <h2>Haftung für Links</h2>
+  <p>
+    Diese Website enthält Links zu externen Websites Dritter. Auf deren Inhalte habe ich
+    keinen Einfluss. Für die Inhalte der verlinkten Seiten ist stets der jeweilige
+    Anbieter oder Betreiber verantwortlich.
+  </p>
+  <p>
+    Zum Zeitpunkt der Verlinkung waren keine offensichtlichen Rechtsverstöße erkennbar.
+    Eine dauerhafte inhaltliche Kontrolle externer Links ist ohne konkrete Anhaltspunkte
+    für einen Rechtsverstoß nicht zumutbar.
+  </p>
+  <p>Bei Bekanntwerden von Rechtsverletzungen werden entsprechende Links entfernt.</p>
+
+  <h2>Urheberrecht</h2>
+  <p>
+    Die auf dieser Website erstellten Inhalte, Texte, Grafiken, Designs, Logos und
+    sonstigen Werke unterliegen dem geltenden Urheberrecht.
+  </p>
+  <p>
+    Eine Vervielfältigung, Bearbeitung, Verbreitung oder sonstige Verwendung außerhalb
+    der gesetzlichen Schranken des Urheberrechts bedarf der vorherigen Zustimmung des
+    jeweiligen Rechteinhabers.
+  </p>
+  <p>
+    Soweit Inhalte auf dieser Website nicht von LCR Labs beziehungsweise Luca Runkel
+    erstellt wurden, werden die Rechte Dritter beachtet.
+  </p>
+
+  <h2>Datenschutz</h2>
+  <p>
+    Wie personenbezogene Daten beim Besuch dieser Website verarbeitet werden, steht in
+    der <a href={localePath('/privacy/', LOCALE)}>Datenschutzerklärung</a>.
+  </p>
+</LegalPage>

@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations, type Locale } from '../../i18n';
+
+/**
+ * The frame both legal pages share, in both languages.
+ *
+ * Only the frame: one narrow prose column, `h2` per section, `<address>` for
+ * the postal blocks. The wording itself is written per language in the four
+ * files beside this one, because legal text is not a translation of a
+ * dictionary key — the German pages state German duties in the finalized
+ * German wording, and the English pages state the same duties, under the same
+ * law, in English.
+ */
+interface Props {
+  locale: Locale;
+  /** Page title, without the site suffix. */
+  title: string;
+  description: string;
+  /** The `h1`. Usually the same as the title. */
+  heading: string;
+  lede: string;
+  /** Repeat the date line at the end, as the privacy notice does. */
+  closingDate?: boolean;
+}
+
+const { locale, title, description, heading, lede, closingDate = false } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={title} description={description}>
+  <section class="section">
+    <div class="container">
+      <header class="head">
+        <p class="eyebrow">{t.legal.eyebrow}</p>
+        <h1>{heading}</h1>
+        <p class="lede">{lede}</p>
+        <p class="meta">{t.legal.updated}</p>
+      </header>
+
+      <div class="prose legal">
+        <slot />
+        {closingDate && <p class="meta">{t.legal.updated}</p>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    max-width: var(--content-narrow);
+    margin-bottom: var(--space-12);
+  }
+
+  .head h1 {
+    margin-top: var(--space-3);
+  }
+
+  .head .lede {
+    margin-top: var(--space-4);
+  }
+
+  /* The date line, in both places it appears: informational, not a heading. */
+  .meta,
+  .legal :global(.meta) {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  /*
+   * Postal addresses. `<address>` is italic by default, which reads as emphasis
+   * the addresses do not carry; the tighter leading is what keeps a four-line
+   * block from looking like four paragraphs. Written in the slotted page, so
+   * matched globally within the column this component owns.
+   */
+  .legal :global(.address) {
+    font-style: normal;
+    line-height: var(--leading-snug);
+  }
+
+  .legal :global(.address strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+</style>

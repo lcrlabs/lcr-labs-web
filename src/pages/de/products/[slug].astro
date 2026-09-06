@@ -1,6 +1,6 @@
 ---
-import ProductView from '../../views/ProductView.astro';
-import { getProducts, type Product } from '../../lib/products';
+import ProductView from '../../../views/ProductView.astro';
+import { getProducts, type Product } from '../../../lib/products';
 
 /** One page per product, per language. Adding a JSON file adds two pages. */
 export async function getStaticPaths() {
@@ -15,4 +15,4 @@ interface Props {
 const { product } = Astro.props;
 ---
 
-<ProductView product={product} locale="en" />
+<ProductView product={product} locale="de" />

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+/**
+ * The site-wide not-found page.
+ *
+ * GitHub Pages serves one `404.html` for every unmatched URL on the domain, so
+ * this page cannot be localized by route the way the rest of the site is: it
+ * is the default language, and it links into the default language. The
+ * language control on it falls back to the German homepage rather than to a
+ * German 404 that could never be served.
+ */
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={t.notFound.title} description={t.notFound.description}>
+  <section class="section">
+    <div class="container notfound">
+      <p class="eyebrow">404</p>
+      <h1>{t.notFound.heading}</h1>
+      <p class="lede">{t.notFound.lede}</p>
+      <div class="notfound__actions">
+        <Button href={localePath('/products/', locale)} variant="primary">
+          {t.notFound.products}
+        </Button>
+        <Button href={localePath('/', locale)} variant="secondary">{t.notFound.home}</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: var(--content-narrow);
+  }
+
+  .notfound h1 {
+    margin-top: var(--space-3);
+  }
+
+  .notfound .lede {
+    margin-top: var(--space-4);
+  }
+
+  .notfound__actions {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

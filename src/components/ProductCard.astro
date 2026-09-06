@@ -1,7 +1,8 @@
 ---
 import StatusBadge from './StatusBadge.astro';
 import type { Product } from '../lib/products';
-import { productHref } from '../lib/products';
+import { content, productHref } from '../lib/products';
+import { useTranslations, type Locale } from '../i18n';
 
 /**
  * The /products listing entry. Compact by design — the detail page does the
@@ -9,10 +10,13 @@ import { productHref } from '../lib/products';
  */
 interface Props {
   product: Product;
+  locale: Locale;
 }
 
-const { product } = Astro.props;
-const href = productHref(product);
+const { product, locale } = Astro.props;
+const t = useTranslations(locale);
+const href = productHref(product, locale);
+const copy = content(product, locale);
 ---
 
 <article class="card">
@@ -28,13 +32,17 @@ const href = productHref(product);
         )
       }
     </h2>
-    <StatusBadge product={product} />
+    <StatusBadge product={product} locale={locale} />
   </div>
 
-  <p class="card__summary">{product.data.shortDescription}</p>
+  <p class="card__summary">{copy.shortDescription}</p>
 
   <p class="card__meta">
-    {product.data.minimumOS ? `${product.data.minimumOS} or later` : product.data.platform}
+    {
+      product.data.minimumOS
+        ? t.product.minimumOS(product.data.minimumOS)
+        : product.data.platform
+    }
   </p>
 </article>
 

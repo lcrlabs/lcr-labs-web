@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrbitalField from '../components/OrbitalField.astro';
+import ProductLead from '../components/ProductLead.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Button from '../components/Button.astro';
+import { getProducts, productHref, sharedStatusLabel } from '../lib/products';
+import { localePath, useTranslations, type Locale } from '../i18n';
+import { SITE_NAME } from '../lib/site';
+
+/**
+ * The homepage, in whichever language it is asked for.
+ *
+ * The two route files under `src/pages` are three lines each and differ only
+ * in the locale they pass, so there is one homepage to change and never two
+ * that can drift apart.
+ */
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const products = await getProducts();
+const featured = products.filter((product) => product.data.featured);
+const rest = products.filter((product) => !product.data.featured);
+
+/* The section is headed by what its products actually are, so the heading
+   cannot outlive the data — a product promoted out of planning changes it. */
+const restLabel = sharedStatusLabel(rest, locale);
+---
+
+<BaseLayout locale={locale}>
+  <section class="hero">
+    <OrbitalField />
+    <div class="container hero__inner">
+      <h1 class="hero__title">{SITE_NAME}</h1>
+      <p class="hero__tagline">{t.site.tagline}</p>
+      <p class="hero__text">{t.home.heroText}</p>
+      {
+        featured.length > 0 && (
+          <div class="hero__actions">
+            <Button href={productHref(featured[0], locale)} variant="primary" size="lg">
+              {t.home.heroAction(featured[0].data.name)}
+            </Button>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    featured.map((product) => (
+      <section class="section" id="products" aria-labelledby="lead-heading">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">{t.home.leadEyebrow}</p>
+            <h2 id="lead-heading">{t.home.leadHeading}</h2>
+          </header>
+          <ProductLead product={product} locale={locale} />
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section" aria-labelledby="principles-heading">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">{t.home.principlesEyebrow}</p>
+        <h2 id="principles-heading">{t.home.principlesHeading}</h2>
+      </header>
+
+      <ul class="principles">
+        {
+          t.home.principles.map((principle) => (
+            <li class="principle">
+              <h3 class="principle__title">{principle.title}</h3>
+              <p class="principle__text">{principle.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    rest.length > 0 && (
+      <section class="section" aria-labelledby="planned-heading">
+        <div class="container">
+          <header class="section__head section__head--wide">
+            <p class="eyebrow">{restLabel ?? t.home.restEyebrow}</p>
+            <h2 id="planned-heading">{t.home.restHeading}</h2>
+            <p class="lede">{t.home.restLede}</p>
+          </header>
+
+          <ul class="cards">
+            {rest.map((product) => (
+              <li>
+                <ProductCard product={product} locale={locale} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--tight" aria-labelledby="about-heading">
+    <div class="container about">
+      <h2 id="about-heading" class="about__heading">{t.home.aboutHeading}</h2>
+      <div class="about__body">
+        <p>{t.home.aboutText}</p>
+        <p class="about__more">
+          <a href={localePath('/about/', locale)}>{t.home.aboutLink}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cta">
+        <div>
+          <h2 class="cta__title">{t.home.ctaTitle}</h2>
+          <p class="cta__text">{t.home.ctaText}</p>
+        </div>
+        <Button href={localePath('/products/', locale)} variant="secondary" size="lg">
+          {t.home.ctaAction}
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---- Hero ---- */
+
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(var(--space-20), 15vw, 9rem);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .hero__title {
+    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 3.75rem);
+    letter-spacing: -0.03em;
+  }
+
+  .hero__tagline {
+    margin-top: var(--space-4);
+    font-size: clamp(var(--text-lg), 1rem + 1vw, var(--text-xl));
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .hero__text {
+    margin: var(--space-4) auto 0;
+    max-width: 46ch;
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+  }
+
+  .hero__actions {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  /* ---- Sections ---- */
+
+  .section__head {
+    max-width: 34ch;
+    margin-bottom: var(--space-12);
+  }
+
+  .section__head--wide {
+    max-width: var(--content-narrow);
+  }
+
+  .section__head h2 {
+    margin-top: var(--space-3);
+  }
+
+  .section__head .lede {
+    margin-top: var(--space-4);
+    max-width: 56ch;
+  }
+
+  .cards {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* The <li> already stretches to the row height; making it a grid container
+     passes that height on to the card inside it, so cards in a row match. */
+  .cards > li {
+    display: grid;
+  }
+
+  /* ---- Principles ---- */
+
+  .principles {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .principle {
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  .principle__title {
+    font-size: var(--text-md);
+  }
+
+  .principle__text {
+    margin-top: var(--space-2);
+    max-width: 40ch;
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .principles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* ---- About ---- */
+
+  .about {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .about__heading {
+    font-size: var(--text-lg);
+  }
+
+  .about__body {
+    max-width: var(--content-narrow);
+    color: var(--text-secondary);
+  }
+
+  .about__more {
+    margin-top: var(--space-4);
+  }
+
+  .about__more a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 48rem) {
+    .about {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
+      gap: var(--space-10);
+    }
+  }
+
+  /* ---- Final CTA ---- */
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: clamp(var(--space-8), 5vw, var(--space-12));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+  }
+
+  .cta__title {
+    font-size: var(--text-lg);
+  }
+
+  .cta__text {
+    margin-top: var(--space-2);
+    color: var(--text-secondary);
+  }
+</style>

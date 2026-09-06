@@ -244,3 +244,20 @@ p {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- Appearance switch ---------- */
+
+/*
+ * Set by `ThemeScript` for the one frame an appearance change lands in.
+ *
+ * WebKit does not re-resolve `light-dark()` for a property that appears in an
+ * element's `transition`, so without this the header's links and controls keep
+ * the colours of the appearance being left. Suppressing transitions for that
+ * frame makes them re-resolve — and a change of appearance reads better as an
+ * instant swap than as a few dozen colours cross-fading independently.
+ */
+:root[data-theme-switching] *,
+:root[data-theme-switching] *::before,
+:root[data-theme-switching] *::after {
+  transition: none !important;
+}

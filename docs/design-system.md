@@ -58,6 +58,11 @@ Consequences to respect:
 - The stored choice is re-applied before first paint by an inline script in
   `BaseLayout`; with JavaScript unavailable the system appearance still works,
   and the toggle simply never appears.
+- `ThemeScript` sets `data-theme-switching` on `<html>` for the frame a change
+  lands in, and `global.css` suppresses every transition while it is there.
+  WebKit does not re-resolve `light-dark()` for a property that appears in an
+  element's `transition`, so without it the header's links and controls keep
+  the colours of the appearance being left.
 
 ## Typography
 
@@ -104,7 +109,8 @@ override on top of that.
 |---|---|
 | `Button` | The only button. `<a>` when given `href`, `<button>` otherwise. |
 | `Logo` | Mark + wordmark. The mark is a CSS mask over `currentColor`. |
-| `Header` | Navigation, appearance toggle, compact-width `<details>` menu. |
+| `Header` | Navigation, language and appearance controls, compact-width `<details>` menu. |
+| `LanguageSwitcher` | `EN`/`DE` links to the equivalent page in the other language. |
 | `Footer` | Links and copyright. |
 | `OrbitalField` | The hero background. |
 | `ProductLead` | The homepage lead product, told at full width. |
@@ -113,7 +119,6 @@ override on top of that.
 | `ThemeScript` | Owns the appearance and `window.lcrTheme`. Inline, in `<head>`. |
 | `StatusBadge` | How real the product is, in status colour. |
 | `StatusNote` | The one honest sentence about availability. |
-| `DraftNotice` | Marks unreviewed legal/support content. Visible in production. |
 
 Rules for a new component:
 

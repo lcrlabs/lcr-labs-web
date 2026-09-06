@@ -1,14 +1,19 @@
 ---
 import Logo from './Logo.astro';
-import { COPYRIGHT_YEAR } from '../lib/site';
+import { COPYRIGHT_YEAR, FOOTER_LINKS } from '../lib/site';
+import { localePath, useTranslations, type Locale } from '../i18n';
 
-const links = [
-  { label: 'Products', href: '/products/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Support', href: '/support/' },
-  { label: 'Privacy', href: '/privacy/' },
-  { label: 'Imprint', href: '/imprint/' },
-];
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const links = FOOTER_LINKS.map((link) => ({
+  label: t.nav[link.key],
+  href: localePath(link.path, locale),
+}));
 ---
 
 <footer class="footer">
@@ -16,10 +21,10 @@ const links = [
     <div class="footer__inner">
       <div class="footer__brand">
         <Logo size={22} />
-        <p class="footer__tagline">Independent software for macOS.</p>
+        <p class="footer__tagline">{t.footer.tagline}</p>
       </div>
 
-      <nav class="footer__nav" aria-label="Footer">
+      <nav class="footer__nav" aria-label={t.a11y.footerNav}>
         <ul>
           {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
         </ul>
@@ -27,7 +32,7 @@ const links = [
     </div>
 
     <div class="footer__legal">
-      <p>© {COPYRIGHT_YEAR} LCR Labs</p>
+      <p>{t.footer.copyright(COPYRIGHT_YEAR)}</p>
     </div>
   </div>
 </footer>

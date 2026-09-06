@@ -4,7 +4,8 @@ import StatusBadge from './StatusBadge.astro';
 import StatusNote from './StatusNote.astro';
 import Button from './Button.astro';
 import type { Product } from '../lib/products';
-import { productHref } from '../lib/products';
+import { content, productHref } from '../lib/products';
+import { useTranslations, type Locale } from '../i18n';
 
 /**
  * The homepage's lead product: told at full width, with its screenshot given
@@ -14,25 +15,28 @@ import { productHref } from '../lib/products';
  */
 interface Props {
   product: Product;
+  locale: Locale;
 }
 
-const { product } = Astro.props;
+const { product, locale } = Astro.props;
+const t = useTranslations(locale);
 const data = product.data;
+const copy = content(product, locale);
 ---
 
 <article class="lead">
   <div class="lead__body">
     <div class="lead__heading">
       <h3 class="lead__name">{data.name}</h3>
-      <StatusBadge product={product} />
+      <StatusBadge product={product} locale={locale} />
     </div>
 
-    <p class="lead__summary">{data.shortDescription}</p>
+    <p class="lead__summary">{copy.shortDescription}</p>
 
     {
-      data.highlights.length > 0 && (
+      copy.highlights.length > 0 && (
         <ul class="lead__highlights">
-          {data.highlights.slice(0, 4).map((highlight) => (
+          {copy.highlights.slice(0, 4).map((highlight) => (
             <li>{highlight}</li>
           ))}
         </ul>
@@ -40,14 +44,14 @@ const data = product.data;
     }
 
     <div class="lead__actions">
-      <Button href={productHref(product)} variant="primary" size="lg">
-        Learn more<span class="visually-hidden"> about {data.name}</span>
+      <Button href={productHref(product, locale)} variant="primary" size="lg">
+        {t.product.learnMore}<span class="visually-hidden">{t.product.learnMoreAbout(data.name)}</span>
       </Button>
-      <StatusNote product={product} />
+      <StatusNote product={product} locale={locale} />
     </div>
   </div>
 
-  <ProductShot product={product} loading="eager" />
+  <ProductShot product={product} locale={locale} loading="eager" />
 </article>
 
 <style>

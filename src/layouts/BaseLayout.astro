@@ -2,10 +2,13 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ThemeScript from '../components/ThemeScript.astro';
-import { SITE_NAME, SITE_DESCRIPTION } from '../lib/site';
+import { SITE_NAME } from '../lib/site';
+import { alternatePaths, useTranslations, DEFAULT_LOCALE, type Locale } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
+  /** The language this page is written in. Every page states its own. */
+  locale: Locale;
   /** Page title without the site suffix. Omit on the homepage. */
   title?: string;
   description?: string;
@@ -13,29 +16,65 @@ interface Props {
   image?: string;
 }
 
-const { title, description = SITE_DESCRIPTION, image = '/brand/og-default.jpg' } = Astro.props;
+const { locale, title, description, image = '/brand/og-default.jpg' } = Astro.props;
+const t = useTranslations(locale);
 
-const pageTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Thoughtful software for macOS`;
+const pageTitle = title ? t.site.pageTitle(title) : t.site.homeTitle;
+const pageDescription = description ?? t.site.description;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL(image, Astro.site);
+
+/*
+ * Both language versions of this page, or `null` for a page that exists in one
+ * language only — the site-wide 404, which GitHub Pages serves for every
+ * unmatched URL and therefore cannot have a German counterpart. Declaring
+ * alternates it does not have would be worse than declaring none.
+ */
+const alternates = alternatePaths(Astro.url.pathname);
+const alternateLocale = locale === 'en' ? 'de' : 'en';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={t.document.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="canonical" href={canonical} />
 
+    {
+      /* Each language version points at itself and at the other, and
+         `x-default` at English — the version served without a prefix. */
+      alternates && (
+        <Fragment>
+          <link rel="alternate" hreflang="en" href={new URL(alternates.en, Astro.site)} />
+          <link rel="alternate" hreflang="de" href={new URL(alternates.de, Astro.site)} />
+          <link
+            rel="alternate"
+            hreflang="x-default"
+            href={new URL(alternates[DEFAULT_LOCALE], Astro.site)}
+          />
+        </Fragment>
+      )
+    }
+
     <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
+    <meta property="og:locale" content={t.document.ogLocale} />
+    {
+      alternates && (
+        <meta
+          property="og:locale:alternate"
+          content={useTranslations(alternateLocale).document.ogLocale}
+        />
+      )
+    }
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
@@ -51,11 +90,11 @@ const socialImage = new URL(image, Astro.site);
   </head>
 
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <Header />
+    <a class="skip-link" href="#main">{t.a11y.skipToContent}</a>
+    <Header locale={locale} />
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </body>
 </html>

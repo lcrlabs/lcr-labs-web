@@ -32,9 +32,11 @@ without an explicit instruction that overrides this file:
 - **No invented product content.** Do not write feature copy for a product that
   has not been specified, and do not invent the fourth product's name. Use the
   `placeholder` flag instead.
-- **No invented legal text.** Legal pages are scaffolds carrying a visible
-  `DraftNotice`. Do not remove a notice, and do not present generated wording as
-  reviewed legal advice.
+- **No invented legal text.** Do not present generated wording as reviewed legal
+  advice, and never state a legal fact the project cannot evidence — a VAT ID, a
+  tax number, a register entry, a company form, a postal address or a phone
+  number. If a required detail does not exist, the section is omitted, not
+  filled in. See **Legal pages**.
 - **No backend.** The safest V1 backend is no backend.
 - **No analytics, trackers, advertising SDKs or session replay.**
 
@@ -54,11 +56,14 @@ without an explicit instruction that overrides this file:
 src/
   content/products/*.json   product data — the single source of truth
   content.config.ts         the product schema (Zod)
-  lib/products.ts           product queries and status labels
-  lib/site.ts               site constants (URL, nav, tagline)
+  i18n/en.ts, de.ts         UI copy; de is typed against en
+  i18n/index.ts             Locale, route arithmetic, dictionary lookup
+  lib/products.ts           product queries, localized copy, status labels
+  lib/site.ts               site constants (URL, nav paths, email)
   components/               presentational; no data fetching
-  layouts/BaseLayout.astro  head, SEO, appearance script, header/footer
-  pages/                    routes
+  views/                    one page body per page, shared by both languages
+  layouts/BaseLayout.astro  head, SEO, hreflang, appearance script, chrome
+  pages/                    routes — English at the root, German under /de/
   styles/tokens.css         every colour, space, radius and duration
   styles/global.css         reset, typography, layout primitives
 ```
@@ -66,7 +71,7 @@ src/
 Rules:
 
 - **Adding a product is a data change.** Drop a JSON file into
-  `src/content/products/`; the homepage, `/products`, its detail page and the
+  `src/content/products/`; the homepage, `/products`, both detail pages and the
   sitemap all pick it up. If a product ever needs a layout change to appear,
   the layout is wrong.
 - **A product's availability is stated in one sentence, never as a button.**
@@ -85,6 +90,33 @@ Rules:
 - **Scoped styles do not reach into child components.** Wrap a child in an
   element this component owns rather than passing a class for the parent to
   style.
+
+## Languages
+
+English is the default and carries no prefix; German lives under `/de/`. There
+is no `/en/`, and nothing redirects — the URL a reader asks for is the page they
+get. `/404` is the one page with no German counterpart, because GitHub Pages
+serves one not-found page for the whole domain.
+
+- **A page body is written once.** It lives in `src/views/` and takes a
+  `locale`; the route file under `src/pages/` is three lines. Never copy a page
+  to translate it.
+- **Every internal link goes through `localePath`.** A canonical (English) path
+  plus the current locale. A German page linking to an English one is a bug, and
+  hard-coding `/de/...` in a component is how that bug gets written.
+- **`de.ts` is typed against `en.ts`.** A key added to one and not the other
+  fails the build. Same for a product's `localized` block, which requires both
+  languages — there is no silent fallback to English anywhere.
+- **Prose belongs to a language; facts do not.** A product's name, platform,
+  minimum OS, status and screenshot files sit at the top level of its JSON;
+  only its copy is per-language.
+- **Legal pages are the exception to sharing a body.** The German pages carry
+  the finalized German wording and are authoritative; the English ones state
+  the same duties under the same law (GDPR, DDG, TDDDG) in English. Change a
+  fact in one and it changes in both, or neither is true.
+- **`lcr-language` is written only when a reader uses the switcher**, and read
+  by nothing that changes navigation. No browser-language redirect, ever. Both
+  privacy pages disclose it alongside `lcr-theme`.
 
 ## Appearance
 
@@ -110,6 +142,30 @@ scroll or pointer listeners, nothing animating outside the hero.
 `prefers-reduced-motion` must leave a composition that looks finished, not an
 empty box. `global.css` also carries a blanket reduced-motion override.
 
+## Legal pages
+
+`/privacy/` and `/imprint/` are finished, production-ready pages, not scaffolds.
+
+- **No draft UI.** Neither page shows a draft notice, warning banner,
+  placeholder banner or any other temporary marker, and none may be added.
+  `DraftNotice.astro` was deleted once the last page stopped needing it — do not
+  recreate it unless a future task asks for it by name.
+- **The layout is settled.** All four pages are one narrow `.prose` column: `h1`
+  in the `.head` block, `h2` per section, `<address class="address">` for postal
+  blocks. `LegalPage.astro` owns that frame and the four bodies slot into it, so
+  an edit to one stays consistent with the rest; none gets its own visual
+  system, and none grows a card stack. The prose carries no `lang` of its own —
+  the document states the language now, and a German `lang` on an English page
+  would be worse than none.
+- **The content tracks the implementation.** Every service the privacy notice
+  names is one the site actually depends on, and every detail the imprint states
+  is one that is true. If the site starts loading something new, the privacy
+  notice changes with it; if it stops, the section goes. Facts the project does
+  not have are absent rather than approximated.
+- Legal wording here is written, not lawyer-reviewed. Independent review is
+  still an open item in `docs/deployment.md`, and nothing in the repository
+  should claim otherwise.
+
 ## Verification
 
 Before calling work here done:
@@ -127,9 +183,16 @@ Before calling work here done:
    and "Allow Remote Automation" must be enabled in Safari's Develop menu
    (`safaridriver --enable` needs an admin password). Safari cannot emulate
    `prefers-color-scheme`, so capture each appearance by setting `data-theme`
-   on `<html>` — the same mechanism the toggle uses. It cannot emulate
+   on `<html>` — but set it through `window.lcrTheme.set()`, or store
+   `lcr-theme` and reload. Assigning the attribute directly leaves every
+   transitioned colour resolved for the appearance being left: WebKit does not
+   re-resolve `light-dark()` for a property listed in a `transition`, which is
+   what `data-theme-switching` exists to work around. It cannot emulate
    `prefers-reduced-motion` at all; check that one by hand.
-4. Tab through the page: skip link, header, menu, every CTA, visible focus.
+4. Tab through the page: skip link, header, language and appearance controls,
+   menu, every CTA, visible focus.
+   Check both languages: the switcher must reach the matching page, and no page
+   may mix languages.
 5. Confirm no secrets, no checkout code, no paid-download link, and no
    distribution channel or store link entered the build.
 

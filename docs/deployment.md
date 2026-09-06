@@ -95,10 +95,12 @@ not widened to `*` to make an error go away.
 ## Pre-launch checklist
 
 - [x] Real domain configured; `SITE_URL`, `robots.txt` and `CNAME` updated.
-- [ ] Imprint completed and legally reviewed; `DraftNotice` removed.
-- [ ] Privacy notice completed, hosting details filled in (GitHub Pages, GitHub
-      Inc.), reviewed; `DraftNotice` removed.
-- [x] Support contact address added; `DraftNotice` removed.
+- [x] Imprint completed: operator details, § 5 DDG, no invented register, VAT
+      or contact data.
+- [x] Privacy notice completed, hosting details filled in (GitHub Pages, GitHub
+      B.V. / GitHub, Inc.).
+- [x] Support contact address added.
+- [ ] Imprint and privacy wording reviewed independently.
 - [ ] Product screenshots added in both appearances, or their absence accepted
       knowingly.
 - [x] Build clean, `npm run check` clean.

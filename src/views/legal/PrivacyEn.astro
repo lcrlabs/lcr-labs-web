@@ -1,0 +1,420 @@
+---
+import LegalPage from './LegalPage.astro';
+import { CONTACT_EMAIL } from '../../lib/site';
+import { localePath, useTranslations, type Locale } from '../../i18n';
+
+/**
+ * The English privacy policy.
+ *
+ * A translation of `PrivacyDe.astro`, not a different policy: the controller
+ * is established in Germany, so the law described here is the GDPR and the
+ * TDDDG, and the legal bases are cited rather than paraphrased away. The
+ * German version is the authoritative one, and any change to the facts — a
+ * new service, a new stored value — has to be made in both.
+ */
+const LOCALE: Locale = 'en';
+const t = useTranslations(LOCALE);
+
+const GITHUB_PRIVACY =
+  'https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement';
+const GMX_PRIVACY = 'https://www.gmx.net/datenschutz/';
+---
+
+<LegalPage
+  locale={LOCALE}
+  title={t.legal.privacyTitle}
+  description={t.legal.privacyDescription}
+  heading={t.legal.privacyTitle}
+  lede={t.legal.privacyLede}
+  closingDate
+>
+  <p>
+    LCR Labs is operated from Germany, so this policy describes processing under the GDPR and
+    German law. It is an English translation of the{' '}
+    <a href={localePath('/privacy/', 'de')}>German version</a>, which is the authoritative one.
+  </p>
+
+  <h2>1. Privacy at a glance</h2>
+  <h3>General information</h3>
+  <p>
+    Protecting your personal data matters to us. The following notes give an overview of which
+    personal data is processed when you visit this website, and for what purposes.
+  </p>
+  <p>Personal data is any data by which you can be personally identified.</p>
+  <p>
+    The LCR Labs website is designed as a data-minimising static information site. No user
+    accounts are kept, and no payment, purchase or customer data is processed through it.
+  </p>
+  <p>
+    Technically necessary data may nevertheless be processed, in particular by the hosting
+    provider. Beyond that, personal data is processed if you choose to contact LCR Labs.
+  </p>
+
+  <h2>2. Controller</h2>
+  <p>The controller within the meaning of the General Data Protection Regulation (GDPR) is:</p>
+  <address class="address">
+    <strong>Luca Runkel</strong><br />
+    Bahnhofstraße 12<br />
+    79353 Bahlingen<br />
+    Germany
+  </address>
+  <p>
+    Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+  <p>
+    The controller decides, alone or jointly with others, on the purposes and means of
+    processing personal data on this website.
+  </p>
+
+  <h2>3. Hosting via GitHub Pages</h2>
+  <p>This website is served by GitHub Pages.</p>
+  <p>The providers are in particular:</p>
+  <address class="address">
+    <strong>GitHub B.V.</strong><br />
+    Prins Bernhardplein 200<br />
+    1097 JB Amsterdam<br />
+    Netherlands
+  </address>
+  <p>and, as part of the GitHub infrastructure:</p>
+  <address class="address">
+    <strong>GitHub, Inc.</strong><br />
+    88 Colin P. Kelly Jr. Street<br />
+    San Francisco, CA 94107<br />
+    USA
+  </address>
+  <p>
+    When a website served by GitHub Pages is requested, GitHub logs the visitor's IP address in
+    particular and stores it for security reasons.
+  </p>
+  <p>
+    In the course of providing the GitHub services, further technical usage and connection data
+    may be processed, for example information about the browser or device used and the time and
+    technical characteristics of a request.
+  </p>
+  <p>
+    This processing is necessary in order to provide the website technically and to ensure the
+    security, stability and functioning of the service.
+  </p>
+  <p>
+    Insofar as the processing falls within our area of responsibility, it is based on
+    Article 6(1)(f) GDPR. Our legitimate interest lies in providing this website securely,
+    reliably and economically.
+  </p>
+  <p>
+    GitHub also processes data outside the European Union, in particular in the United States.
+    GitHub states that it uses appropriate safeguards for such international transfers,
+    including the European Commission's standard contractual clauses, and that it participates
+    in the EU–U.S. Data Privacy Framework.
+  </p>
+  <p>
+    Further information about the processing of data by GitHub is available in{' '}
+    <a href={GITHUB_PRIVACY} rel="noopener noreferrer">GitHub's official privacy statement</a>.
+  </p>
+
+  <h2>4. Encrypted transmission</h2>
+  <p>This website is served over HTTPS.</p>
+  <p>
+    The connection between your browser and the website is therefore encrypted, so that data
+    exchanged during transmission cannot readily be read by third parties.
+  </p>
+  <p>
+    An encrypted connection is usually recognisable by the website's address beginning with{' '}
+    <code>https://</code>.
+  </p>
+
+  <h2>5. Server and access data</h2>
+  <p>Technically necessary connection data arises when this website is requested.</p>
+  <p>This may include the IP address in particular.</p>
+  <p>
+    Such technical data is processed solely in order to deliver the website, to ensure its
+    technical stability and to detect or prevent misuse and security attacks.
+  </p>
+  <p>
+    LCR Labs does not combine this technical access data with other data sources for
+    advertising, analytics or profiling purposes. LCR Labs has no access to the raw server logs
+    of this website.
+  </p>
+  <p>
+    Insofar as this processing falls within our area of responsibility, the legal basis is
+    Article 6(1)(f) GDPR. The legitimate interest lies in the secure and trouble-free operation
+    of the website.
+  </p>
+
+  <h2>6. Cookies, tracking and web analytics</h2>
+  <p>
+    As matters stand, LCR Labs uses no analytics, advertising or tracking services on this
+    website and creates no personal usage profiles.
+  </p>
+  <p>
+    In particular, no services such as Google Analytics, Google Ads, Meta Pixel or comparable
+    tracking technologies are used.
+  </p>
+  <p>
+    LCR Labs sets no cookies that are not technically necessary. Accordingly, no consent or
+    cookie banner is currently required for such services.
+  </p>
+
+  <h3>Locally stored preferences</h3>
+  <p>
+    This website stores two settings in your browser's local storage
+    (<code>localStorage</code>) — and only if you make the choice in question explicitly:
+  </p>
+  <ul>
+    <li>
+      <code>lcr-theme</code>, with the value <code>light</code> or <code>dark</code>, once you
+      use the light or dark appearance control in the header.
+    </li>
+    <li>
+      <code>lcr-language</code>, with the value <code>en</code> or <code>de</code>, once you use
+      the language control in the header.
+    </li>
+  </ul>
+  <p>
+    Both values remain on your device, in your browser, and are not transmitted to LCR Labs or
+    to any third party. They contain nothing but the interface preference you explicitly chose,
+    and are not used for analytics, advertising or profiling purposes, nor to recognise
+    visitors.
+  </p>
+  <p>
+    Without such an explicit choice nothing is stored: the appearance then follows your
+    operating system's setting, and the language follows solely from the address you requested.
+    There is no automatic redirect based on a stored language or on the language configured in
+    your browser.
+  </p>
+  <p>
+    This storage serves to provide a service you have explicitly requested and is therefore
+    strictly necessary within the meaning of § 25(2) no. 2 TDDDG; no consent is required for
+    it. You can delete the stored values at any time through your browser's settings.
+  </p>
+
+  <h2>7. Contact by email</h2>
+  <p>
+    This website contains no contact, support or upload form. Contact is made exclusively by
+    email to the address given above.
+  </p>
+  <p>
+    If you contact LCR Labs by email, the personal data you transmit is processed. This may
+    include in particular:
+  </p>
+  <ul>
+    <li>your email address</li>
+    <li>your name, if you provide it</li>
+    <li>the content of your message</li>
+    <li>any attachments or further details you choose to send</li>
+  </ul>
+  <p>
+    The data is used solely in order to deal with your enquiry and to communicate with you.
+  </p>
+  <p>
+    If your enquiry relates to the initiation or performance of a contractual relationship, the
+    processing is based on Article 6(1)(b) GDPR.
+  </p>
+  <p>
+    For other enquiries, the processing is based on Article 6(1)(f) GDPR. The legitimate
+    interest lies in dealing with and answering incoming enquiries appropriately.
+  </p>
+  <p>
+    The transmitted data is deleted once the enquiry in question has been dealt with
+    conclusively and no statutory retention obligations or other legitimate grounds for further
+    storage exist.
+  </p>
+
+  <h2>8. GMX email service</h2>
+  <p>LCR Labs uses an email service provided by GMX for email communication.</p>
+  <p>GMX is a service of:</p>
+  <address class="address">
+    <strong>1&amp;1 Mail &amp; Media GmbH</strong><br />
+    Zweigniederlassung Karlsruhe<br />
+    Brauerstraße 48<br />
+    76135 Karlsruhe<br />
+    Germany
+  </address>
+  <p>
+    If you contact LCR Labs by email, the data required to deliver and store the message is
+    also processed technically on the email provider's systems. This concerns in particular:
+  </p>
+  <ul>
+    <li>sender and recipient address</li>
+    <li>technical email metadata</li>
+    <li>the content of the message</li>
+    <li>any attachments</li>
+  </ul>
+  <p>
+    Further information about the processing of personal data by GMX is available in{' '}
+    <a href={GMX_PRIVACY} rel="noopener noreferrer">GMX's official privacy information</a>.
+  </p>
+
+  <h2>9. External links</h2>
+  <p>
+    This website may contain links to external websites, for example to the privacy information
+    of the providers named in this policy.
+  </p>
+  <p>
+    If you follow such an external link, you leave the area of responsibility of this website.
+    The external provider's own privacy terms then apply to any subsequent processing of
+    personal data.
+  </p>
+  <p>
+    LCR Labs has no influence over the data processing carried out by the operator of an
+    external website once it has been opened. The external provider is contacted only when you
+    actively click such a link.
+  </p>
+
+  <h2>10. External fonts and content</h2>
+  <p>
+    When this website is opened normally, LCR Labs embeds no external fonts, advertising
+    networks or third-party social media plugins that would establish a connection to those
+    third parties as the page loads.
+  </p>
+  <p>
+    The fonts already present on your device are used for display; images, styles and scripts
+    are delivered exclusively by this website itself.
+  </p>
+  <p>
+    The German and the English version of this website are pre-built static pages. No external
+    translation or localisation service is used for switching languages, and no text or
+    language input is transmitted to third parties.
+  </p>
+
+  <h2>11. Storage period</h2>
+  <p>
+    Personal data is stored, as a rule, only for as long as is necessary for the respective
+    purpose of processing.
+  </p>
+  <p>
+    If the purpose of the processing ceases to apply, the data concerned is deleted, unless
+    statutory retention obligations or other legally permissible grounds for further storage
+    exist.
+  </p>
+  <p>
+    Technical log data processed directly by hosting or infrastructure providers may be subject
+    to those providers' own storage and deletion periods.
+  </p>
+
+  <h2>12. Legal bases for processing</h2>
+  <p>
+    Insofar as personal data is processed on this website, this is done in particular on the
+    following legal bases:
+  </p>
+  <ul>
+    <li>
+      <strong>Article 6(1)(b) GDPR</strong> — where processing is necessary for the performance
+      of a contract or for pre-contractual measures.
+    </li>
+    <li>
+      <strong>Article 6(1)(f) GDPR</strong> — where processing is necessary to protect
+      legitimate interests, in particular for the secure technical operation of the website or
+      for dealing with general enquiries.
+    </li>
+    <li>
+      <strong>Article 6(1)(a) GDPR</strong> — where consent is expressly obtained for a
+      particular processing operation.
+    </li>
+  </ul>
+  <p>Consent once given can be withdrawn at any time with effect for the future.</p>
+
+  <h2>13. Your rights</h2>
+  <p>
+    Subject to the statutory conditions, you have in particular the following rights with
+    regard to your personal data:
+  </p>
+
+  <h3>Right of access — Article 15 GDPR</h3>
+  <p>
+    You can request information as to whether, and which, personal data concerning you is
+    processed.
+  </p>
+
+  <h3>Right to rectification — Article 16 GDPR</h3>
+  <p>
+    You can request the rectification of inaccurate personal data or the completion of
+    incomplete personal data.
+  </p>
+
+  <h3>Right to erasure — Article 17 GDPR</h3>
+  <p>
+    Subject to the statutory conditions, you can request the erasure of your personal data.
+  </p>
+
+  <h3>Right to restriction of processing — Article 18 GDPR</h3>
+  <p>
+    Subject to the statutory conditions, you can request that the processing of your personal
+    data be restricted.
+  </p>
+
+  <h3>Right to data portability — Article 20 GDPR</h3>
+  <p>
+    Where the statutory conditions are met, you can receive personal data you have provided in
+    a structured, commonly used and machine-readable format, or request that it be transmitted
+    to another controller.
+  </p>
+
+  <h3>Right to object — Article 21 GDPR</h3>
+  <p>
+    Where personal data is processed on the basis of Article 6(1)(f) GDPR, you can object to
+    that processing at any time on grounds relating to your particular situation.
+  </p>
+
+  <h3>Withdrawal of consent — Article 7(3) GDPR</h3>
+  <p>
+    Consent already given can be withdrawn at any time with effect for the future. The
+    lawfulness of processing carried out up to the withdrawal remains unaffected.
+  </p>
+
+  <p>
+    To exercise your rights, you can contact LCR Labs at the email address given above,{' '}
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+  </p>
+
+  <h2>14. Right to lodge a complaint with a supervisory authority</h2>
+  <p>
+    If you consider that the processing of your personal data infringes data protection law,
+    you have the right under Article 77 GDPR to lodge a complaint with a data protection
+    supervisory authority.
+  </p>
+  <p>For Baden-Württemberg, the competent authority includes:</p>
+  <address class="address">
+    <strong>
+      Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg
+    </strong><br />
+    Heilbronner Straße 35<br />
+    70191 Stuttgart<br />
+    Germany
+  </address>
+  <p>
+    Email: <a href="mailto:poststelle@lfdi.bwl.de">poststelle@lfdi.bwl.de</a>
+  </p>
+  <p>
+    The right to contact another competent data protection supervisory authority remains
+    unaffected.
+  </p>
+
+  <h2>15. Automated decision-making and profiling</h2>
+  <p>
+    No automated decision-making, including profiling, within the meaning of Article 22 GDPR
+    takes place through this website.
+  </p>
+
+  <h2>16. Security</h2>
+  <p>
+    Within the bounds of what is technically and economically reasonable, LCR Labs takes
+    appropriate measures to protect personal data against loss, misuse, unauthorised access and
+    unauthorised alteration.
+  </p>
+  <p>The website is transmitted encrypted over HTTPS in particular.</p>
+  <p>
+    Despite appropriate security measures, absolute protection cannot be guaranteed for data
+    transmission over the internet.
+  </p>
+
+  <h2>17. Changes to this privacy policy</h2>
+  <p>
+    This privacy policy may be adapted if the website, the services used or the legal
+    requirements change.
+  </p>
+  <p>The current version published on this website applies.</p>
+  <p>
+    The provider identification is set out in the{' '}
+    <a href={localePath('/imprint/', LOCALE)}>legal notice</a>.
+  </p>
+</LegalPage>

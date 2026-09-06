@@ -2,32 +2,62 @@
   "name": "Edgehold",
   "order": 3,
   "featured": false,
-  "shortDescription": "A planned utility for making the pointer cross between displays on purpose instead of by accident.",
-  "longDescription": "On a multi-display desk the pointer slips onto the wrong screen constantly. Edgehold is being planned as a way to give each boundary between displays its own behaviour — asking for a little more intent before a crossing happens — while leaving pointer movement everywhere else completely normal. The aim is that once it is configured you stop noticing it. Which behaviours actually ship is not yet decided.",
   "icon": null,
   "screenshots": [],
   "platform": "macOS",
   "status": "in-planning",
-  "statusNote": "In planning. This describes the intended direction, not finished software.",
-  "highlights": [
-    "Planned: rules configured per boundary, not per display",
-    "Under consideration: resistance, a second push, a modifier key, a defined gate",
-    "Planned: profiles for different desk setups",
-    "Intended to stay out of the way while you are dragging"
-  ],
-  "features": [
-    {
-      "title": "Per-boundary rules",
-      "description": "The central idea: configure each edge between two displays on its own, because the boundary you keep crossing by accident is rarely the one you cross on purpose."
+  "localized": {
+    "en": {
+      "shortDescription": "A planned utility for making the pointer cross between displays on purpose instead of by accident.",
+      "longDescription": "On a multi-display desk the pointer slips onto the wrong screen constantly. Edgehold is being planned as a way to give each boundary between displays its own behaviour — asking for a little more intent before a crossing happens — while leaving pointer movement everywhere else completely normal. The aim is that once it is configured you stop noticing it. Which behaviours actually ship is not yet decided.",
+      "statusNote": "In planning. This describes the intended direction, not finished software.",
+      "highlights": [
+        "Planned: rules configured per boundary, not per display",
+        "Under consideration: resistance, a second push, a modifier key, a defined gate",
+        "Planned: profiles for different desk setups",
+        "Intended to stay out of the way while you are dragging"
+      ],
+      "features": [
+        {
+          "title": "Per-boundary rules",
+          "description": "The central idea: configure each edge between two displays on its own, because the boundary you keep crossing by accident is rarely the one you cross on purpose."
+        },
+        {
+          "title": "Deliberate crossings",
+          "description": "Several ways of asking for intent are being explored — slowing at the edge, a second push, a held modifier key, or a defined gate along the shared edge. The set that ships may be narrower than that list."
+        },
+        {
+          "title": "Desk profiles",
+          "description": "The goal is that different setups get different behaviour, so docking and undocking does not mean reconfiguring."
+        }
+      ],
+      "privacyNote": "The intended design evaluates pointer behaviour entirely on your Mac, with nothing about your display use leaving the device. This is a design goal for a product that does not exist yet, not a description of shipped behaviour."
     },
-    {
-      "title": "Deliberate crossings",
-      "description": "Several ways of asking for intent are being explored — slowing at the edge, a second push, a held modifier key, or a defined gate along the shared edge. The set that ships may be narrower than that list."
-    },
-    {
-      "title": "Desk profiles",
-      "description": "The goal is that different setups get different behaviour, so docking and undocking does not mean reconfiguring."
+    "de": {
+      "shortDescription": "Ein geplantes Werkzeug, damit der Zeiger absichtlich zwischen Bildschirmen wechselt statt versehentlich.",
+      "longDescription": "An einem Arbeitsplatz mit mehreren Bildschirmen rutscht der Zeiger ständig auf den falschen Bildschirm. Edgehold ist als Möglichkeit geplant, jeder Grenze zwischen zwei Bildschirmen ein eigenes Verhalten zu geben — vor einem Übergang also etwas mehr Absicht zu verlangen — und die Zeigerbewegung überall sonst vollkommen normal zu lassen. Das Ziel ist, dass es nach der Einrichtung nicht mehr auffällt. Welche Verhaltensweisen tatsächlich erscheinen, ist noch nicht entschieden.",
+      "statusNote": "In Planung. Das beschreibt die beabsichtigte Richtung, keine fertige Software.",
+      "highlights": [
+        "Geplant: Regeln pro Grenze statt pro Bildschirm",
+        "In Prüfung: Widerstand, ein zweiter Anlauf, eine Modifikatortaste, ein definierter Durchgang",
+        "Geplant: Profile für verschiedene Arbeitsplätze",
+        "Vorgesehen: beim Ziehen nicht im Weg zu stehen"
+      ],
+      "features": [
+        {
+          "title": "Regeln pro Grenze",
+          "description": "Der zentrale Gedanke: jede Kante zwischen zwei Bildschirmen für sich konfigurieren, denn die Grenze, die ständig versehentlich überquert wird, ist selten die, die absichtlich überquert wird."
+        },
+        {
+          "title": "Bewusste Übergänge",
+          "description": "Mehrere Wege, Absicht abzufragen, werden untersucht — Abbremsen an der Kante, ein zweiter Anlauf, eine gehaltene Modifikatortaste oder ein definierter Durchgang entlang der gemeinsamen Kante. Was am Ende erscheint, kann weniger sein als diese Liste."
+        },
+        {
+          "title": "Arbeitsplatzprofile",
+          "description": "Ziel ist, dass verschiedene Aufbauten unterschiedliches Verhalten bekommen, damit An- und Abdocken keine Neukonfiguration bedeutet."
+        }
+      ],
+      "privacyNote": "Die beabsichtigte Gestaltung wertet das Zeigerverhalten vollständig auf dem Mac aus; nichts über die Bildschirmnutzung verlässt das Gerät. Das ist ein Gestaltungsziel für ein Produkt, das noch nicht existiert, keine Beschreibung ausgelieferter Funktionen."
     }
-  ],
-  "privacyNote": "The intended design evaluates pointer behaviour entirely on your Mac, with nothing about your display use leaving the device. This is a design goal for a product that does not exist yet, not a description of shipped behaviour."
+  }
 }

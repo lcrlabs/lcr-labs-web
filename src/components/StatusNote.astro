@@ -1,5 +1,7 @@
 ---
 import type { Product } from '../lib/products';
+import { content } from '../lib/products';
+import type { Locale } from '../i18n';
 
 /**
  * The one honest sentence about a product's availability.
@@ -9,12 +11,14 @@ import type { Product } from '../lib/products';
  */
 interface Props {
   product: Product;
+  locale: Locale;
 }
 
-const { product } = Astro.props;
+const { product, locale } = Astro.props;
+const statusNote = content(product, locale).statusNote;
 ---
 
-{product.data.statusNote && <p class="status-note">{product.data.statusNote}</p>}
+{statusNote && <p class="status-note">{statusNote}</p>}
 
 <style>
   .status-note {

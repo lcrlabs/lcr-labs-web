@@ -1,0 +1,128 @@
+---
+import {
+  LOCALES,
+  LANGUAGE_STORAGE_KEY,
+  alternatePath,
+  useTranslations,
+  type Locale,
+} from '../i18n';
+
+/**
+ * The language control: two links, EN and DE, and nothing else.
+ *
+ * They are real links to real URLs, so the control works with no JavaScript,
+ * can be opened in a new tab, and leaves the page in the browser's history the
+ * way any other navigation does. Each one points at the equivalent page in its
+ * language — `alternatePath` does that arithmetic once, for every route — and
+ * falls back to that language's homepage only where no counterpart exists.
+ *
+ * No flags: a language is not a country. The active language is marked by
+ * `aria-current`, by weight and by a filled background, so it does not rely on
+ * colour alone.
+ *
+ * The small script stores the reader's explicit choice. It is written on a
+ * click and read by nothing: navigation stays in the URL, which is what keeps
+ * this free of redirects, loops and a first paint in the wrong language.
+ */
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const options = LOCALES.map((target) => ({
+  target,
+  code: target.toUpperCase(),
+  href: alternatePath(Astro.url.pathname, target),
+  current: target === locale,
+  label:
+    target === locale
+      ? t.a11y.languageCurrent(t.languages[target])
+      : t.a11y.languageSwitch(t.languages[target]),
+}));
+---
+
+<nav class="lang" aria-label={t.a11y.languageNav} data-language-key={LANGUAGE_STORAGE_KEY}>
+  <ul class="lang__list">
+    {
+      options.map((option) => (
+        <li>
+          <a
+            class="lang__link"
+            href={option.href}
+            hreflang={option.target}
+            aria-label={option.label}
+            aria-current={option.current ? 'true' : undefined}
+            data-language={option.target}
+          >
+            {option.code}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .lang__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .lang__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-tertiary);
+    transition:
+      color var(--duration-fast) var(--ease),
+      background-color var(--duration-fast) var(--ease);
+  }
+
+  .lang__link:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-hover);
+  }
+
+  /* Weight and fill, not colour alone. */
+  .lang__link[aria-current='true'] {
+    color: var(--text-primary);
+    font-weight: 600;
+    background-color: var(--surface-hover);
+  }
+
+  /* Below the smallest phone widths the header carries the brand, this
+     control, the appearance toggle and the menu button on one line. */
+  @media (max-width: 22.5rem) {
+    .lang__link {
+      padding-inline: var(--space-1);
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const nav = document.querySelector('[data-language-key]');
+    if (!nav) return;
+
+    const key = nav.dataset.languageKey;
+
+    for (const link of nav.querySelectorAll('[data-language]')) {
+      link.addEventListener('click', () => {
+        try {
+          localStorage.setItem(key, link.dataset.language);
+        } catch {
+          /* Private browsing or blocked storage: the choice just won't persist. */
+        }
+      });
+    }
+  })();
+</script>

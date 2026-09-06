@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductShot from '../components/ProductShot.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import StatusNote from '../components/StatusNote.astro';
+import { content, statusLabel, type Product } from '../lib/products';
+import { SITE_NAME } from '../lib/site';
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  product: Product;
+  locale: Locale;
+}
+
+const { product, locale } = Astro.props;
+const t = useTranslations(locale);
+const data = product.data;
+const copy = content(product, locale);
+
+const requirements = [
+  { label: t.product.specs.platform, value: data.platform },
+  data.minimumOS ? { label: t.product.specs.requires, value: t.product.minimumOS(data.minimumOS) } : null,
+  data.architecture
+    ? { label: t.product.specs.architecture, value: data.architecture[locale] }
+    : null,
+  data.version ? { label: t.product.specs.version, value: data.version } : null,
+  { label: t.product.specs.status, value: statusLabel(product, locale) },
+].filter((row): row is { label: string; value: string } => row !== null);
+
+/*
+ * Structured data describes only what the product data actually states. No
+ * offer, price or download URL is emitted — the site is not the seller, and
+ * claiming otherwise in metadata would be as wrong as claiming it on the page.
+ *
+ * It is emitted in the language of the page it sits on, and `inLanguage` says
+ * which one, so the two versions do not read as one duplicated record.
+ */
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: data.name,
+  description: copy.shortDescription,
+  inLanguage: t.document.lang,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: data.minimumOS ?? data.platform,
+  ...(data.version ? { softwareVersion: data.version } : {}),
+  author: { '@type': 'Organization', name: SITE_NAME },
+};
+
+const released = data.status === 'available' || data.status === 'beta';
+const extraScreenshots = data.screenshots.slice(1);
+---
+
+<BaseLayout locale={locale} title={data.name} description={copy.shortDescription}>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+    is:inline
+  />
+
+  <article>
+    <section class="section section--tight">
+      <div class="container">
+        <nav class="crumb" aria-label={t.a11y.breadcrumb}>
+          <a href={localePath('/products/', locale)}>{t.nav.products}</a>
+        </nav>
+
+        <div class="intro">
+          <div class="intro__body">
+            <div class="intro__heading">
+              <h1>{data.name}</h1>
+              <StatusBadge product={product} locale={locale} />
+            </div>
+            <p class="lede intro__summary">{copy.shortDescription}</p>
+            <div class="intro__action">
+              <StatusNote product={product} locale={locale} />
+            </div>
+          </div>
+
+          <dl class="specs">
+            {
+              requirements.map((row) => (
+                <div class="specs__row">
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        {
+          /* Rendered only when there is something to show — an empty frame
+             would just be a hole between the specs and the overview. */
+          data.screenshots.length > 0 && (
+            <div class="visual">
+              <ProductShot product={product} locale={locale} loading="eager" />
+            </div>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-labelledby="overview-heading">
+      <div class="container overview">
+        <h2 id="overview-heading" class="overview__heading">{t.product.overview}</h2>
+        <p class="overview__text">{copy.longDescription}</p>
+      </div>
+    </section>
+
+    {
+      copy.features.length > 0 && (
+        <section class="section section--tight" aria-labelledby="features-heading">
+          <div class="container">
+            <h2 id="features-heading" class="block__heading">
+              {t.product.features}
+            </h2>
+            <ul class="features">
+              {copy.features.map((feature) => (
+                <li class="feature">
+                  <h3 class="feature__title">{feature.title}</h3>
+                  <p class="feature__text">{feature.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      extraScreenshots.length > 0 && (
+        <section class="section section--tight" aria-labelledby="screens-heading">
+          <div class="container">
+            <h2 id="screens-heading" class="block__heading">
+              {t.product.screenshots}
+            </h2>
+            <div class="shots">
+              {extraScreenshots.map((_, offset) => (
+                <ProductShot product={product} locale={locale} index={offset + 1} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="section section--tight" aria-labelledby="availability-heading">
+      <div class="container">
+        <div class="panel">
+          <h2 id="availability-heading" class="panel__title">{t.product.availability}</h2>
+          <p class="panel__text">
+            {
+              released
+                ? t.product.availableNote(data.name)
+                : t.product.unavailableNote(data.name)
+            }
+          </p>
+          {copy.privacyNote && <p class="panel__privacy">{copy.privacyNote}</p>}
+        </div>
+
+        <p class="support">
+          {t.product.supportQuestion(data.name)}{' '}
+          <a href={localePath('/support/', locale)}>{t.product.supportLink}</a>.
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .crumb {
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .crumb a:hover {
+    color: var(--text-primary);
+  }
+
+  .intro {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .intro__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .intro__summary {
+    margin-top: var(--space-4);
+    max-width: 50ch;
+  }
+
+  .intro__action {
+    margin-top: var(--space-6);
+  }
+
+  .specs {
+    align-self: start;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+    font-size: var(--text-sm);
+  }
+
+  .specs__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .specs__row + .specs__row {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .specs dt {
+    color: var(--text-tertiary);
+  }
+
+  .specs dd {
+    margin: 0;
+    color: var(--text-primary);
+    text-align: right;
+  }
+
+  .visual {
+    margin-top: clamp(var(--space-10), 6vw, var(--space-16));
+  }
+
+  .overview {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .overview__heading {
+    font-size: var(--text-lg);
+  }
+
+  .overview__text {
+    max-width: var(--content-narrow);
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+  }
+
+  .block__heading {
+    margin-bottom: var(--space-8);
+    font-size: var(--text-lg);
+  }
+
+  .features {
+    display: grid;
+    gap: var(--space-8) var(--space-10);
+  }
+
+  .feature {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .feature__title {
+    font-size: var(--text-md);
+  }
+
+  .feature__text {
+    margin-top: var(--space-2);
+    max-width: 46ch;
+    color: var(--text-secondary);
+  }
+
+  .shots {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .panel {
+    padding: clamp(var(--space-6), 4vw, var(--space-10));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+  }
+
+  .panel__title {
+    font-size: var(--text-lg);
+  }
+
+  .panel__text {
+    margin-top: var(--space-3);
+    max-width: 56ch;
+    color: var(--text-secondary);
+  }
+
+  .panel__privacy {
+    margin-top: var(--space-3);
+    max-width: 56ch;
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .support {
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .support a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 48rem) {
+    .features {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .intro {
+      grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+      gap: var(--space-12);
+      align-items: start;
+    }
+  }
+</style>

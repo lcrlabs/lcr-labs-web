@@ -17,6 +17,13 @@
  * So theme-aware images ship without a `src` and are given one here, from the
  * resolved appearance — one element, one request, and never the wrong variant
  * on screen first.
+ *
+ * `applied()` exists for a WebKit bug: when `color-scheme` changes, Safari does
+ * not re-resolve `light-dark()` for a property that is listed in an element's
+ * `transition`, so the header's links and controls keep the colours of the
+ * appearance being left. Suppressing transitions for the frame the change
+ * lands in makes it re-resolve, and the switch reads better for not having
+ * every colour cross-fade anyway.
  */
 ---
 
@@ -42,6 +49,16 @@
     const listeners = new Set();
     let current = resolved();
 
+    /* One frame with no transitions, so WebKit re-resolves `light-dark()`. */
+    const settle = () => {
+      root.dataset.themeSwitching = '';
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          delete root.dataset.themeSwitching;
+        }),
+      );
+    };
+
     const announce = () => {
       const next = resolved();
       if (next === current) return;
@@ -51,7 +68,10 @@
 
     /* Only has an effect while the reader is still following the system: once
        `data-theme` is set, `resolved()` stops consulting the query. */
-    systemDark.addEventListener('change', announce);
+    systemDark.addEventListener('change', () => {
+      settle();
+      announce();
+    });
 
     window.lcrTheme = {
       get current() {
@@ -59,6 +79,7 @@
       },
       /** Store an explicit choice and tell everything that cares. */
       set(theme) {
+        settle();
         root.dataset.theme = theme;
         try {
           localStorage.setItem(KEY, theme);
