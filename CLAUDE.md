@@ -95,9 +95,18 @@ Rules:
 
 English is the default and carries no prefix; German lives under `/de/`. There
 is no `/en/`, and nothing redirects — the URL a reader asks for is the page they
-get. `/404` is the one page with no German counterpart, because GitHub Pages
-serves one not-found page for the whole domain.
+get, so `lcrlabs.de` serves English to everyone, every time. `/404` is the one
+page with no German counterpart, because GitHub Pages serves one not-found page
+for the whole domain.
 
+[`docs/localization.md`](docs/localization.md) is the full contract — the
+invariants, the storage and privacy rules, the legal-page rule, and what adding
+a third language would touch. The rules below are the ones that get broken most
+easily.
+
+- **`src/i18n/index.ts` owns locale routing.** `LOCALES`, `DEFAULT_LOCALE`, the
+  prefix per locale, the set of translated paths and every path helper live
+  there and nowhere else.
 - **A page body is written once.** It lives in `src/views/` and takes a
   `locale`; the route file under `src/pages/` is three lines. Never copy a page
   to translate it.
@@ -110,13 +119,42 @@ serves one not-found page for the whole domain.
 - **Prose belongs to a language; facts do not.** A product's name, platform,
   minimum OS, status and screenshot files sit at the top level of its JSON;
   only its copy is per-language.
+- **The switcher goes to the equivalent logical page**, falling back to that
+  language's homepage only where no counterpart exists.
+- **Metadata is derived, never written out by hand.** Each page's canonical
+  points at itself; every translated page emits `hreflang` for `en`, `de` and
+  `x-default`; `x-default` is English because it is `DEFAULT_LOCALE`; and both
+  locales appear in the sitemap. A page that gains a language gains all four
+  without an edit to any of them.
 - **Legal pages are the exception to sharing a body.** The German pages carry
   the finalized German wording and are authoritative; the English ones state
   the same duties under the same law (GDPR, DDG, TDDDG) in English. Change a
-  fact in one and it changes in both, or neither is true.
-- **`lcr-language` is written only when a reader uses the switcher**, and read
-  by nothing that changes navigation. No browser-language redirect, ever. Both
-  privacy pages disclose it alongside `lcr-theme`.
+  fact in one and it changes in both, or neither is true — an edit to either
+  version means checking the other. German and EU references are never replaced
+  with US or other foreign law.
+- **A product page is not done until both languages are.** English copy, German
+  copy, localized metadata and localized screenshot `alt` text, both routes
+  building, and the pair in the sitemap and the `hreflang` set. Localized
+  screenshot *images* are not required: an English capture may stand on a German
+  page as long as the alt text is German and nothing claims otherwise.
+- **`lcr-language` is written only when a reader uses the switcher**, holds a
+  supported locale value, and is read by nothing that changes navigation. No
+  browser-language redirect, ever, and no use for analytics, advertising or
+  profiling. Both privacy pages disclose it alongside `lcr-theme`; those two
+  keys are the only browser storage the site uses.
+- **Localization stays local and static.** Translations are written in the
+  repository and bundled at build time. No translation API, no runtime machine
+  translation, no external localization script or locale bundle, no
+  localization telemetry, and no analytics or tracking keyed on language.
+- **The architecture stays open to more languages.** French, Spanish, Italian
+  and Chinese are all plausible later; do not implement any of them without an
+  explicit instruction, and do not write code that assumes `en` and `de` are the
+  only locales there can be. Adding one must be: the locale in the central
+  config, its dictionary, its static routes, its content — with `hreflang`,
+  `og:locale`, the switcher and the sitemap following from `LOCALES` on their
+  own. If a language addition would need the routing redesigned, the routing is
+  wrong. `docs/localization.md` lists the exact files and which ones the
+  compiler catches.
 
 ## Appearance
 
@@ -162,6 +200,13 @@ empty box. `global.css` also carries a blanket reduced-motion override.
   is one that is true. If the site starts loading something new, the privacy
   notice changes with it; if it stops, the section goes. Facts the project does
   not have are absent rather than approximated.
+- **The pair stays consistent.** The German pages are the source text; the
+  English ones are translations of the same duties under the same law. Operator
+  name, address, contact address, hosting and infrastructure disclosures,
+  supervisory authority, storage keys and dates must read identically in both.
+  Editing one version means checking the other in the same change. Official
+  names of companies and authorities stay in their own language on both sides —
+  they are names, not prose.
 - Legal wording here is written, not lawyer-reviewed. Independent review is
   still an open item in `docs/deployment.md`, and nothing in the repository
   should claim otherwise.
@@ -193,7 +238,11 @@ Before calling work here done:
    menu, every CTA, visible focus.
    Check both languages: the switcher must reach the matching page, and no page
    may mix languages.
-5. Confirm no secrets, no checkout code, no paid-download link, and no
+5. On the built `dist/`: both variants of every page, no `/en/` path anywhere,
+   `<html lang>` matching the directory, a self-referential canonical and
+   `en`/`de`/`x-default` on each translated page, and both locales in the
+   sitemap. `docs/localization.md` has the full list.
+6. Confirm no secrets, no checkout code, no paid-download link, and no
    distribution channel or store link entered the build.
 
 There is no test suite: the site has no domain logic to protect. If real logic

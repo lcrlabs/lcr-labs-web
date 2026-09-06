@@ -153,6 +153,13 @@ The one page that exists in English only is `404.html`: GitHub Pages serves a
 single not-found page for the whole domain, so there is nowhere for a German
 one to be served from.
 
+Nothing above is specific to two languages. A locale lives in `LOCALES` with a
+prefix, a dictionary and a directory of three-line routes; `hreflang`,
+`og:locale`, the switcher and the sitemap all follow from that list. Adding a
+third language is content and configuration, not a change to the routing —
+[`docs/localization.md`](docs/localization.md) is the full contract, including
+the exact files a new locale touches.
+
 ## What this repository will not contain
 
 No cart, checkout, payment SDK, payment webhook, purchase-success page, licence
@@ -166,20 +173,23 @@ full set of constraints.
 public/brand/          logo, icons, social card
 public/products/       product screenshots
 src/content/products/  product data (the source of truth)
-src/i18n/              locale type, route arithmetic, the two dictionaries
+src/i18n/              locale config, route arithmetic, the dictionaries
 src/components/        presentational components
 src/views/             one page body per page, shared by both languages
 src/layouts/           the single page shell
 src/pages/             routes — English at the root, German under /de/
 src/lib/               product queries, status labels, site constants
 src/styles/            design tokens and global styles
-docs/                  design system and deployment notes
+docs/                  design system, localization and deployment notes
 ```
 
 ## Documentation
 
 - [`docs/design-system.md`](docs/design-system.md) — tokens, type, motion, the
   rules a new component has to follow.
+- [`docs/localization.md`](docs/localization.md) — the localization contract:
+  routing, dictionaries, metadata, storage, the legal-page rule, and what
+  adding a language takes.
 - [`docs/deployment.md`](docs/deployment.md) — the GitHub Pages workflow,
   domain and header policy.
 - [`CLAUDE.md`](CLAUDE.md) — working rules and hard constraints.

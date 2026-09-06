@@ -88,9 +88,13 @@ not widened to `*` to make an error go away.
 ## Verifying a deployment
 
 1. Actions → the run for the pushed commit is green, both jobs.
-2. `https://lcrlabs.de/` serves the built site.
-3. Spot-check a product route, `/sitemap.xml` and `/robots.txt`.
-4. An unknown path returns the 404 page.
+2. `https://lcrlabs.de/` serves the built site, in English — the apex serves the
+   default locale with no redirect and no browser-language detection.
+3. `https://lcrlabs.de/de/` serves the German site, and the header's `EN`/`DE`
+   control moves between the two on the same page.
+4. Spot-check a product route in both languages, `/sitemap.xml` and
+   `/robots.txt`.
+5. An unknown path returns the 404 page.
 
 ## Pre-launch checklist
 
@@ -104,6 +108,12 @@ not widened to `*` to make an error go away.
 - [ ] Product screenshots added in both appearances, or their absence accepted
       knowingly.
 - [x] Build clean, `npm run check` clean.
+- [x] Both locales build: every English route has its German counterpart and no
+      `/en/` path exists in the output or the sitemap.
+- [x] Localization metadata verified in `dist/`: `<html lang>` per directory,
+      self-referential canonicals, `en`/`de`/`x-default` on every translated
+      page, both locales in the sitemap. See [`localization.md`](localization.md).
+- [ ] Language switcher exercised page by page in a browser, both directions.
 - [ ] Checked in Safari at desktop and phone widths, both appearances.
 - [ ] Keyboard pass: skip link, header, menu, every CTA.
 - [x] Confirmed no checkout code, no paid-download link, no secrets in the
