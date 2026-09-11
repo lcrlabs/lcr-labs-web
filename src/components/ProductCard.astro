@@ -1,4 +1,5 @@
 ---
+import AppStoreButton from './AppStoreButton.astro';
 import StatusBadge from './StatusBadge.astro';
 import type { Product } from '../lib/products';
 import { content, productHref } from '../lib/products';
@@ -44,6 +45,7 @@ const copy = content(product, locale);
         : product.data.platform
     }
   </p>
+  {product.data.appStoreUrl && <div class="card__store"><AppStoreButton product={product} locale={locale} /></div>}
 </article>
 
 <style>
@@ -83,6 +85,13 @@ const copy = content(product, locale);
 
   .card:has(.card__link) {
     position: relative;
+  }
+
+  .card__store {
+    position: relative;
+    z-index: 1;
+    align-self: flex-start;
+    margin-top: var(--space-2);
   }
 
   .card__summary {

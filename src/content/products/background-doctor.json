@@ -31,12 +31,12 @@
     "en": "Apple silicon and Intel",
     "de": "Apple Silicon und Intel"
   },
-  "status": "in-development",
+  "status": "available",
   "localized": {
     "en": {
       "shortDescription": "Understand what is running on your Mac, why it is running and what belongs to which app.",
       "longDescription": "Activity Monitor shows you processes. Background Doctor shows you applications — it groups the dozen helpers a browser spawns back under the browser, explains in plain language what each background component is and whose software it belongs to, and tells you what starts automatically at login. It is a system inspector written for people who want an answer, not a process table.",
-      "statusNote": "In development. Release details will be published here.",
+      "statusNote": "Available now on the Mac App Store.",
       "highlights": [
         "Groups helper processes under the application they belong to",
         "Explains what a background component is and where it came from",
@@ -66,7 +66,7 @@
     "de": {
       "shortDescription": "Verstehen, was auf dem Mac läuft, warum es läuft und zu welcher App es gehört.",
       "longDescription": "Die Aktivitätsanzeige zeigt Prozesse. Background Doctor zeigt Anwendungen — die zwölf Helfer, die ein Browser startet, werden wieder dem Browser zugeordnet, zu jeder Hintergrundkomponente steht in klarer Sprache, was sie ist und zu wessen Software sie gehört, und sichtbar wird auch, was beim Anmelden automatisch startet. Ein Systeminspektor für alle, die eine Antwort suchen und keine Prozesstabelle.",
-      "statusNote": "In Entwicklung. Die Einzelheiten zur Veröffentlichung erscheinen hier.",
+      "statusNote": "Jetzt im Mac App Store verfügbar.",
       "highlights": [
         "Fasst Hilfsprozesse unter der Anwendung zusammen, zu der sie gehören",
         "Erklärt, was eine Hintergrundkomponente ist und woher sie stammt",
@@ -93,5 +93,6 @@
       ],
       "privacyNote": "Die Daten der App bleiben auf dem Mac. Kein Konto und keine Analyse. Background Doctor überträgt keine Prozess- oder Systemdaten."
     }
-  }
+  },
+  "appStoreUrl": "https://apps.apple.com/de/app/background-doctor/id6808660034?mt=12"
 }

@@ -85,6 +85,8 @@ export const en = {
       version: 'Version',
       status: 'Status',
     },
+    appStoreAction: 'View on the',
+    appStoreStatus: 'Available on the Mac App Store',
     overview: 'Overview',
     features: 'What it does',
     screenshots: 'Screenshots',
@@ -104,7 +106,7 @@ export const en = {
     heroAction: (name: string) => `Meet ${name}`,
 
     leadEyebrow: 'The current focus',
-    leadHeading: 'The app LCR Labs is building right now.',
+    leadHeading: 'Discover Background Doctor.',
 
     principlesEyebrow: 'Principles',
     principlesHeading: 'How the apps are built.',
@@ -167,7 +169,7 @@ export const en = {
       'Data stays on the device by default. A system monitor should not need an account, a note-taking companion should not upload your email, and a pointer utility should not be interested in how you use your displays. Where a product later benefits from synchronisation, the intent is user-controlled iCloud rather than a database owned by LCR Labs.',
     availabilityHeading: 'Availability',
     availabilityText:
-      'Nothing has been released yet. How the apps will be distributed has not been decided, and it will be announced here once it is — release details for each product are published on its own page. This website exists to explain the products; it is not a shop, it processes no payments and it hosts no paid downloads.',
+      'Background Doctor is available on the Mac App Store. Threadmark and Edgehold are still in planning; their release details will be published on their product pages. This website exists to explain the products; it is not a shop, it processes no payments and it hosts no paid downloads.',
     contactHeading: 'Contact',
     /** Split around the three links the sentence carries. */
     contactBefore: 'Product questions, bug reports and feedback are welcome at ',

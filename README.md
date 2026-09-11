@@ -8,9 +8,9 @@ deployed to GitHub Pages at <https://lcrlabs.de> by GitHub Actions.
 
 ## What this site does
 
-It presents the products and says honestly where each one stands. No
-distribution channel has been chosen yet, so no page links to a store or names
-one. The site sells nothing, stores nothing about visitors and has no server
+It presents the products and says honestly where each one stands. Background
+Doctor is available on the Mac App Store, linked from its product data. Other
+products retain their own development status. The site sells nothing, stores nothing about visitors and has no server
 component.
 
 ## Getting started

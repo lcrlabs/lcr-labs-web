@@ -22,7 +22,10 @@ export function content(product: Product, locale: Locale): ProductContent {
 }
 
 export function statusLabel(product: Product, locale: Locale): string {
-  return useTranslations(locale).status[product.data.status];
+  const t = useTranslations(locale);
+  return product.data.status === 'available' && product.data.appStoreUrl
+    ? t.product.appStoreStatus
+    : t.status[product.data.status];
 }
 
 /**

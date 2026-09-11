@@ -73,6 +73,8 @@ export const de: typeof en = {
       version: 'Version',
       status: 'Status',
     },
+    appStoreAction: 'Ansehen im',
+    appStoreStatus: 'Im Mac App Store verfügbar',
     overview: 'Überblick',
     features: 'Was die App leistet',
     screenshots: 'Screenshots',
@@ -93,7 +95,7 @@ export const de: typeof en = {
     heroAction: (name: string) => `${name} kennenlernen`,
 
     leadEyebrow: 'Aktueller Schwerpunkt',
-    leadHeading: 'Die App, an der LCR Labs gerade arbeitet.',
+    leadHeading: 'Background Doctor entdecken.',
 
     principlesEyebrow: 'Grundsätze',
     principlesHeading: 'Wie die Apps entstehen.',
@@ -155,7 +157,7 @@ export const de: typeof en = {
       'Daten bleiben standardmäßig auf dem Gerät. Ein Systemmonitor braucht kein Konto, ein Begleiter für Notizen muss keine E-Mails hochladen, und ein Zeiger-Werkzeug hat sich nicht dafür zu interessieren, wie Bildschirme genutzt werden. Wo ein Produkt später von Synchronisierung profitiert, ist nutzergesteuertes iCloud vorgesehen und keine Datenbank in der Hand von LCR Labs.',
     availabilityHeading: 'Verfügbarkeit',
     availabilityText:
-      'Bisher ist nichts veröffentlicht. Wie die Apps vertrieben werden, ist noch nicht entschieden und wird hier bekanntgegeben, sobald es feststeht — die Einzelheiten zur Veröffentlichung erscheinen auf der jeweiligen Produktseite. Diese Website erklärt die Produkte; sie ist kein Shop, wickelt keine Zahlungen ab und stellt keine kostenpflichtigen Downloads bereit.',
+      'Background Doctor ist im Mac App Store verfügbar. Threadmark und Edgehold sind weiterhin in Planung; Einzelheiten zur Veröffentlichung erscheinen auf den jeweiligen Produktseiten. Diese Website erklärt die Produkte; sie ist kein Shop, wickelt keine Zahlungen ab und stellt keine kostenpflichtigen Downloads bereit.',
     contactHeading: 'Kontakt',
     contactBefore: 'Fragen zu den Produkten, Fehlerberichte und Rückmeldungen sind willkommen unter ',
     contactMiddle: ' oder über die ',

@@ -1,5 +1,6 @@
 ---
 import ProductShot from './ProductShot.astro';
+import AppStoreButton from './AppStoreButton.astro';
 import StatusBadge from './StatusBadge.astro';
 import StatusNote from './StatusNote.astro';
 import Button from './Button.astro';
@@ -44,7 +45,8 @@ const copy = content(product, locale);
     }
 
     <div class="lead__actions">
-      <Button href={productHref(product, locale)} variant="primary" size="lg">
+      <AppStoreButton product={product} locale={locale} />
+      <Button href={productHref(product, locale)} variant={data.appStoreUrl ? "secondary" : "primary"} size="lg">
         {t.product.learnMore}<span class="visually-hidden">{t.product.learnMoreAbout(data.name)}</span>
       </Button>
       <StatusNote product={product} locale={locale} />

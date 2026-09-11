@@ -46,7 +46,7 @@ const contentSchema = z.object({
   shortDescription: z.string(),
   /** One or two paragraphs for the product page hero. */
   longDescription: z.string(),
-  /** Short, honest note about why a product is not yet available. */
+  /** Short, honest note about a product’s availability. */
   statusNote: z.string().optional(),
   features: z
     .array(z.object({ title: z.string(), description: z.string() }))
@@ -80,6 +80,8 @@ const products = defineCollection({
     /** Prose rather than an identifier, so it is written per language. */
     architecture: localized(z.string()).optional(),
     version: z.string().optional(),
+    /** Official store listing, supplied only for a released product. */
+    appStoreUrl: z.url({ protocol: /^https$/, hostname: /^apps\.apple\.com$/ }).optional(),
 
     /**
      * Where the product actually is. `coming-soon` is reserved for a release

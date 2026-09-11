@@ -3,6 +3,15 @@
 Project-specific rules for this repository. The global rules in `~/.claude/CLAUDE.md`
 still apply; where this file is more specific, this file wins.
 
+## Background Doctor release update — 2026-09-11
+
+The user has confirmed Background Doctor is live on the Mac App Store. Its
+`appStoreUrl` in product data is the approved direct link. Render the shared
+`AppStoreButton` as its primary acquisition CTA, with localized availability.
+This supersedes the unreleased/no-store/no-button statements below only for
+Background Doctor. Other products retain their existing status and constraints.
+Verification must confirm the exact approved link, not prohibit that link.
+
 ## What this is
 
 The LCR Labs website: a static product and brand hub for the LCR Labs macOS

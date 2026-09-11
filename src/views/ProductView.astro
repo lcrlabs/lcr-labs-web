@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductShot from '../components/ProductShot.astro';
 import StatusBadge from '../components/StatusBadge.astro';
+import AppStoreButton from '../components/AppStoreButton.astro';
 import StatusNote from '../components/StatusNote.astro';
 import { content, statusLabel, type Product } from '../lib/products';
 import { SITE_NAME } from '../lib/site';
@@ -74,6 +75,7 @@ const extraScreenshots = data.screenshots.slice(1);
             </div>
             <p class="lede intro__summary">{copy.shortDescription}</p>
             <div class="intro__action">
+              <AppStoreButton product={product} locale={locale} />
               <StatusNote product={product} locale={locale} />
             </div>
           </div>
@@ -152,11 +154,12 @@ const extraScreenshots = data.screenshots.slice(1);
           <h2 id="availability-heading" class="panel__title">{t.product.availability}</h2>
           <p class="panel__text">
             {
-              released
+              copy.statusNote ?? (released
                 ? t.product.availableNote(data.name)
-                : t.product.unavailableNote(data.name)
+                : t.product.unavailableNote(data.name))
             }
           </p>
+          {data.appStoreUrl && <div class="intro__action"><AppStoreButton product={product} locale={locale} /></div>}
           {copy.privacyNote && <p class="panel__privacy">{copy.privacyNote}</p>}
         </div>
 
@@ -198,6 +201,10 @@ const extraScreenshots = data.screenshots.slice(1);
   }
 
   .intro__action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
     margin-top: var(--space-6);
   }
 
